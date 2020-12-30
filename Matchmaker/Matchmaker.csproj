@@ -53,7 +53,7 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>bowl.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\bowl.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClosedXML, Version=0.95.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -156,7 +156,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bowl.ico" />
+    <Content Include="Resources\bowl.ico" />
     <Content Include="Resources\table.html" />
   </ItemGroup>
   <ItemGroup>

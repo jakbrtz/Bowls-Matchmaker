@@ -26,4 +26,4 @@ The only script that should look at the content of table.html is HTMLdocument.cs
 * %thirdvisible%
 * %skipvisible%
 
-It also searches for "<!--repeat-->" to avoid duplicating the entire document.
+It also searches for `<!--repeat-->` to avoid duplicating the entire document.

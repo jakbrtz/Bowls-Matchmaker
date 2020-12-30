@@ -1,0 +1,217 @@
+<html>
+	<head>
+		<style>
+
+			h1 {
+				font: 22px Arial, sans-serif;
+				font-weight: bold;
+				margin-top: 1pt;
+				margin-bottom: 1pt;
+			}
+
+			h2 {
+				font: 14px Arial, sans-serif;
+				text-decoration:underline;
+				text-align:left;
+				margin-top: 1pt;
+				margin-right: 3pt;
+				margin-bottom: 3pt;
+				margin-left: 3pt;
+			}
+
+			p {
+				font: 20px Arial, sans-serif;
+				margin-top: 1pt;
+				margin-right: 3pt;
+				margin-bottom: 1pt;
+				margin-left: 3pt;
+			}
+
+			.rink {
+				font-weight: bold;
+			}
+
+			.size {
+				font: 14px Arial, sans-serif;
+			}
+
+			.position {
+				
+			}
+
+			.player {
+				font-weight: bold;
+				float:left;
+			}
+
+			.preference {
+				float:right;
+			}
+
+			table {
+				border-collapse:collapse;
+			}
+
+			td {
+				vertical-align:top;
+				overflow: hidden;
+			}
+
+			table tr td:last-child {
+				border-left: solid windowtext 2.0pt;
+				padding-left: 13pt;
+			}
+
+			table th:nth-child(5) {
+				padding-left: 13pt;
+			}
+
+			tbody {
+				break-inside: avoid-page;
+			}
+
+			table tbody tr:nth-last-child(2) {
+				height:20px;
+			}
+
+			table tbody tr:last-child {	
+				height:20px;
+				border-top: solid windowtext 1.0pt;
+			}
+
+			::-ms-clear {
+				display: none;
+			}
+			
+			button {
+				width: 100%;
+			}
+			
+			select {
+				width: 100%;
+			}
+			
+		</style>
+		<meta http-equiv=X-UA-Compatible content="IE=edge">
+	</head>
+	<body>
+		<div align=center>
+			<table cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th colspan="3" align="left">
+							<h1>Club Name</h1>
+						</th>
+						<th colspan="2">
+							<h1>Card Call for %date%</h1>
+						</th>
+					</tr>
+					<tr>
+						<th width=50>
+							<h2>Rink</h2>
+						</th>
+						<th width=100>
+							<h2>Type</h2>
+						</th>
+						<th width=100>
+
+						</th>
+						<th width=280>
+							<h2>Team 1</h2>
+						</th>
+						<th width=280>
+							<h2>Team 2</h2>
+						</th>
+					</tr>
+				</thead>
+				<!--repeat-->
+				<tbody>
+					<tr>
+						<td>
+							<p class="rink">%rink%</p>
+						</td>
+						<td>
+							<p class="size">%size%</p>
+						</td>
+						<td>
+							<p class="position">Lead</p>
+						</td>
+						<td>
+							<p class="player">%lead1%</p>
+							<div class="preference"><p class="preference">%lead1pref%</p></div>
+						</td>
+						<td>
+							<div class="player"><p class="player">%lead2%</p></div>
+							<div class="preference"><p class="preference">%lead2pref%</p></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>&nbsp;</p>
+						</td>
+						<td>
+							<p>%delete%</p>
+						</td>
+						<td>
+							<p class="position">Second</p>
+						</td>
+						<td>
+							<p class="player">%second1%</p>
+							<div class="preference"><p class="preference">%second1pref%</p></div>
+						</td>
+						<td>
+							<div class="player"><p class="player">%second2%</p></div>
+							<div class="preference"><p class="preference">%second2pref%</p></div>
+						</td>
+					</tr>
+					<tr>
+						<td><p>&nbsp;</p></td>
+						<td><p>&nbsp;</p></td>
+						<td>
+							<p class="position">Third</p>
+						</td>
+						<td>
+							<p class="player">%third1%</p>
+							<div class="preference"><p class="preference">%third1pref%</p></div>
+						</td>
+						<td>
+							<div class="player"><p class="player">%third2%</p></div>
+							<div class="preference"><p class="preference">%third2pref%</p></div>
+						</td>
+					</tr>
+					<tr>
+						<td><p>&nbsp;</p></td>
+						<td><p>&nbsp;</p></td>
+						<td>
+							<p class="position">Skip</p>
+						</td>
+						<td>
+							<p class="player">%skip1%</p>
+							<div class="preference"><p class="preference">%skip1pref%</p></div>
+						</td>
+						<td>
+							<div class="player"><p class="player">%skip2%</p></div>
+							<div class="preference"><p class="preference">%skip2pref%</p></div>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+				<!--repeat-->
+			</table>
+		</div>
+		<br />
+	</body>
+</html>

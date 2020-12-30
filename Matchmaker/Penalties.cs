@@ -141,7 +141,7 @@ namespace Matchmaker
 
         public override string Reason(IList<Day> history)
         {
-            string result = $"{player} ({grade}) wanted {wantedPosition} but got {givenPosition}";
+            string result = $"{player} ({grade.ToUserFriendlyString()}) wanted {wantedPosition.ToUserFriendlyString()} but got {givenPosition.ToUserFriendlyString()}";
             if (usedSecondary)
                 result += " (second choice)";
             result += ". ";
@@ -158,7 +158,7 @@ namespace Matchmaker
 
         public override string Reason(IList<Day> history)
         {
-            string result = $"{player} wanted to play {wantedSize} but got {givenSize}. ";
+            string result = $"{player} wanted to play {wantedSize.ToUserFriendlyString()} but got {givenSize.ToUserFriendlyString()}. ";
             result += historical.CiteOccurence(history);
             return result;
         }

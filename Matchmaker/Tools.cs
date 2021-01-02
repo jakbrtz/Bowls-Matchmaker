@@ -29,14 +29,28 @@ namespace Matchmaker
 
         public static int RelevanceToSearch(Player player, string search)
         {
+            const int bignumber = 1 << 10; // there's no way the user will use more than this many words
+            if (player.Name == search) return int.MinValue;
+            int earliestMatchingWord = -1;
+            int numberOfMatchingWords = 0;
             foreach (string searchWord in search.Split(' '))
             {
                 var names = player.Name.Split(' ');
                 for (int i = 0; i < names.Length; i++)
+                {
                     if (names[i].StartsWith(searchWord, StringComparison.OrdinalIgnoreCase))
-                        return i;
+                    {
+                        numberOfMatchingWords++;
+                        if (i < earliestMatchingWord)
+                        {
+                            earliestMatchingWord = i;
+                        }
+                        break;
+                    }
+                }
             }
-            return int.MaxValue;
+            if (numberOfMatchingWords == 0) return int.MaxValue;
+            return (bignumber - numberOfMatchingWords) * bignumber + earliestMatchingWord;
         }
 
         public static int PlayerCompare(Player player1, Player player2)

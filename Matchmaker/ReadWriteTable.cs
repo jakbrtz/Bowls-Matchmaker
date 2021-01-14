@@ -146,34 +146,6 @@ namespace Matchmaker
             }
         }
 
-        class CSVWriter : ITableWriter
-        {
-            readonly StreamWriter streamWriter;
-
-            public CSVWriter(string filename)
-            {
-                streamWriter = new StreamWriter(filename);
-            }
-
-            public void AddRow(params string[] values)
-            {
-                string line = string.Empty;
-                foreach (string value in values)
-                {
-                    if (!string.IsNullOrEmpty(value))
-                        line += ", ";
-                    line += "\"" + value.Replace("\"", "\\\"") + "\"";
-                    // todo: escape escape characters, and their edge cases
-                }
-                streamWriter.WriteLine(line);
-            }
-
-            public void Dispose()
-            {
-                streamWriter.Dispose();
-            }
-        }
-
         class SingleColumnWriter : ITableWriter
         {
             readonly StreamWriter streamWriter;

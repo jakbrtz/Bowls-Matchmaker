@@ -858,14 +858,11 @@ namespace Matchmaker
             if (OFDexcel.ShowDialog() == DialogResult.Cancel) return;
             SFDexcel.FileName = OFDexcel.FileName;
 
-            if (ReadWriteTable.ImportPlayerDetails(OFDexcel.FileName, players))
+            FormTableImporter importerForm = new FormTableImporterPlayer(new ExcelReader(OFDexcel.FileName), players);
+            if (importerForm.ShowDialog() == DialogResult.OK)
             {
                 RefreshFullListOfPlayers();
                 toolStripStatusLabel1.Text = "Imported from " + SFDexcel.FileName;
-            }
-            else
-            {
-                MessageBox.Show("Something went wrong while importing", "Error");
             }
         }
 

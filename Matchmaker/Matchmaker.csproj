@@ -93,8 +93,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters.cs" />
+    <Compile Include="DataGridViewDropDownHeaderCell.cs" />
+    <Compile Include="DataGridViewDropDownHeaderColumn.cs" />
     <Compile Include="DeleteData.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="FormTableImporter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTableImporter.Designer.cs">
+      <DependentUpon>FormTableImporter.cs</DependentUpon>
+    </Compile>
     <Compile Include="ReadWriteTable.cs" />
     <Compile Include="ProgressUpdater.cs" />
     <Compile Include="Tools.cs" />
@@ -129,6 +137,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTableImporter.resx">
+      <DependentUpon>FormTableImporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

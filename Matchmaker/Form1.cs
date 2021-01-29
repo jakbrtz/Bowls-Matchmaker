@@ -74,11 +74,6 @@ namespace Matchmaker
             TBXhtml.Text = HTMLdocument.format;
         }
 
-        private void PictureBox1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         #endregion
 
         #region data binding

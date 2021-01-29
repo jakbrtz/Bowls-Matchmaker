@@ -108,7 +108,7 @@
             this.WVWenemies = new Matchmaker.WeightView();
             this.WVWmainposition = new Matchmaker.WeightView();
             this.WVWsecondaryposition = new Matchmaker.WeightView();
-            this.WVWbadpositionbadgrade = new Matchmaker.WeightView();
+            this.WVWbadpositiongoodgrade = new Matchmaker.WeightView();
             this.WVWunbalancedplayers = new Matchmaker.WeightView();
             this.WVWunbalancedteams = new Matchmaker.WeightView();
             this.WVWteamsize = new Matchmaker.WeightView();
@@ -931,7 +931,7 @@
             this.FLPweights.Controls.Add(this.WVWenemies);
             this.FLPweights.Controls.Add(this.WVWmainposition);
             this.FLPweights.Controls.Add(this.WVWsecondaryposition);
-            this.FLPweights.Controls.Add(this.WVWbadpositionbadgrade);
+            this.FLPweights.Controls.Add(this.WVWbadpositiongoodgrade);
             this.FLPweights.Controls.Add(this.WVWunbalancedplayers);
             this.FLPweights.Controls.Add(this.WVWunbalancedteams);
             this.FLPweights.Controls.Add(this.WVWteamsize);
@@ -989,13 +989,13 @@
             // 
             // WVWbadpositionbadgrade
             // 
-            this.WVWbadpositionbadgrade.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWbadpositionbadgrade.Description = "Bad players should not get moved to other positions";
-            this.WVWbadpositionbadgrade.Location = new System.Drawing.Point(3, 307);
-            this.WVWbadpositionbadgrade.Name = "WVWbadpositionbadgrade";
-            this.WVWbadpositionbadgrade.Size = new System.Drawing.Size(959, 70);
-            this.WVWbadpositionbadgrade.TabIndex = 8;
-            this.WVWbadpositionbadgrade.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            this.WVWbadpositiongoodgrade.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWbadpositiongoodgrade.Description = "Good players should not get moved to other positions";
+            this.WVWbadpositiongoodgrade.Location = new System.Drawing.Point(3, 307);
+            this.WVWbadpositiongoodgrade.Name = "WVWbadpositiongoodgrade";
+            this.WVWbadpositiongoodgrade.Size = new System.Drawing.Size(959, 70);
+            this.WVWbadpositiongoodgrade.TabIndex = 8;
+            this.WVWbadpositiongoodgrade.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
             // WVWunbalancedplayers
             // 
@@ -1591,7 +1591,7 @@
         private WeightView WVWenemies;
         private WeightView WVWmainposition;
         private WeightView WVWsecondaryposition;
-        private WeightView WVWbadpositionbadgrade;
+        private WeightView WVWbadpositiongoodgrade;
         private WeightView WVWunbalancedplayers;
         private WeightView WVWunbalancedteams;
         private WeightView WVWteamsize;

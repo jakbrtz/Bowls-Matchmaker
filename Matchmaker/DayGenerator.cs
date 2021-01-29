@@ -467,8 +467,8 @@ namespace Matchmaker
             double score =
                 (usedSecondary ? weights.SecondaryPosition.Score : weights.IncorrectPosition.Score) *
                 (Tools.DifferenceBetweenPositions(player.PositionPrimary, position, size) * 2 - 1) +
-                weights.BadPositionForBadGrade.Score *
-                (effectiveGrade.Score() + 1) / (EffectiveGrade.MaxScore + 1);
+                weights.BadPositionForGoodGrade.Score *
+                (1 - (effectiveGrade.Score() + 1) / (EffectiveGrade.MaxScore + 1));
 
             if (!incorrectPositions.TryGetValue(player, out HistoryOfPenalty historical))
                 historical = new HistoryOfPenalty(); // todo adjust history depending on severity

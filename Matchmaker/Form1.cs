@@ -136,7 +136,7 @@ namespace Matchmaker
             WVWenemies.BindToWeight(weights.PairPlayedTogetherAgainstEachOther);
             WVWmainposition.BindToWeight(weights.IncorrectPosition);
             WVWsecondaryposition.BindToWeight(weights.SecondaryPosition);
-            WVWbadpositionbadgrade.BindToWeight(weights.BadPositionForBadGrade);
+            WVWbadpositiongoodgrade.BindToWeight(weights.BadPositionForGoodGrade);
             WVWunbalancedplayers.BindToWeight(weights.UnbalancedPlayers);
             WVWunbalancedteams.BindToWeight(weights.UnbalancedTeams);
             WVWteamsize.BindToWeight(weights.IncorrectTeamSize);

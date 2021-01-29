@@ -206,7 +206,7 @@ namespace Matchmaker
                 Write("SP", ConvertWeight(weights.SecondaryPosition));
                 Write("GP", ConvertWeight(weights.UnbalancedPlayers));
                 Write("GT", ConvertWeight(weights.UnbalancedTeams));
-                Write("PG", ConvertWeight(weights.BadPositionForBadGrade));
+                Write("PG", ConvertWeight(weights.BadPositionForGoodGrade));
                 FinishSection();
             }
 
@@ -694,7 +694,7 @@ namespace Matchmaker
                             weights.UnbalancedTeams = ConvertWeight(value);
                             break;
                         case "PG":
-                            weights.BadPositionForBadGrade = ConvertWeight(value);
+                            weights.BadPositionForGoodGrade = ConvertWeight(value);
                             break;
                     }
                 }

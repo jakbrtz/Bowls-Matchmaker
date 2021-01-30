@@ -93,6 +93,7 @@ namespace Matchmaker
         public bool HasPreference => position != Position.None;
     }
 
+    [TypeConverter(typeof(PositionPreferenceConverter))]
     public struct PositionPreference
     {
         public Position primary;
@@ -181,29 +182,42 @@ namespace Matchmaker
         }
     }
 
-    class PositionConverter : TypeConverter
+    abstract class StringConverter<T> : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-        {
-            return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
-        }
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) => destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
+        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) => StringToEnum(value as string);
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) => EnumToString((T)value);
+        public abstract T StringToEnum(string value);
+        public virtual string EnumToString(T value) => value.ToString();
+    }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            return destinationType == typeof(string) || base.CanConvertTo(context, destinationType);
-        }
-
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    class PositionPreferenceConverter : StringConverter<PositionPreference>
+    {
+        public override PositionPreference StringToEnum(string value)
         {
             foreach (var match in PositionPreference.Values)
-                if (match.ToString() == value.ToString())
+                if (match.ToString() == value)
                     return match;
             throw new InvalidCastException("Unrecognised Position Preference");
         }
+    }
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            return value.ToString();
-        }
+    class PositionConverter : StringConverter<Position>
+    {
+        public override Position StringToEnum(string value) => EnumParser.ParsePosition(value);
+        public override string EnumToString(Position value) => EnumParser.ToUserFriendlyString(value);
+    }
+
+    class GradeConverter : StringConverter<Grade>
+    {
+        public override Grade StringToEnum(string value) => EnumParser.ParseGrade(value);
+        public override string EnumToString(Grade value) => EnumParser.ToUserFriendlyString(value);
+    }
+
+    class TeamSizeConverter : StringConverter<TeamSize>
+    {
+        public override TeamSize StringToEnum(string value) => EnumParser.ParseTeamSize(value);
+        public override string EnumToString(TeamSize value) => EnumParser.ToUserFriendlyString(value);
     }
 }

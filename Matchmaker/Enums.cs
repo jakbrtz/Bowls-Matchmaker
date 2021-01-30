@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Matchmaker
 {
+    [TypeConverter(typeof(PositionConverter))]
     public enum Position { 
         Lead    = 0, 
         Second  = 1, 
@@ -15,12 +17,14 @@ namespace Matchmaker
         None    = -1 
     }
 
+    [TypeConverter(typeof(GradeConverter))]
     public enum Grade { 
         G1,
         G2, 
         G3 
     }
 
+    [TypeConverter(typeof(TeamSizeConverter))]
     public enum TeamSize { 
         Pairs           = 1 << 2, 
         Triples         = 1 << 3,
@@ -310,7 +314,7 @@ namespace Matchmaker
                 TeamSize.Triples => "Triples",
                 TeamSize.PairsOrTriples => "Pairs or Triples",
                 TeamSize.Fours => "Fours",
-                TeamSize.TriplesOrFours => "Triples or Fours",
+                TeamSize.TriplesOrFours => "Not Pairs",
                 TeamSize.Any => "Any",
                 _ => teamSize.ToString(),
             };
@@ -349,8 +353,7 @@ namespace Matchmaker
             {
                 if (TryParseTeamSize(value.Substring(3), out teamSize))
                 {
-                    teamSize = ~teamSize;
-                    teamSize &= TeamSize.Any;
+                    teamSize = ~teamSize & TeamSize.Any;
                     return true;
                 }
             }

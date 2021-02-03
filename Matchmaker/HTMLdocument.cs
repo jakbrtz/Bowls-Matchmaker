@@ -140,7 +140,7 @@ namespace Matchmaker
             return TextboxOrPlainText(mode!=HTMLmode.ViewHistory, day.date, "Date", "TypeDate(this.value)", true);
         }
 
-        static string TextboxOrPlainText(bool textbox, string value, string placeholder, string function, bool visible)
+        static string TextboxOrPlainText(bool textbox, string value, string placeholder, string function, bool border)
         {
             if (textbox)
             {
@@ -149,9 +149,8 @@ namespace Matchmaker
                 result += $"placeholder=\"{placeholder}\"";
                 if (!string.IsNullOrEmpty(function))
                     result += $"oninput=\"window.external.{function}\" ";
-                result += "style=\"";
-                if (!visible)
-                    result += "width:100%; border:none;"; // todo: use a class in the css  
+                if (!border)
+                    result += "class=\"borderless\"";
                 result += "\">";
                 return result;
             }

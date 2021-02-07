@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Matchmaker.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Matchmaker
+namespace Matchmaker.FileOperations
 {
     static class ReadWriteMainFile
     {

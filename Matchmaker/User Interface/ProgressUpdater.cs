@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Matchmaker.Algorithms;
+using System;
 using System.Windows.Forms;
 
-namespace Matchmaker
+namespace Matchmaker.UserInterface
 {
     public class ProgressUpdater : IDisposable
     {
-        readonly Form1 form;
+        readonly FormMain form;
         readonly ToolStripProgressBar progressBar;
         readonly ToolStripLabel label;
         readonly Timer timer;
         readonly IAlgorithmWithProgress algorithm;
 
-        public ProgressUpdater(IAlgorithmWithProgress algorithm, Form1 form, ToolStripProgressBar progressBar, ToolStripLabel label, Timer timer)
+        public ProgressUpdater(IAlgorithmWithProgress algorithm, FormMain form, ToolStripProgressBar progressBar, ToolStripLabel label, Timer timer)
         {
             this.form = form;
             this.progressBar = progressBar;
@@ -52,10 +53,5 @@ namespace Matchmaker
                 label.Text = "Done";
             });
         }
-    }
-
-    public interface IAlgorithmWithProgress
-    {
-        public void GetProgress(out double progress, out double score);
     }
 }

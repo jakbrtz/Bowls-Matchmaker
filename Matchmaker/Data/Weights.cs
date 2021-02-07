@@ -1,4 +1,4 @@
-﻿namespace Matchmaker
+﻿namespace Matchmaker.Data
 {
     public class Weights
     {

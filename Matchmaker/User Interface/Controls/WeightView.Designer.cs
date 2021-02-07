@@ -1,4 +1,4 @@
-﻿namespace Matchmaker
+﻿namespace Matchmaker.UserInterface.Controls
 {
     partial class WeightView
     {
@@ -101,7 +101,7 @@
             // 
             // TBRvalue
             // 
-            this.TBRvalue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.TBRvalue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TBRvalue.AutoSize = false;
             this.TBRvalue.BackColor = System.Drawing.SystemColors.Control;

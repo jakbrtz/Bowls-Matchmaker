@@ -1,5 +1,4 @@
-﻿
-namespace Matchmaker
+﻿namespace Matchmaker.FileOperations
 {
     partial class FormTableImporter
     {

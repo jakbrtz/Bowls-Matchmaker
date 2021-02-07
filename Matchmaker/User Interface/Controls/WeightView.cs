@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Matchmaker.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Matchmaker
+namespace Matchmaker.UserInterface.Controls
 {
     public partial class WeightView : UserControl
     {

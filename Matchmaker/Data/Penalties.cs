@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Matchmaker
+namespace Matchmaker.Data
 {
     public struct PairOfPlayers
     {

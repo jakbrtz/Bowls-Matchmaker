@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Matchmaker.Algorithms;
+using Matchmaker.Algorithms.Structures;
+using Matchmaker.Data;
+using Matchmaker.DataHandling;
+using Matchmaker.FileOperations;
+using Matchmaker.UserInterface.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,12 +16,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Day = Matchmaker.Data.Day;
 
-namespace Matchmaker
+namespace Matchmaker.UserInterface
 {
-    public partial class Form1 : Form
+    public partial class FormMain : Form
     {
-        public Form1()
+        public FormMain()
         {
             InitializeComponent();
         }
@@ -35,10 +42,11 @@ namespace Matchmaker
                 Properties.Settings.Default.FileMain = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\bowls matchmaker\\file.bmm";
             ReadWriteMainFile.Input(Properties.Settings.Default.FileMain, players, history, weights);
 
-            SCBfixedmatchplayers.SortBy = (obj, str) => Tools.RelevanceToSearch(obj as Player, str);
+            SCBfixedmatchplayers.SortBy = (obj, str) => Search.RelevanceToSearch(obj as Player, str);
             SetUpHTMLscripting();
             RefreshPageMatchesPlayers();
             DoBindingStuff();
+            PrepareComboBoxes();
             LoadSettings();
 
             if (players.Count == 0) BTNmainPlayers.PerformClick();
@@ -83,13 +91,18 @@ namespace Matchmaker
             RefreshFullListOfPlayers();
             RefreshHistoryList();
 
+            BindWeights();
+        }
+
+        void PrepareComboBoxes()
+        {
             PositionPrimary.DataSource = Enums.Positions;
             PositionSecondary.DataSource = Enums.PositionsIncludingNone;
             GradePrimary.DataSource = Enums.Grades;
             GradeSecondary.DataSource = Enums.Grades;
             preferredTeamSizesDataGridViewTextBoxColumn.DataSource = Enums.TeamSizes;
 
-            BindWeights();
+            StringConverter.AddAttributesToEnumsAndStructs();
         }
 
         void RefreshHistoryList()
@@ -101,16 +114,16 @@ namespace Matchmaker
 
         private void PlayerBindingSource_AddingNew(object sender, AddingNewEventArgs e)
         {
-            Player player = new Player { ID = Tools.UniqueRandomInt(this.players) };
-            if (!RBNvisitor.Checked) player.TagNumber = Tools.NextTagNumber(this.players);
+            Player player = new Player { ID = DataCreation.UniqueRandomInt(this.players) };
+            if (!RBNvisitor.Checked) player.TagNumber = DataCreation.NextTagNumber(this.players);
             e.NewObject = player;
             this.players.Add(player);
         }
 
         public void RefreshPageMatchesPlayers(bool isTyping = false)
         {
-            var relevantPlayers = players.Where(player => Tools.Filter(player, TBXfilterPagePlayers.Text));
-            if (isTyping) relevantPlayers = relevantPlayers.OrderBy(player => Tools.RelevanceToSearch(player, TBXfilterPagePlayers.Text));
+            var relevantPlayers = players.Where(player => Search.Filter(player, TBXfilterPagePlayers.Text));
+            if (isTyping) relevantPlayers = relevantPlayers.OrderBy(player => Search.RelevanceToSearch(player, TBXfilterPagePlayers.Text));
 
             CLBpagePlayers.Items.Clear();
             foreach (Player player in relevantPlayers)
@@ -214,14 +227,14 @@ namespace Matchmaker
 
         private void BTNsortnamematches_Click(object sender, EventArgs e)
         {
-            players.Sort(Tools.PlayerCompare);
+            players.Sort(Sorts.PlayerCompare);
             CLBpagePlayers.FormatString = "%name - %position";
             RefreshPageMatchesPlayers();
         }
 
         private void BTNsorttagmatches_Click(object sender, EventArgs e)
         {
-            players.Sort(Tools.TagNumberCompare);
+            players.Sort(Sorts.TagNumberCompare);
             CLBpagePlayers.FormatString = "%tag - %name - %position";
             RefreshPageMatchesPlayers();
         }
@@ -278,7 +291,7 @@ namespace Matchmaker
             else
                 WEBfixmatches.DocumentText = HTMLdocument.GenerateDay(fixedMatchesDay, HTMLmode.FixMatches);
 
-            SCBfixedmatchplayers.SetAllItems(players.Except(Tools.PlayersInDay(fixedMatchesDay)));
+            SCBfixedmatchplayers.SetAllItems(players.Except(fixedMatchesDay.Players()));
         }
 
         int swapPlayerIndexForFixing = -1;
@@ -337,7 +350,7 @@ namespace Matchmaker
                     if (!team.PositionShouldBeFilled((Position)position))
                         team.players[position] = null;
             swapPlayerIndexForFixing = -1;
-            toolStripStatusLabel1.Text = $"Changed a match to {EnumParser.NameOfTeamSize(value)}";
+            toolStripStatusLabel1.Text = $"Changed a match to {Enums.NameOfTeamSize(value)}";
             DisplayFixedMatches();
         }
 
@@ -377,7 +390,7 @@ namespace Matchmaker
             string str = $"{playersSelectedForDay.Count} players have been selected. ";
             if (fixedMatchesDay != null)
             {
-                int fixedPlayerCount = Tools.PlayersInDay(fixedMatchesDay).Count();
+                int fixedPlayerCount = fixedMatchesDay.Players().Count();
                 int freePlayerCount = playersSelectedForDay.Count - fixedPlayerCount;
                 int expectedFixedPlayerCount = fixedMatchesDay.matches.Sum(match => match.Size * 2);
                 if (fixedPlayerCount > 0 && expectedFixedPlayerCount < playersSelectedForDay.Count)
@@ -397,12 +410,12 @@ namespace Matchmaker
             foreach (Player player in playersFree)
                 playersPerPosition[(int)player.PositionPrimary].Add(player);
             for (int position = 0; position < Team.MaxSize; position++)
-                playersPerPosition[position].Sort(Tools.PlayerCompare);
+                playersPerPosition[position].Sort(Sorts.PlayerCompare);
 
             SuspendLayout();
             TBXconfirmConsole.Clear();
-            TBXconfirmConsole.Text += $"{Tools.PlayersInDay(fixedMatchesDay).Count()} players in fixed matches {Environment.NewLine}";
-            foreach (Player player in Tools.PlayersInDay(fixedMatchesDay))
+            TBXconfirmConsole.Text += $"{fixedMatchesDay.Players().Count()} players in fixed matches {Environment.NewLine}";
+            foreach (Player player in fixedMatchesDay.Players())
             {
                 TBXconfirmConsole.Text += $"  {player} {Environment.NewLine}";
             }
@@ -450,7 +463,7 @@ namespace Matchmaker
 
         void MaxNumMatches(int preferredSize)
         {
-            Tools.PickNumGamesForPlayers(playersSelectedForDay.Count - Tools.PlayersInDay(fixedMatchesDay).Count(), preferredSize, out int numPairs, out int numTrips, out int numFours);
+            Tools.PickNumGamesForPlayers(playersSelectedForDay.Count - fixedMatchesDay.Players().Count(), preferredSize, out int numPairs, out int numTrips, out int numFours);
             NUDpairs.Value = numPairs;
             NUDtriples.Value = numTrips;
             NUDfours.Value = numFours;
@@ -559,7 +572,7 @@ namespace Matchmaker
 
         void GetNumPlayers(out HashSet<Player> playersFree, out int numPairs, out int numTrips, out int numFours)
         {
-            playersFree = new HashSet<Player>(playersSelectedForDay.Except(Tools.PlayersInDay(fixedMatchesDay)));
+            playersFree = new HashSet<Player>(playersSelectedForDay.Except(fixedMatchesDay.Players()));
             numPairs = (int)NUDpairs.Value;
             numTrips = (int)NUDtriples.Value;
             numFours = (int)NUDfours.Value;
@@ -701,7 +714,7 @@ namespace Matchmaker
         {
             if (generatedDay == null) return;
 
-            generatedDay.matches.Sort(Tools.MatchRinkCompare);
+            generatedDay.matches.Sort(Sorts.MatchRinkCompare);
 
             history.Add(generatedDay);
             Save();
@@ -810,7 +823,7 @@ namespace Matchmaker
 
         private void BTNsorttagplayers_Click(object sender, EventArgs e)
         {
-            players.Sort(Tools.TagNumberCompare);
+            players.Sort(Sorts.TagNumberCompare);
             RefreshPlayerFilters();
         }
 
@@ -818,8 +831,8 @@ namespace Matchmaker
         {
             Player player = new Player()
             {
-                ID = Tools.UniqueRandomInt(players),
-                TagNumber = RBNvisitor.Checked ? "" : Tools.NextTagNumber(players),
+                ID = DataCreation.UniqueRandomInt(players),
+                TagNumber = RBNvisitor.Checked ? "" : DataCreation.NextTagNumber(players),
             };
             players.Add(player);
             RefreshPlayerFilters();
@@ -843,7 +856,7 @@ namespace Matchmaker
             string listPlayersForMessage = Tools.ShortListDescription(selectedPlayers);
             if (MessageBox.Show("Are you sure you want to delete " + listPlayersForMessage + "?", "Delete", MessageBoxButtons.YesNo) == DialogResult.No) return;
 
-            DeleteData.DeletePlayers(selectedPlayers, players, history);
+            DataDeletion.DeletePlayers(selectedPlayers, players, history);
 
             RefreshPlayerFilters();
         }
@@ -906,7 +919,7 @@ namespace Matchmaker
             foreach(int selectedIndex in LBXhistory.SelectedIndices)
                 indices.Add(history.Count - 1 - selectedIndex);
 
-            DeleteData.DeleteFromHistory(history, indices);
+            DataDeletion.DeleteFromHistory(history, indices);
 
             toolStripStatusLabel1.Text = $"Deleted " + listDaysForMessage;
             RefreshHistoryList();

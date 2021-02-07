@@ -1,6 +1,6 @@
-﻿namespace Matchmaker
+﻿namespace Matchmaker.UserInterface
 { 
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.CMSdeleteday = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -104,14 +104,14 @@
             this.BTNconfirmbeforecreating = new System.Windows.Forms.Button();
             this.pageMainSettings = new System.Windows.Forms.TabPage();
             this.FLPweights = new CustomControls.AnchorFlowLayoutPanel();
-            this.WVWpairsplaytogether = new Matchmaker.WeightView();
-            this.WVWenemies = new Matchmaker.WeightView();
-            this.WVWmainposition = new Matchmaker.WeightView();
-            this.WVWsecondaryposition = new Matchmaker.WeightView();
-            this.WVWbadpositiongoodgrade = new Matchmaker.WeightView();
-            this.WVWunbalancedplayers = new Matchmaker.WeightView();
-            this.WVWunbalancedteams = new Matchmaker.WeightView();
-            this.WVWteamsize = new Matchmaker.WeightView();
+            this.WVWpairsplaytogether = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWenemies = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWmainposition = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWsecondaryposition = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWbadpositiongoodgrade = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWunbalancedplayers = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWunbalancedteams = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWteamsize = new Matchmaker.UserInterface.Controls.WeightView();
             this.BTNresetWeights = new System.Windows.Forms.Button();
             this.BFFmain = new CustomControls.BrowseForFile();
             this.BFFhtml = new CustomControls.BrowseForFile();
@@ -1154,7 +1154,7 @@
             // 
             // playerBindingSource
             // 
-            this.playerBindingSource.DataSource = typeof(Matchmaker.Player);
+            this.playerBindingSource.DataSource = typeof(Matchmaker.Data.Player);
             this.playerBindingSource.AddingNew += new System.ComponentModel.AddingNewEventHandler(this.PlayerBindingSource_AddingNew);
             // 
             // panel2
@@ -1587,14 +1587,14 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabPage pageMainSettings;
         private CustomControls.AnchorFlowLayoutPanel FLPweights;
-        private WeightView WVWpairsplaytogether;
-        private WeightView WVWenemies;
-        private WeightView WVWmainposition;
-        private WeightView WVWsecondaryposition;
-        private WeightView WVWbadpositiongoodgrade;
-        private WeightView WVWunbalancedplayers;
-        private WeightView WVWunbalancedteams;
-        private WeightView WVWteamsize;
+        private Controls.WeightView WVWpairsplaytogether;
+        private Controls.WeightView WVWenemies;
+        private Controls.WeightView WVWmainposition;
+        private Controls.WeightView WVWsecondaryposition;
+        private Controls.WeightView WVWbadpositiongoodgrade;
+        private Controls.WeightView WVWunbalancedplayers;
+        private Controls.WeightView WVWunbalancedteams;
+        private Controls.WeightView WVWteamsize;
         private System.Windows.Forms.Button BTNresetWeights;
         private CustomControls.BrowseForFile BFFmain;
         private CustomControls.BrowseForFile BFFhtml;

@@ -92,30 +92,47 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters.cs" />
-    <Compile Include="DataGridViewDropDownHeaderCell.cs" />
-    <Compile Include="DataGridViewDropDownHeaderColumn.cs" />
-    <Compile Include="DeleteData.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="FormTableImporter.cs">
+    <Compile Include="Algorithms\DayImprover.cs" />
+    <Compile Include="Algorithms\Structures\CachedPenalties.cs" />
+    <Compile Include="Algorithms\Structures\DayGeneratorParameters.cs" />
+    <Compile Include="Algorithms\Structures\Swap.cs" />
+    <Compile Include="Algorithms\Tools.cs" />
+    <Compile Include="Data Handling\DataCreation.cs" />
+    <Compile Include="Data Handling\Search.cs" />
+    <Compile Include="Data Handling\Sorts.cs" />
+    <Compile Include="User Interface\StringConverter.cs" />
+    <Compile Include="Data\Day.cs" />
+    <Compile Include="Data\EnumsAndStructs\EffectiveGrade.cs" />
+    <Compile Include="Data\EnumsAndStructs\Grade.cs" />
+    <Compile Include="Data\Match.cs" />
+    <Compile Include="Data\Player.cs" />
+    <Compile Include="Data\EnumsAndStructs\Position.cs" />
+    <Compile Include="Data\EnumsAndStructs\PositionAndGrade.cs" />
+    <Compile Include="Data\EnumsAndStructs\PositionPreference.cs" />
+    <Compile Include="Data\EnumsAndStructs\PositionPreferenceAndGrade.cs" />
+    <Compile Include="Data\Team.cs" />
+    <Compile Include="Data\EnumsAndStructs\TeamSize.cs" />
+    <Compile Include="User Interface\Controls\DataGridViewDropDownHeader.cs" />
+    <Compile Include="Data Handling\DataDeletion.cs" />
+    <Compile Include="File Operations\FormTableImporter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTableImporter.Designer.cs">
+    <Compile Include="File Operations\FormTableImporter.Designer.cs">
       <DependentUpon>FormTableImporter.cs</DependentUpon>
     </Compile>
-    <Compile Include="ReadWriteTable.cs" />
-    <Compile Include="ProgressUpdater.cs" />
-    <Compile Include="Tools.cs" />
-    <Compile Include="DayGenerator.cs" />
-    <Compile Include="ReadWriteMainFile.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="File Operations\ReadWriteTable.cs" />
+    <Compile Include="User Interface\ProgressUpdater.cs" />
+    <Compile Include="User Interface\Tools.cs" />
+    <Compile Include="Algorithms\DayGenerator.cs" />
+    <Compile Include="File Operations\ReadWriteMainFile.cs" />
+    <Compile Include="User Interface\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="User Interface\FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="HTMLdocument.cs" />
-    <Compile Include="Penalties.cs" />
+    <Compile Include="User Interface\HTMLdocument.cs" />
+    <Compile Include="Data\Penalties.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -123,22 +140,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Structures.cs" />
-    <Compile Include="CustomControls.cs">
+    <Compile Include="User Interface\Controls\CustomControls.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Weights.cs" />
-    <Compile Include="WeightView.cs">
+    <Compile Include="Data\Weights.cs" />
+    <Compile Include="User Interface\Controls\WeightView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WeightView.Designer.cs">
+    <Compile Include="User Interface\Controls\WeightView.Designer.cs">
       <DependentUpon>WeightView.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="User Interface\FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTableImporter.resx">
+    <EmbeddedResource Include="File Operations\FormTableImporter.resx">
       <DependentUpon>FormTableImporter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -146,7 +162,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="WeightView.resx">
+    <EmbeddedResource Include="User Interface\Controls\WeightView.resx">
       <DependentUpon>WeightView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -182,6 +198,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

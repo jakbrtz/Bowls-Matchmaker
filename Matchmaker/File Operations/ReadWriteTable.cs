@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ClosedXML.Excel;
+using Matchmaker.Data;
+using Matchmaker.DataHandling;
+using Day = Matchmaker.Data.Day;
 
-namespace Matchmaker
+namespace Matchmaker.FileOperations
 {
     static class ReadWriteTable
     {
@@ -31,13 +34,14 @@ namespace Matchmaker
         public static bool ExportPlayersFromDay(string filename, Day day)
         {
             using SingleColumnWriter singleColumnWriter = new SingleColumnWriter(filename);
-            foreach (Player player in Tools.PlayersInDay(day))
+            foreach (Player player in day.Players())
                 singleColumnWriter.AddRow(player.Name);
             return true;
         }
 
         public static bool ImportPlayerForDay(string filename, List<Player> allPlayers, HashSet<Player> players)
         {
+            // todo: return false if someone didn't get imported
             using SingleColumnReader singleColumnReader = new SingleColumnReader(filename);
             players.Clear();
             while (singleColumnReader.ReadRow(out string[] values))
@@ -47,7 +51,7 @@ namespace Matchmaker
                 int bestMatchRelevance = int.MaxValue;
                 foreach (Player player in allPlayers)
                 {
-                    int relevance = Tools.RelevanceToSearch(player, name);
+                    int relevance = Search.RelevanceToSearch(player, name);
                     if (relevance < bestMatchRelevance)
                     {
                         bestMatchRelevance = relevance;

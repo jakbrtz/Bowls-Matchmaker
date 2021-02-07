@@ -7,17 +7,15 @@
 //PARTICULAR PURPOSE.
 //---------------------------------------------------------------------
 
+// This original code came from https://www.microsoft.com/en-au/download/details.aspx?id=23459
+// It has been modified so that I have more control over the drop down lists, and so data doesn't get filtered
+
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using System.Collections;
-using System.Reflection;
 
 namespace CustomControls
 {
@@ -927,5 +925,70 @@ namespace CustomControls
 
     }
 
-}
+    /// <summary>
+    /// Represents a DataGridViewTextBoxColumn with a drop-down filter list accessible from the header cell.  
+    /// </summary>
+    public class DataGridViewDropDownHeaderColumn : DataGridViewTextBoxColumn
+    {
+        /// <summary>
+        /// Initializes a new instance of the DataGridViewAutoFilterTextBoxColumn class.
+        /// </summary>
+        public DataGridViewDropDownHeaderColumn() : base()
+        {
+            base.DefaultHeaderCellType = typeof(DataGridViewDropDownHeaderCell);
+            base.SortMode = DataGridViewColumnSortMode.NotSortable;
+            ((DataGridViewDropDownHeaderCell)HeaderCell).HeaderOptionClicked += DataGridViewDropDownHeaderColumn_HeaderOptionClicked; ;
+        }
 
+        /// <summary>
+        /// Returns the AutoFilter header cell type. This property hides the 
+        /// non-virtual DefaultHeaderCellType property inherited from the 
+        /// DataGridViewBand class. The inherited property is set in the 
+        /// DataGridViewAutoFilterTextBoxColumn constructor. 
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never), Browsable(false),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new Type DefaultHeaderCellType
+        {
+            get
+            {
+                return typeof(DataGridViewDropDownHeaderCell);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum height of the drop-down filter list for this column. 
+        /// </summary>
+        [DefaultValue(20)]
+        public Int32 DropDownListBoxMaxLines
+        {
+            get
+            {
+                return ((DataGridViewDropDownHeaderCell)HeaderCell).DropDownListBoxMaxLines;
+            }
+            set
+            {
+                ((DataGridViewDropDownHeaderCell)HeaderCell).DropDownListBoxMaxLines = value;
+            }
+        }
+
+        public string[] AllOptions
+        {
+            get
+            {
+                return ((DataGridViewDropDownHeaderCell)HeaderCell).AllOptions;
+            }
+            set
+            {
+                ((DataGridViewDropDownHeaderCell)HeaderCell).AllOptions = value;
+            }
+        }
+
+        private void DataGridViewDropDownHeaderColumn_HeaderOptionClicked(int obj)
+        {
+            HeaderOptionClicked(this, obj);
+        }
+
+        public event Action<object, int> HeaderOptionClicked;
+    }
+}

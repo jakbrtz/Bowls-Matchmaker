@@ -1,4 +1,6 @@
 ﻿using CustomControls;
+using Matchmaker.Data;
+using Matchmaker.DataHandling;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Matchmaker
+namespace Matchmaker.FileOperations
 {
     public abstract partial class FormTableImporter : Form
     {
@@ -62,9 +64,8 @@ namespace Matchmaker
             {
                 DataGridViewDropDownHeaderColumn column = new DataGridViewDropDownHeaderColumn
                 {
-                    SortMode = DataGridViewColumnSortMode.NotSortable,
-                    ReadOnly = true,
                     AllOptions = titles,
+                    ReadOnly = true,
                 };
                 column.HeaderOptionClicked += FormTableImporter_HeaderOptionClicked;
                 dataGridView1.Columns.Add(column);
@@ -136,7 +137,6 @@ namespace Matchmaker
         /// <param name="data">The strings found on a single row in the table</param>
         public abstract void HandleRow(string[] data);
     }
-
     public class FormTableImporterPlayer : FormTableImporter
     {
         readonly IList<Player> players;
@@ -176,7 +176,7 @@ namespace Matchmaker
             }
             if (player == null)
             {
-                player = new Player { ID = Tools.UniqueRandomInt(players) };
+                player = new Player { ID = DataCreation.UniqueRandomInt(players) };
                 players.Add(player);
             }
             // Import
@@ -193,25 +193,25 @@ namespace Matchmaker
                         player.Name = data[i];
                         break;
                     case "Primary Position":
-                        player.PositionPrimary = EnumParser.ParsePosition(data[i]);
+                        player.PositionPrimary = Enums.ParsePosition(data[i]);
                         break;
                     case "Primary Grade":
-                        player.GradePrimary = EnumParser.ParseGrade(data[i]);
+                        player.GradePrimary = Enums.ParseGrade(data[i]);
                         break;
                     case "Secondary Position":
-                        player.PositionSecondary = EnumParser.ParsePosition(data[i]);
+                        player.PositionSecondary = Enums.ParsePosition(data[i]);
                         break;
                     case "Secondary Grade":
-                        player.GradeSecondary = EnumParser.ParseGrade(data[i]);
+                        player.GradeSecondary = Enums.ParseGrade(data[i]);
                         break;
                     case "Primary Position and Grade":
-                        player.PreferencePrimary = EnumParser.ParsePositionAndGrade(data[i]);
+                        player.PreferencePrimary = Enums.ParsePositionAndGrade(data[i]);
                         break;
                     case "Secondary Position and Grade":
-                        player.PreferenceSecondary = EnumParser.ParsePositionAndGrade(data[i]);
+                        player.PreferenceSecondary = Enums.ParsePositionAndGrade(data[i]);
                         break;
                     case "Team Size":
-                        player.PreferredTeamSizes = EnumParser.TryParseTeamSize(data[i], out TeamSize ts) ? ts : TeamSize.Any;
+                        player.PreferredTeamSizes = Enums.TryParseTeamSize(data[i], out TeamSize ts) ? ts : TeamSize.Any;
                         break;
                 }
             }

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Matchmaker.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Matchmaker
+namespace Matchmaker.UserInterface
 {
     public static class HTMLdocument
     {
@@ -114,11 +115,11 @@ namespace Matchmaker
         static string GetControlForTeamSize(Day day, int matchIndex, HTMLmode mode)
         {
             Match match = day.matches[matchIndex];
-            if (mode != HTMLmode.FixMatches) return EnumParser.NameOfTeamSize(match.Size);
+            if (mode != HTMLmode.FixMatches) return Enums.NameOfTeamSize(match.Size);
             string controls = "";
             controls += $"<select onChange=\"window.external.SelectSize({matchIndex}, this.value)\">";
             for (int size = Team.MinSize; size <= Team.MaxSize; size++)
-                controls += $"<option value = \"{size}\" {(day.matches[matchIndex].Size == size ? "selected" : "")}>{EnumParser.NameOfTeamSize(size)}</option>";
+                controls += $"<option value = \"{size}\" {(day.matches[matchIndex].Size == size ? "selected" : "")}>{Enums.NameOfTeamSize(size)}</option>";
             controls += "</select>";
             return controls;
         }

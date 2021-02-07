@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Matchmaker.Data;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Matchmaker
+namespace Matchmaker.DataHandling
 {
-    public static class DeleteData
+    public static class DataDeletion
     {
         public static void DeleteFromHistory(IList<Day> history, IList<int> indices)
         {

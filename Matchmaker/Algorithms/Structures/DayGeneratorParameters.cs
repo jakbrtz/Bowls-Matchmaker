@@ -8,6 +8,6 @@ namespace Matchmaker.Algorithms.Structures
         public IList<Player> players;
         public IList<Day> history;
         public Weights weights;
-        public int[] numTeamSizes;
+        public Dictionary<MatchSize, int> numTeamSizes;
     }
 }

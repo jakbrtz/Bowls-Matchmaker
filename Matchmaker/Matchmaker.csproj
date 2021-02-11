@@ -100,6 +100,7 @@
     <Compile Include="Data Handling\DataCreation.cs" />
     <Compile Include="Data Handling\Search.cs" />
     <Compile Include="Data Handling\Sorts.cs" />
+    <Compile Include="Data\EnumsAndStructs\MatchSize.cs" />
     <Compile Include="User Interface\StringConverter.cs" />
     <Compile Include="Data\Day.cs" />
     <Compile Include="Data\EnumsAndStructs\EffectiveGrade.cs" />

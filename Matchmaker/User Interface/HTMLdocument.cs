@@ -68,14 +68,14 @@ namespace Matchmaker.UserInterface
                 .Replace("%third2%",      GetName(day, matchIndex, 1, Position.Third,  mode))
                 .Replace("%skip1%",       GetName(day, matchIndex, 0, Position.Skip,   mode))
                 .Replace("%skip2%",       GetName(day, matchIndex, 1, Position.Skip,   mode))
-                .Replace("%lead1pref%",   GetPosition(match.Team1, Position.Lead,   mode))
-                .Replace("%lead2pref%",   GetPosition(match.Team2, Position.Lead,   mode))
-                .Replace("%second1pref%", GetPosition(match.Team1, Position.Second, mode))
-                .Replace("%second2pref%", GetPosition(match.Team2, Position.Second, mode))
-                .Replace("%third1pref%",  GetPosition(match.Team1, Position.Third,  mode))
-                .Replace("%third2pref%",  GetPosition(match.Team2, Position.Third,  mode))
-                .Replace("%skip1pref%",   GetPosition(match.Team1, Position.Skip,   mode))
-                .Replace("%skip2pref%",   GetPosition(match.Team2, Position.Skip,   mode))
+                .Replace("%lead1pref%",   GetPosition(day, matchIndex, 0, Position.Lead,   mode))
+                .Replace("%lead2pref%",   GetPosition(day, matchIndex, 1, Position.Lead,   mode))
+                .Replace("%second1pref%", GetPosition(day, matchIndex, 0, Position.Second, mode))
+                .Replace("%second2pref%", GetPosition(day, matchIndex, 1, Position.Second, mode))
+                .Replace("%third1pref%",  GetPosition(day, matchIndex, 0, Position.Third,  mode))
+                .Replace("%third2pref%",  GetPosition(day, matchIndex, 1, Position.Third,  mode))
+                .Replace("%skip1pref%",   GetPosition(day, matchIndex, 0, Position.Skip,   mode))
+                .Replace("%skip2pref%",   GetPosition(day, matchIndex, 1, Position.Skip,   mode))
                 .Replace("%leadvisible%",   match.Team1.PositionShouldBeFilled(Position.Lead)   ? "" : "style=\"display:none; \"")
                 .Replace("%secondvisible%", match.Team1.PositionShouldBeFilled(Position.Second) ? "" : "style=\"display:none; \"")
                 .Replace("%thirdvisible%",  match.Team1.PositionShouldBeFilled(Position.Third)  ? "" : "style=\"display:none; \"")
@@ -86,20 +86,24 @@ namespace Matchmaker.UserInterface
 
         static string GetName(Day day, int matchIndex, int teamIndex, Position position, HTMLmode mode)
         {
-            Team team = day.matches[matchIndex].teams[teamIndex];
-            if (!team.PositionShouldBeFilled(position)) return "";
-            Player player = team.players[(int)position];
-            if (player == null && mode==HTMLmode.ViewHistory) return "[deleted]";
+            Match match = day.matches[matchIndex];
+            Team team = match.teams[teamIndex];
+            if (!match.PositionShouldBeFilled(position)) return "";
+            Player player = mode == HTMLmode.FixMatches ? team.players[(int)position] : team.Player(position);
+            if (player == null && mode == HTMLmode.ViewHistory) return "[deleted]";
             string name = player?.Name ?? "[no player selected]";
             if (string.IsNullOrEmpty(name)) name = player.TagNumber;
             if (mode == HTMLmode.ViewHistory) return name;
             return $"<a href=\"javascript:window.external.ClickOnPlayer({matchIndex}, {teamIndex}, {(int)position})\" style=\"color:#000000; text-decoration: none;\">{name}</a>";
         }
 
-        static string GetPosition(Team team, Position position, HTMLmode mode)
+        static string GetPosition(Day day, int matchIndex, int teamIndex, Position position, HTMLmode mode)
         {
-            if (mode!=HTMLmode.ConfirmMatches) return "";
-            Player player = team.players[(int)position];
+            if (mode != HTMLmode.ConfirmMatches) return "";
+            Match match = day.matches[matchIndex];
+            Team team = match.teams[teamIndex];
+            if (!match.PositionShouldBeFilled(position)) return "";
+            Player player = team.Player(position);
             if (player == null) return "";
             string result = player.PreferencePrimary.Abbreviation();
             if (player.PreferenceSecondary.HasPreference)

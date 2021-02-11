@@ -280,7 +280,7 @@ namespace Matchmaker.UserInterface
                     date = DateTime.Now.ToString("d", CultureInfo.CurrentCulture)
                 };
             }
-            fixedMatchesDay.matches.Add(new Match(3, true));
+            fixedMatchesDay.matches.Add(new Match(new MatchSize(3), true));
             DisplayFixedMatches();
         }
 
@@ -344,7 +344,7 @@ namespace Matchmaker.UserInterface
         private void ScripterFixGames_SizeChanged(int matchIndex, int value)
         {
             Match match = fixedMatchesDay.matches[matchIndex];
-            match.SetTeamSize(value);
+            match.SetTeamSize(new MatchSize(value));
             foreach (Team team in match.teams)
                 for (int position = 0; position < Team.MaxSize; position++)
                     if (!team.PositionShouldBeFilled((Position)position))
@@ -392,7 +392,7 @@ namespace Matchmaker.UserInterface
             {
                 int fixedPlayerCount = fixedMatchesDay.Players().Count();
                 int freePlayerCount = playersSelectedForDay.Count - fixedPlayerCount;
-                int expectedFixedPlayerCount = fixedMatchesDay.matches.Sum(match => match.Size * 2);
+                int expectedFixedPlayerCount = fixedMatchesDay.matches.Sum(match => match.Team1.size + match.Team2.size);
                 if (fixedPlayerCount > 0 && expectedFixedPlayerCount < playersSelectedForDay.Count)
                     str += $"{freePlayerCount} selected for regular matches and {fixedPlayerCount} selected for fixed matches. ";
             }
@@ -476,7 +476,7 @@ namespace Matchmaker.UserInterface
             {
                 MaxNumMatches(3);
             }
-            else if (fixedMatchesDay != null && numPairs * 4 + numTrips * 6 + numFours * 8 == playersFree.Count + fixedMatchesDay.matches.Sum(match => match.Size * 2))
+            else if (fixedMatchesDay != null && numPairs * 4 + numTrips * 6 + numFours * 8 == playersFree.Count + fixedMatchesDay.matches.Sum(match => match.Team1.size + match.Team2.size))
             {
                 foreach (Match match in fixedMatchesDay.matches)
                 {
@@ -505,25 +505,10 @@ namespace Matchmaker.UserInterface
             parameters = null;
 
             GetNumPlayers(out HashSet<Player> playersFree, out int numPairs, out int numTrips, out int numFours);
+
             if (validate)
             {
-                for (int matchIndex = 0; matchIndex < fixedMatchesDay?.matches.Count; matchIndex++)
-                {
-                    Match match = fixedMatchesDay.matches[matchIndex];
-                    int nullsWhereThereShouldBePlayers = 0;
-                    foreach (Team team in match.teams)
-                        for (int position = 0; position < Team.MaxSize; position++)
-                            if (team.players[position] == null && team.PositionShouldBeFilled((Position)position))
-                                nullsWhereThereShouldBePlayers++;
-                    if (nullsWhereThereShouldBePlayers == 2 * match.Size)
-                        fixedMatchesDay.matches.RemoveAt(matchIndex--);
-                    else if (nullsWhereThereShouldBePlayers > 0)
-                    {
-                        BTNfixedMatches.PerformClick();
-                        MessageBox.Show($"Please make sure that all the positions in the fixed matches have been filled");
-                        return false;
-                    }
-                }
+                // Make sure all the players are correct
 
                 if (playersSelectedForDay.Count == 0)
                 {
@@ -532,14 +517,7 @@ namespace Matchmaker.UserInterface
                     return false;
                 }
 
-                if (playersFree.Count < 4)
-                {
-                    BTNplayers.PerformClick();
-                    MessageBox.Show("Please select more players", "Not enough players");
-                    return false;
-                }
-
-                if (playersFree.Count % 2 == 1)
+                if ((playersFree.Count) % 2 == 1)
                 {
                     BTNplayers.PerformClick();
                     MessageBox.Show("Please select an even number of players for this day", "Uneven players");
@@ -552,6 +530,44 @@ namespace Matchmaker.UserInterface
                     MessageBox.Show("Please make sure that the number of matches is correct for the number of players", "Wrong number of players");
                     return false;
                 }
+
+                for (int matchIndex = 0; matchIndex < fixedMatchesDay?.matches.Count; matchIndex++)
+                {
+                    Match match = fixedMatchesDay.matches[matchIndex];
+                    
+                    foreach (Team team in match.teams)
+                    {
+                        bool errorFound = false;
+                        int size = 0;
+                        foreach (Player player in team.players)
+                            if (player != null)
+                                size++;
+                        for (int position = 0; position < Team.MaxSize; position++)
+                            if (Match.PositionShouldBeFilled((Position)position, size) != (team.players[position] != null))
+                                errorFound = true;
+                        if (errorFound)
+                        {
+                            BTNfixedMatches.PerformClick();
+                            MessageBox.Show($"Please make sure that all the positions in the fixed matches have been filled");
+                            return false;
+                        }
+                    }
+                }
+
+                // Adjust anything that needs to be fixed
+
+                for (int matchIndex = 0; matchIndex < fixedMatchesDay?.matches.Count; matchIndex++)
+                {
+                    Match match = fixedMatchesDay.matches[matchIndex];
+                    foreach (Team team in match.teams)
+                    {
+                        int size = 0;
+                        foreach (Player player in team.players)
+                            if (player != null)
+                                size++;
+                        team.size = size;
+                    }
+                }
             }
 
             parameters = new DayGeneratorParameters
@@ -559,7 +575,12 @@ namespace Matchmaker.UserInterface
                 players = new List<Player>(playersFree),
                 history = history,
                 weights = weights,
-                numTeamSizes = new int[] { numPairs, numTrips, numFours },
+                numTeamSizes = new Dictionary<MatchSize, int> {
+                    { new MatchSize(2), numPairs },
+                    { new MatchSize(3), numTrips },
+                    { new MatchSize(4), numFours },
+                }
+                // todo: add 3v2 and 4v3 to the form
             };
             return true;
         }
@@ -665,12 +686,20 @@ namespace Matchmaker.UserInterface
 
         private void ScripterNewGames_PlayerClickedOn(int matchIndex, int teamIndex, int position)
         {
+            // Look at which player was clicked on
+            Team team = generatedDay.matches[matchIndex].teams[teamIndex];
+            Player player = team.Player(position);
+            // Make sure a player was clicked on
+            if (player == null) return;
+            // Adjust the position so it points to the player
+            position = Array.IndexOf(team.players, player);
+            // Find the playerIndex
             int playerIndex = Swap.CreatePlayerIndex(matchIndex, teamIndex, position);
 
             if (swapPlayerIndex == -1)
             {
                 swapPlayerIndex = playerIndex;
-                toolStripStatusLabel1.Text = $"Swapping {generatedDay.matches[matchIndex].teams[teamIndex].players[position].Name}...";
+                toolStripStatusLabel1.Text = $"Swapping {player.Name}...";
             }
             else
             {

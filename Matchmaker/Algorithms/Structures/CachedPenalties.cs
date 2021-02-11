@@ -61,17 +61,20 @@ namespace Matchmaker.Algorithms.Structures
                 {
                     for (int position = 0; position < Team.MaxSize; position++)
                     {
-                        Player player1 = match.Team1.players[position];
-                        Player player2 = match.Team2.players[position];
-                        if (player1 != null && player2 != null && playersHashSet.Contains(player1) && playersHashSet.Contains(player2))
+                        if (match.PositionShouldBeFilled((Position)position))
                         {
-                            PairOfPlayers pair = new PairOfPlayers(player1, player2);
-                            double score = weights.PairPlayedTogetherAgainstEachOther.Result(Min(gamesPlayerHasPlayed[player1], gamesPlayerHasPlayed[player2]));
-                            if (!repeatedEnemies.ContainsKey(pair))
+                            Player player1 = match.Team1.Player(position);
+                            Player player2 = match.Team2.Player(position);
+                            if (playersHashSet.Contains(player1) && playersHashSet.Contains(player2))
                             {
-                                repeatedEnemies[pair] = new HistoryOfPenalty { mostRecentGameIndex = dayIndex, };
+                                PairOfPlayers pair = new PairOfPlayers(player1, player2);
+                                double score = weights.PairPlayedTogetherAgainstEachOther.Result(Min(gamesPlayerHasPlayed[player1], gamesPlayerHasPlayed[player2]));
+                                if (!repeatedEnemies.ContainsKey(pair))
+                                {
+                                    repeatedEnemies[pair] = new HistoryOfPenalty { mostRecentGameIndex = dayIndex, };
+                                }
+                                repeatedEnemies[pair].IncreaseScore(score);
                             }
-                            repeatedEnemies[pair].IncreaseScore(score);
                         }
                     }
                 }
@@ -144,18 +147,21 @@ namespace Matchmaker.Algorithms.Structures
                             Add(penalty);
             foreach (var team in match.teams)
                 for (int position = 0; position < Team.MaxSize; position++)
-                    if (IsPenalty(team.players[position], (Position)position, team.size, out IncorrectPosition penalty))
-                        Add(penalty);
+                    if (match.PositionShouldBeFilled((Position)position))
+                        if (IsPenalty(team.Player(position), (Position)position, team.size, out IncorrectPosition penalty))
+                            Add(penalty);
             foreach (var team in match.teams)
                 for (int position = 0; position < Team.MaxSize; position++)
                     if (IsPenalty(team.players[position], (TeamSize)(1 << team.size), out WrongTeamSize penalty))
                         Add(penalty);
             for (int position = 0; position < Team.MaxSize; position++)
-                if (IsPenalty(match.Team1.players[position], match.Team2.players[position], out PairAlreadyPlayedAgainstEachOther penalty))
-                    Add(penalty);
+                if (match.PositionShouldBeFilled((Position)position))
+                    if (IsPenalty(match.Team1.Player(position), match.Team2.Player(position), out PairAlreadyPlayedAgainstEachOther penalty))
+                        Add(penalty);
             for (int position = 0; position < Team.MaxSize; position++)
-                if (IsPenalty(match.Team1.players[position], match.Team2.players[position], (Position)position, out UnbalancedPlayers penalty))
-                    Add(penalty);
+                if (match.PositionShouldBeFilled((Position)position))
+                    if (IsPenalty(match.Team1.Player(position), match.Team2.Player(position), (Position)position, out UnbalancedPlayers penalty))
+                        Add(penalty);
             {
                 if (IsPenalty(match, out UnbalancedTeams penalty))
                     Add(penalty);
@@ -182,7 +188,7 @@ namespace Matchmaker.Algorithms.Structures
 
         public bool IsPenalty(Player player1, Player player2, out PairAlreadyPlayedAgainstEachOther penalty)
         {
-            if (player1 != null && player2 != null && repeatedEnemies.TryGetValue(new PairOfPlayers(player1, player2), out HistoryOfPenalty historical))
+            if (repeatedEnemies.TryGetValue(new PairOfPlayers(player1, player2), out HistoryOfPenalty historical))
             {
                 penalty = new PairAlreadyPlayedAgainstEachOther
                 {
@@ -199,7 +205,7 @@ namespace Matchmaker.Algorithms.Structures
 
         public bool IsPenalty(Player player, Position position, int size, out IncorrectPosition penalty)
         {
-            if (player == null || player.PositionIsPrimary(position))
+            if (player.PositionIsPrimary(position))
             {
                 penalty = null;
                 return false;
@@ -255,7 +261,7 @@ namespace Matchmaker.Algorithms.Structures
 
         public bool IsPenalty(Player player1, Player player2, Position position, out UnbalancedPlayers penalty)
         {
-            if (player1 != null && player2 != null && player1.EffectiveGrade(position).Score() != player2.EffectiveGrade(position).Score())
+            if (player1.EffectiveGrade(position).Score() != player2.EffectiveGrade(position).Score())
             {
                 unbalancedPlayerDictionary.TryGetValue(player1, out HistoryOfPenalty historical1);
                 unbalancedPlayerDictionary.TryGetValue(player2, out HistoryOfPenalty historical2);
@@ -281,10 +287,10 @@ namespace Matchmaker.Algorithms.Structures
             int difference = 0;
             for (int position = 0; position < Team.MaxSize; position++)
             {
-                if (match.Team1.players[position] != null && match.Team2.players[position] != null)
+                if (match.PositionShouldBeFilled((Position)position))
                 {
-                    difference += match.Team1.players[position].EffectiveGrade((Position)position).Score();
-                    difference -= match.Team2.players[position].EffectiveGrade((Position)position).Score();
+                    difference += match.Team1.Player(position).EffectiveGrade((Position)position).Score();
+                    difference -= match.Team2.Player(position).EffectiveGrade((Position)position).Score();
                 }
             }
             if (difference == 0)
@@ -297,10 +303,10 @@ namespace Matchmaker.Algorithms.Structures
             EffectiveGrade[] team2Grades = new EffectiveGrade[Team.MaxSize];
             for (int position = 0; position < Team.MaxSize; position++)
             {
-                if (match.Team1.PositionShouldBeFilled((Position)position))
+                if (match.PositionShouldBeFilled((Position)position))
                 {
-                    team1Grades[position] = match.Team1.players[position].EffectiveGrade((Position)position);
-                    team2Grades[position] = match.Team2.players[position].EffectiveGrade((Position)position);
+                    team1Grades[position] = match.Team1.Player(position).EffectiveGrade((Position)position);
+                    team2Grades[position] = match.Team2.Player(position).EffectiveGrade((Position)position);
                 }
             }
             penalty = new UnbalancedTeams

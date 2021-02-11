@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+// todo: use JSON instead
+
 namespace Matchmaker.FileOperations
 {
     static class ReadWriteMainFile
@@ -455,7 +457,7 @@ namespace Matchmaker.FileOperations
                         case "T2":
                             var team = code == "T1" ? match.Team1 : match.Team2;
                             string[] playerIDs = value.Split(',');
-                            match.SetTeamSize(playerIDs.Length);
+                            team.size = playerIDs.Length;
                             Position position = (Position)0;
                             foreach (string playerID in playerIDs)
                             {

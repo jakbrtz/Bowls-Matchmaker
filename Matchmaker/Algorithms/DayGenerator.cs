@@ -55,10 +55,9 @@ namespace Matchmaker.Algorithms
 
             void SetUpMatchSizes()
             {
-                for (int teamSizeIndex = 0; teamSizeIndex < parameters.numTeamSizes.Length; teamSizeIndex++)
-                    for (int i = 0; i < parameters.numTeamSizes[teamSizeIndex]; i++)
-                        day.matches.Add(new Match(Team.MinSize + teamSizeIndex, false));
-                // todo: matches can be triple vs pair
+                foreach (var matchSizeAndCount in parameters.numTeamSizes)
+                    for (int i = 0; i < matchSizeAndCount.Value; i++)
+                        day.matches.Add(new Match(matchSizeAndCount.Key, false));
             }
 
             void PlacePlayersAccordingToPosition()
@@ -79,9 +78,10 @@ namespace Matchmaker.Algorithms
                 // Look at how many players are requested for each position
                 int[] requestedPlayers = new int[Team.MaxSize];
                 foreach (Match match in day.matches)
-                    for (int position = 0; position < Team.MaxSize; position++)
-                        if (match.Team1.PositionShouldBeFilled((Position)position))
-                            requestedPlayers[position] += 2;
+                    foreach (Team team in match.teams)
+                        for (int position = 0; position < Team.MaxSize; position++)
+                            if (team.PositionShouldBeFilled((Position)position))
+                                requestedPlayers[position]++;
 
                 for (int position = 0; position < Team.MaxSize; position++)
                 {

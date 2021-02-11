@@ -13,12 +13,12 @@ namespace Matchmaker.Algorithms.Structures
 
         public Swap(int playerIndex1, int playerIndex2, Day day)
         {
-            match1 = day.matches[playerIndex1 / Match.MaxPlayers];
-            team1 = match1.teams[playerIndex1 % Match.MaxPlayers / Team.MaxSize];
-            position1 = playerIndex1 % Team.MaxSize;
-            match2 = day.matches[playerIndex2 / Match.MaxPlayers];
-            team2 = match2.teams[playerIndex2 % Match.MaxPlayers / Team.MaxSize];
-            position2 = playerIndex2 % Team.MaxSize;
+            GetIndiciesForPlayerIndex(playerIndex1, out int matchIndex1, out int teamIndex1, out position1);
+            match1 = day.matches[matchIndex1];
+            team1 = match1.teams[teamIndex1];
+            GetIndiciesForPlayerIndex(playerIndex2, out int matchIndex2, out int teamIndex2, out position2);
+            match2 = day.matches[matchIndex2];
+            team2 = match2.teams[teamIndex2];
         }
 
         public bool BothPlayersAreNotNull()

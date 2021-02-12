@@ -86,6 +86,7 @@ namespace Matchmaker.Data
                     position = Position.Skip;
                     return true;
                 case "":
+                case "none":
                     position = Position.None;
                     return true;
             }

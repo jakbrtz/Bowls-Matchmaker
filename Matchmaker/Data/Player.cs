@@ -2,17 +2,17 @@
 
 namespace Matchmaker.Data
 {
-    public partial class Player : IFormattable
+    public partial class Player
     {
-        // todo: are all these {get;set;} necessary?
-        public int ID { get; set; }
-        public string TagNumber { get; set; } = "";
-        public string Name { get; set; } = "";
-        public Position PositionPrimary { get; set; } = Position.Lead;
-        public Position PositionSecondary { get; set; } = Position.None;
-        public Grade GradePrimary { get; set; } = Grade.G2;
-        public Grade GradeSecondary { get; set; } = Grade.G2;
-        public TeamSize PreferredTeamSizes { get; set; } = TeamSize.Triples;
+        public int ID;
+        public string TagNumber = "";
+        public string Name = "";
+        public Position PositionPrimary = Position.Lead;
+        public Position PositionSecondary = Position.None;
+        public Grade GradePrimary = Grade.G2;
+        public Grade GradeSecondary = Grade.G2;
+        public TeamSize PreferredTeamSizes = TeamSize.Triples;
+
         public bool Visitor => string.IsNullOrEmpty(TagNumber);
 
         public override string ToString() => Name + (string.IsNullOrEmpty(TagNumber) ? " (visitor)" : $" ({TagNumber})");
@@ -53,7 +53,12 @@ namespace Matchmaker.Data
                 positionIsSecondary = positionIsSecondary,
             };
         }
+    }
 
+    // todo: move this to the User Interface
+
+    public partial class Player : IFormattable
+    {
         public string ToString(string format, IFormatProvider formatProvider)
         {
             if (format == null) return ToString();
@@ -62,6 +67,48 @@ namespace Matchmaker.Data
                 .Replace("%tag", string.IsNullOrEmpty(TagNumber) ? "(visitor)" : TagNumber)
                 .Replace("%position", PositionPrimary.ToString())
                 .Replace("%visitor", Visitor ? "Visitor" : "Member");
+        }
+
+        public string TagNumberForTable
+        {
+            get => TagNumber;
+            set => TagNumber = value;
+        }
+
+        public string NameForTable
+        {
+            get => Name;
+            set => Name = value;
+        }
+
+        public Position PositionPrimaryForTable
+        {
+            get => PositionPrimary;
+            set => PositionPrimary = value;
+        }
+
+        public Position PositionSecondaryForTable
+        {
+            get => PositionSecondary;
+            set => PositionSecondary = value;
+        }
+
+        public Grade GradePrimaryForTable
+        {
+            get => GradePrimary;
+            set => GradePrimary = value;
+        }
+
+        public Grade GradeSecondaryForTable
+        {
+            get => GradeSecondary;
+            set => GradeSecondary = value;
+        }
+
+        public TeamSize PreferredTeamSizesForTable
+        {
+            get => PreferredTeamSizes;
+            set => PreferredTeamSizes = value;
         }
 
         public PositionPreference PositionPreference

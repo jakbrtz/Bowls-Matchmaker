@@ -870,6 +870,19 @@ namespace Matchmaker.UserInterface
             dataGridView1.BeginEdit(true);
         }
 
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var dataGrid = (DataGridView)sender;
+            if (e.Button == MouseButtons.Right && e.RowIndex != -1)
+            {
+                var row = dataGrid.Rows[e.RowIndex];
+                dataGrid.CurrentCell = row.Cells[e.ColumnIndex == -1 ? 1 : e.ColumnIndex];
+                row.Selected = true;
+                dataGrid.Focus();
+                CMSdeleteplayer.Show(Cursor.Position);
+            }
+        }
+
         private void DeletePlayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var indicies = new List<int>();

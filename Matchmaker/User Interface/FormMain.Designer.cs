@@ -1096,7 +1096,6 @@
             this.PositionSecondary,
             this.GradeSecondary,
             this.preferredTeamSizesDataGridViewTextBoxColumn});
-            this.dataGridView1.ContextMenuStrip = this.CMSdeleteplayer;
             this.dataGridView1.DataSource = this.playerBindingSource;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(200, 31);
@@ -1104,6 +1103,7 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(782, 437);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             // 
             // tagDataGridViewTextBoxColumn
             // 

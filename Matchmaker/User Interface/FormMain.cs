@@ -263,7 +263,18 @@ namespace Matchmaker.UserInterface
             if (recentDayInHistory != null && !string.IsNullOrEmpty(recentDayInHistory.date))
                 OFDplayersinday.FileName = Tools.GuessFilename(recentDayInHistory) + ".txt";
             if (OFDplayersinday.ShowDialog() == DialogResult.Cancel) return;
-            ReadWriteTable.ImportPlayerForDay(OFDplayersinday.FileName, players, playersSelectedForDay);
+            ReadWriteTable.ImportPlayerForDay(OFDplayersinday.FileName, players, playersSelectedForDay, out List<string> namesNotImported);
+            if (namesNotImported.Count == 1)
+            {
+                MessageBox.Show($"I could not find anyone with the name {namesNotImported[0]}", "Incomplete import");
+            }
+            else if (namesNotImported.Count > 1)
+            {
+                string msg = "I could not find anyone with these names:";
+                foreach (string name in namesNotImported)
+                    msg += "\n" + name;
+                MessageBox.Show(msg, "Incomplete import");
+            }
             RefreshPageMatchesPlayers();
         }
 

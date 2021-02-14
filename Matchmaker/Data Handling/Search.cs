@@ -10,7 +10,12 @@ namespace Matchmaker.DataHandling
         public static bool Filter(Player player, string search)
         {
             if (string.IsNullOrEmpty(search)) return true;
-            return SimplifySearch(player.Name).IndexOf(SimplifySearch(search), StringComparison.OrdinalIgnoreCase) != -1 || player.TagNumber?.ToString().Contains(search) == true;
+            return SimplifySearch(player.Name).IndexOf(SimplifySearch(search), StringComparison.OrdinalIgnoreCase) != -1 || player.TagNumber?.Contains(search) == true;
+        }
+
+        public static bool IsGreatMatch(Player player, string search)
+        {
+            return SimplifySearch(player.Name).Equals(SimplifySearch(search), StringComparison.OrdinalIgnoreCase) || player.TagNumber?.Equals(search) == true;
         }
 
         public static int RelevanceToSearch(Player player, string search)

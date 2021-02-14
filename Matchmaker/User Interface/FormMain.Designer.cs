@@ -987,7 +987,7 @@
             this.WVWsecondaryposition.TabIndex = 2;
             this.WVWsecondaryposition.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
-            // WVWbadpositionbadgrade
+            // WVWbadpositiongoodgrade
             // 
             this.WVWbadpositiongoodgrade.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWbadpositiongoodgrade.Description = "Good players should not get moved to other positions";
@@ -1420,7 +1420,7 @@
             this.SFDhtml.FileName = "table.html";
             this.SFDhtml.Filter = "HTML file(*.html)|*.html, *.htm";
             // 
-            // Form1
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1429,7 +1429,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Text = "Bowls Matchmaker";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

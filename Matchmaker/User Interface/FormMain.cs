@@ -798,7 +798,13 @@ namespace Matchmaker.UserInterface
             Properties.Settings.Default.FileHTML = BFFhtml.FileName;
             Properties.Settings.Default.Save();
             HTMLdocument.ReloadFormat(Properties.Settings.Default.FileHTML);
-            // todo: update even when the file name doesn't change
+            HTMLformatedChanged();
+        }
+
+        void HTMLformatedChanged()
+        {
+            DisplayFixedMatches();
+            ReloadSelectedDaysInHistory();
         }
 
         private void BTNseedefaulthtml_Click(object sender, EventArgs e)
@@ -942,6 +948,11 @@ namespace Matchmaker.UserInterface
 
         private void LBXhistory_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ReloadSelectedDaysInHistory();
+        }
+
+        void ReloadSelectedDaysInHistory()
+        {
             List<Day> days = new List<Day>();
             foreach (Day day in LBXhistory.SelectedItems)
                 days.Add(day);
@@ -968,7 +979,7 @@ namespace Matchmaker.UserInterface
             LBXhistory.SelectedIndices.Clear();
             if (LBXhistory.Items.Count > 0)
                 LBXhistory.SelectedIndices.Add(0);
-            LBXhistory_SelectedIndexChanged(null, null);
+            ReloadSelectedDaysInHistory();
         }
 
         private void BTNprintHistory_Click(object sender, EventArgs e)
@@ -1003,7 +1014,7 @@ namespace Matchmaker.UserInterface
         private void TBXhtml_Leave(object sender, EventArgs e)
         {
             HTMLdocument.format = TBXhtml.Text;
-            LBXhistory_SelectedIndexChanged(null, null);
+            HTMLformatedChanged();
         }
 
         #endregion

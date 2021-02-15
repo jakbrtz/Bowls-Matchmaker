@@ -17,7 +17,7 @@ namespace Matchmaker.Data
 
         public override string ToString() => Name + (string.IsNullOrEmpty(TagNumber) ? " (visitor)" : $" ({TagNumber})");
 
-        public override int GetHashCode() => ID; // todo: create a separate class with an extra idx field
+        public override int GetHashCode() => ID;
 
         public bool PositionIsPrimary(Position possiblePosition)
         {

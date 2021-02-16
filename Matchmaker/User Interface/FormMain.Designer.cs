@@ -75,6 +75,12 @@
             this.pageConfirmBeforeMatches = new System.Windows.Forms.TabPage();
             this.TBXconfirmConsole = new System.Windows.Forms.TextBox();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.BTNmax4v3 = new System.Windows.Forms.Button();
+            this.NUD4v3 = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.BTNmax3v2 = new System.Windows.Forms.Button();
+            this.NUD3v2 = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
             this.BTNmaxfours = new System.Windows.Forms.Button();
             this.BTNmaxtrips = new System.Windows.Forms.Button();
             this.NUDfours = new System.Windows.Forms.NumericUpDown();
@@ -164,6 +170,8 @@
             this.panel3.SuspendLayout();
             this.pageConfirmBeforeMatches.SuspendLayout();
             this.panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUD4v3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUD3v2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUDfours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUDtriples)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUDpairs)).BeginInit();
@@ -593,18 +601,24 @@
             this.TBXconfirmConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TBXconfirmConsole.Location = new System.Drawing.Point(3, 186);
+            this.TBXconfirmConsole.Location = new System.Drawing.Point(3, 244);
             this.TBXconfirmConsole.Multiline = true;
             this.TBXconfirmConsole.Name = "TBXconfirmConsole";
             this.TBXconfirmConsole.ReadOnly = true;
             this.TBXconfirmConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TBXconfirmConsole.Size = new System.Drawing.Size(767, 253);
+            this.TBXconfirmConsole.Size = new System.Drawing.Size(767, 195);
             this.TBXconfirmConsole.TabIndex = 10;
             // 
             // panel7
             // 
             this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel7.Controls.Add(this.BTNmax4v3);
+            this.panel7.Controls.Add(this.NUD4v3);
+            this.panel7.Controls.Add(this.label14);
+            this.panel7.Controls.Add(this.BTNmax3v2);
+            this.panel7.Controls.Add(this.NUD3v2);
+            this.panel7.Controls.Add(this.label13);
             this.panel7.Controls.Add(this.BTNmaxfours);
             this.panel7.Controls.Add(this.BTNmaxtrips);
             this.panel7.Controls.Add(this.NUDfours);
@@ -617,8 +631,62 @@
             this.panel7.Controls.Add(this.LBLnummatcheswarning);
             this.panel7.Location = new System.Drawing.Point(3, 93);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(767, 87);
+            this.panel7.Size = new System.Drawing.Size(767, 145);
             this.panel7.TabIndex = 11;
+            // 
+            // BTNmax4v3
+            // 
+            this.BTNmax4v3.Location = new System.Drawing.Point(110, 119);
+            this.BTNmax4v3.Name = "BTNmax4v3";
+            this.BTNmax4v3.Size = new System.Drawing.Size(75, 23);
+            this.BTNmax4v3.TabIndex = 19;
+            this.BTNmax4v3.Text = "max 4 vs 3";
+            this.BTNmax4v3.UseVisualStyleBackColor = true;
+            this.BTNmax4v3.Click += new System.EventHandler(this.BTNmax4v3_Click);
+            // 
+            // NUD4v3
+            // 
+            this.NUD4v3.Location = new System.Drawing.Point(45, 122);
+            this.NUD4v3.Name = "NUD4v3";
+            this.NUD4v3.Size = new System.Drawing.Size(59, 20);
+            this.NUD4v3.TabIndex = 18;
+            this.NUD4v3.ValueChanged += new System.EventHandler(this.NUDnumMatches_ValueChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(3, 124);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(39, 13);
+            this.label14.TabIndex = 17;
+            this.label14.Text = "4 vs 3:";
+            // 
+            // BTNmax3v2
+            // 
+            this.BTNmax3v2.Location = new System.Drawing.Point(110, 90);
+            this.BTNmax3v2.Name = "BTNmax3v2";
+            this.BTNmax3v2.Size = new System.Drawing.Size(75, 23);
+            this.BTNmax3v2.TabIndex = 16;
+            this.BTNmax3v2.Text = "max 3 vs 2";
+            this.BTNmax3v2.UseVisualStyleBackColor = true;
+            this.BTNmax3v2.Click += new System.EventHandler(this.BTNmax3v2_Click);
+            // 
+            // NUD3v2
+            // 
+            this.NUD3v2.Location = new System.Drawing.Point(45, 93);
+            this.NUD3v2.Name = "NUD3v2";
+            this.NUD3v2.Size = new System.Drawing.Size(59, 20);
+            this.NUD3v2.TabIndex = 15;
+            this.NUD3v2.ValueChanged += new System.EventHandler(this.NUDnumMatches_ValueChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(3, 95);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(39, 13);
+            this.label13.TabIndex = 14;
+            this.label13.Text = "3 vs 2:";
             // 
             // BTNmaxfours
             // 
@@ -706,7 +774,7 @@
             this.LBLnummatcheswarning.ForeColor = System.Drawing.Color.Red;
             this.LBLnummatcheswarning.Location = new System.Drawing.Point(191, 3);
             this.LBLnummatcheswarning.Name = "LBLnummatcheswarning";
-            this.LBLnummatcheswarning.Size = new System.Drawing.Size(111, 81);
+            this.LBLnummatcheswarning.Size = new System.Drawing.Size(111, 139);
             this.LBLnummatcheswarning.TabIndex = 10;
             // 
             // panel9
@@ -1455,6 +1523,8 @@
             this.pageConfirmBeforeMatches.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUD4v3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUD3v2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUDfours)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUDtriples)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUDpairs)).EndInit();
@@ -1609,6 +1679,12 @@
         private System.Windows.Forms.ToolStripMenuItem editHTMLToolStripMenuItem;
         private System.Windows.Forms.Button BTNseedefaulthtml;
         private System.Windows.Forms.SaveFileDialog SFDhtml;
+        private System.Windows.Forms.Button BTNmax4v3;
+        private System.Windows.Forms.NumericUpDown NUD4v3;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button BTNmax3v2;
+        private System.Windows.Forms.NumericUpDown NUD3v2;
+        private System.Windows.Forms.Label label13;
     }
 }
 

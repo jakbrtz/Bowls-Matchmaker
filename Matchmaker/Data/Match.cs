@@ -54,5 +54,7 @@ namespace Matchmaker.Data
         }
 
         public bool PositionShouldBeFilled(Position position) => PositionShouldBeFilled(position, Size);
+
+        public MatchSize GetMatchSize() => new MatchSize(Team1.size, Team2.size);
     }
 }

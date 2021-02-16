@@ -1,4 +1,5 @@
-﻿using Matchmaker.Data;
+﻿using Matchmaker.Collections;
+using Matchmaker.Data;
 using System.Collections.Generic;
 
 namespace Matchmaker.Algorithms.Structures
@@ -321,16 +322,5 @@ namespace Matchmaker.Algorithms.Structures
         }
 
         private static int Min(int a, int b) => a < b ? a : b;
-    }
-
-    public class Counter<TKey>
-    {
-        readonly Dictionary<TKey, int> counts = new Dictionary<TKey, int>();
-
-        public int this[TKey key]
-        {
-            get => counts.TryGetValue(key, out int value) ? value : 0;
-            set => counts[key] = value;
-        }
     }
 }

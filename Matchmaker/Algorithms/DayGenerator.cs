@@ -55,7 +55,7 @@ namespace Matchmaker.Algorithms
 
             void SetUpMatchSizes()
             {
-                foreach (var matchSizeAndCount in parameters.numTeamSizes)
+                foreach (var matchSizeAndCount in parameters.numMatchSizes)
                     for (int i = 0; i < matchSizeAndCount.Value; i++)
                         day.matches.Add(new Match(matchSizeAndCount.Key, false));
             }

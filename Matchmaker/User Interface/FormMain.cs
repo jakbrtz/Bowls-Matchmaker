@@ -1,5 +1,6 @@
 ﻿using Matchmaker.Algorithms;
 using Matchmaker.Algorithms.Structures;
+using Matchmaker.Collections;
 using Matchmaker.Data;
 using Matchmaker.DataHandling;
 using Matchmaker.FileOperations;
@@ -291,7 +292,7 @@ namespace Matchmaker.UserInterface
                     date = DateTime.Now.ToString("d", CultureInfo.CurrentCulture)
                 };
             }
-            fixedMatchesDay.matches.Add(new Match(new MatchSize(3), true));
+            fixedMatchesDay.matches.Add(new Match(MatchSize.Triples, true));
             DisplayFixedMatches();
         }
 
@@ -414,7 +415,7 @@ namespace Matchmaker.UserInterface
 
         void ReloadConfirmationConsole()
         {
-            GetNumPlayers(out HashSet<Player> playersFree, out _, out _, out _);
+            GetNumPlayers(out HashSet<Player> playersFree, out _);
             List<Player>[] playersPerPosition = new List<Player>[Team.MaxSize];
             for (int position = 0; position < Team.MaxSize; position++)
                 playersPerPosition[position] = new List<Player>();
@@ -445,8 +446,8 @@ namespace Matchmaker.UserInterface
 
         private void NUDnumMatches_ValueChanged(object sender, EventArgs e)
         {
-            GetNumPlayers(out HashSet<Player> playersFree, out int numPairs, out int numTrips, out int numFours);
-            int numPlayersByMatch = (numPairs * 2 + numTrips * 3 + numFours * 4) * 2;
+            GetNumPlayers(out HashSet<Player> playersFree, out Counter<MatchSize> numMatchSizes);
+            int numPlayersByMatch = Tools.SumOfPlayersInMatchSizes(numMatchSizes);
             if (numPlayersByMatch == playersFree.Count)
             {
                 LBLnummatcheswarning.Text = "";
@@ -459,52 +460,62 @@ namespace Matchmaker.UserInterface
 
         private void BTNmaxpairs_Click(object sender, EventArgs e)
         {
-            MaxNumMatches(2);
+            MaxNumMatches(MatchSize.Pairs);
         }
 
         private void BTNmaxtrips_Click(object sender, EventArgs e)
         {
-            MaxNumMatches(3);
+            MaxNumMatches(MatchSize.Triples);
         }
 
         private void BTNmaxfours_Click(object sender, EventArgs e)
         {
-            MaxNumMatches(4);
+            MaxNumMatches(MatchSize.Fours);
         }
 
-        void MaxNumMatches(int preferredSize)
+        private void BTNmax3v2_Click(object sender, EventArgs e)
         {
-            Tools.PickNumGamesForPlayers(playersSelectedForDay.Count - fixedMatchesDay.Players().Count(), preferredSize, out int numPairs, out int numTrips, out int numFours);
-            NUDpairs.Value = numPairs;
-            NUDtriples.Value = numTrips;
-            NUDfours.Value = numFours;
+            MaxNumMatches(MatchSize.TripVsPair);
+        }
+
+        private void BTNmax4v3_Click(object sender, EventArgs e)
+        {
+            MaxNumMatches(MatchSize.FourVsTrip);
+        }
+
+        void MaxNumMatches(MatchSize preferredSize)
+        {
+            Tools.PickNumGamesForPlayers(playersSelectedForDay.Count - fixedMatchesDay.Players().Count(), preferredSize, out Counter<MatchSize> numMatchSizes);
+            SetMatchSizes(numMatchSizes);
         }
 
         void PickNumMatchesIfNotAlreadySelected()
         {
-            GetNumPlayers(out HashSet<Player> playersFree, out int numPairs, out int numTrips, out int numFours);
-            if (numPairs == 0 && numTrips == 0 && numFours == 0)
+            GetNumPlayers(out HashSet<Player> playersFree, out var numMatchSizes);
+            if (Tools.SumOfPlayersInMatchSizes(numMatchSizes) == 0)
             {
-                MaxNumMatches(3);
+                MaxNumMatches(MatchSize.Triples);
             }
-            else if (fixedMatchesDay != null && numPairs * 4 + numTrips * 6 + numFours * 8 == playersFree.Count + fixedMatchesDay.matches.Sum(match => match.Team1.size + match.Team2.size))
+            else if (fixedMatchesDay != null && Tools.SumOfPlayersInMatchSizes(numMatchSizes) == playersFree.Count + fixedMatchesDay.matches.Sum(match => match.Team1.size + match.Team2.size))
             {
                 foreach (Match match in fixedMatchesDay.matches)
                 {
-                    switch (match.Size)
-                    {
-                        case 2: numPairs--; break;
-                        case 3: numTrips--; break;
-                        case 4: numFours--; break;
-                    }
+                    numMatchSizes[match.GetMatchSize()]--;
                 }
-                if (numPairs >= 0 && numTrips >= 0 && numFours >= 0)
+                if (numMatchSizes.All(kvp => kvp.Value >= 0))
                 {
-                    NUDpairs.Value = numPairs;
-                    NUDtriples.Value = numTrips;
-                    NUDfours.Value = numFours;
+                    SetMatchSizes(numMatchSizes);
                 }
             }
+        }
+
+        void SetMatchSizes(Counter<MatchSize> numMatchSizes)
+        {
+            NUDpairs.Value = numMatchSizes[MatchSize.Pairs];
+            NUDtriples.Value = numMatchSizes[MatchSize.Triples];
+            NUDfours.Value = numMatchSizes[MatchSize.Fours];
+            NUD3v2.Value = numMatchSizes[MatchSize.TripVsPair];
+            NUD4v3.Value = numMatchSizes[MatchSize.FourVsTrip];
         }
 
         #endregion
@@ -515,7 +526,7 @@ namespace Matchmaker.UserInterface
         {
             parameters = null;
 
-            GetNumPlayers(out HashSet<Player> playersFree, out int numPairs, out int numTrips, out int numFours);
+            GetNumPlayers(out HashSet<Player> playersFree, out Counter<MatchSize> numMatchSizes);
 
             if (validate)
             {
@@ -528,14 +539,7 @@ namespace Matchmaker.UserInterface
                     return false;
                 }
 
-                if ((playersFree.Count) % 2 == 1)
-                {
-                    BTNplayers.PerformClick();
-                    MessageBox.Show("Please select an even number of players for this day", "Uneven players");
-                    return false;
-                }
-
-                if ((numPairs * 2 + numTrips * 3 + numFours * 4) * 2 != playersFree.Count)
+                if (Tools.SumOfPlayersInMatchSizes(numMatchSizes) != playersFree.Count)
                 {
                     BTNconfirmbeforecreating.PerformClick();
                     MessageBox.Show("Please make sure that the number of matches is correct for the number of players", "Wrong number of players");
@@ -586,12 +590,7 @@ namespace Matchmaker.UserInterface
                 players = new List<Player>(playersFree),
                 history = history,
                 weights = weights,
-                numTeamSizes = new Dictionary<MatchSize, int> {
-                    { new MatchSize(2), numPairs },
-                    { new MatchSize(3), numTrips },
-                    { new MatchSize(4), numFours },
-                }
-                // todo: add 3v2 and 4v3 to the form
+                numMatchSizes = numMatchSizes,
             };
             return true;
         }
@@ -602,12 +601,17 @@ namespace Matchmaker.UserInterface
             return result;
         }
 
-        void GetNumPlayers(out HashSet<Player> playersFree, out int numPairs, out int numTrips, out int numFours)
+        void GetNumPlayers(out HashSet<Player> playersFree, out Counter<MatchSize> numMatchSizes)
         {
             playersFree = new HashSet<Player>(playersSelectedForDay.Except(fixedMatchesDay.Players()));
-            numPairs = (int)NUDpairs.Value;
-            numTrips = (int)NUDtriples.Value;
-            numFours = (int)NUDfours.Value;
+            numMatchSizes = new Counter<MatchSize>
+            {
+                { MatchSize.Pairs, (int)NUDpairs.Value },
+                { MatchSize.Triples, (int)NUDtriples.Value },
+                { MatchSize.Fours, (int)NUDfours.Value },
+                { MatchSize.TripVsPair, (int)NUD3v2.Value },
+                { MatchSize.FourVsTrip, (int)NUD4v3.Value },
+            };
         }
 
         private void BTNnewgamesgo_Click(object sender, EventArgs e)
@@ -762,9 +766,7 @@ namespace Matchmaker.UserInterface
             generatedDay = null;
             fixedMatchesDay = null;
             playersSelectedForDay.Clear();
-            NUDpairs.Value = 0;
-            NUDtriples.Value = 0;
-            NUDfours.Value = 0;
+            SetMatchSizes(new Counter<MatchSize>());
 
             RefreshFullListOfPlayers();
             DisplayFixedMatches();

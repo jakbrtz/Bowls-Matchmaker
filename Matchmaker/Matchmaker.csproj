@@ -100,6 +100,7 @@
     <Compile Include="Algorithms\Structures\DayGeneratorParameters.cs" />
     <Compile Include="Algorithms\Structures\Swap.cs" />
     <Compile Include="Algorithms\Tools.cs" />
+    <Compile Include="Collections\Counter.cs" />
     <Compile Include="Data Handling\DataCreation.cs" />
     <Compile Include="Data Handling\Search.cs" />
     <Compile Include="Data Handling\Sorts.cs" />

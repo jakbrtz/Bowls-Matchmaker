@@ -889,7 +889,7 @@ namespace Matchmaker.UserInterface
             dataGridView1.BeginEdit(true);
         }
 
-        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private void DataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             var dataGrid = (DataGridView)sender;
             if (e.Button == MouseButtons.Right && e.RowIndex != -1)

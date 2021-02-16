@@ -1,7 +1,7 @@
 ﻿using Matchmaker.Collections;
 using Matchmaker.Data;
 using System.Collections;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -20,64 +20,67 @@ namespace Matchmaker.UserInterface
             };
         }
 
-        public static void PickNumGamesForPlayers(int numPlayers, MatchSize preferredSize, out Counter<MatchSize> numberOfPlayers)
+        public static void PickNumGamesForPlayers(int numPlayers, MatchSize preferredSize, out Counter<MatchSize> numMatchSizes)
         {
-            numberOfPlayers = new Counter<MatchSize>();
+            numMatchSizes = new Counter<MatchSize>();
             // If there are only 4 players then there's no way to set this up
             if (numPlayers < 4) return;
-            // How many players in the preference size?
-            int sizePref = preferredSize.team1Size + preferredSize.team2Size;
             // How many games can we make?
-            numberOfPlayers[preferredSize] = numPlayers / sizePref;
+            numMatchSizes[preferredSize] = numPlayers / preferredSize.TotalSize;
             // How many players are left over?
-            int leftovers = numPlayers % sizePref;
+            int leftovers = numPlayers % preferredSize.TotalSize;
             // If we don't have any leftovers then we're done
             if (leftovers == 0) return;
             // We don't have enough leftover players to make a game, so give up one of the games of preferred size
-            if (leftovers < 4 && numberOfPlayers[preferredSize] > 0)
+            if (leftovers < 4 && numMatchSizes[preferredSize] > 0)
             {
-                numberOfPlayers[preferredSize]--;
-                leftovers += sizePref;
+                numMatchSizes[preferredSize]--;
+                leftovers += preferredSize.TotalSize;
             }
+            Debug.Assert(leftovers >= 4, "There should be at least 4 leftovers");
             // We have an odd number of leftover players but our preferred size was odd, so give up one of the games of preferred size
-            if (leftovers % 2 == 1 && numberOfPlayers[preferredSize] > 0 && sizePref % 2 == 1)
+            if (leftovers % 2 == 1 && numMatchSizes[preferredSize] > 0 && preferredSize.TotalSize % 2 == 1)
             {
-                numberOfPlayers[preferredSize]--;
-                leftovers += sizePref;
+                numMatchSizes[preferredSize]--;
+                leftovers += preferredSize.TotalSize;
             }
+            Debug.Assert(leftovers % 2 == 0 || preferredSize.TotalSize % 2 == 0, "There should be an even number of leftovers, unless there is an even preferred size");
             // We have an odd number of leftover players, so add an uneven match
             if (leftovers % 2 == 1)
             {
                 if (leftovers == 7)
                 {
-                    numberOfPlayers[MatchSize.FourVsTrip]++;
+                    numMatchSizes[MatchSize.FourVsTrip]++;
                     leftovers -= 7;
                 }
                 else
                 {
-                    numberOfPlayers[MatchSize.TripVsPair]++;
+                    numMatchSizes[MatchSize.TripVsPair]++;
                     leftovers -= 5;
                 }
             }
+            Debug.Assert(leftovers % 2 == 0, "There should be an even number of leftovers");
             // Add pairs to fill up the remaining spots
             while (leftovers >= 4)
             {
-                numberOfPlayers[MatchSize.Pairs]++;
+                numMatchSizes[MatchSize.Pairs]++;
                 leftovers -= 4;
             }
             // If we were left with 2 players, remove a pair and add a trip
             if (leftovers == 2)
             {
-                numberOfPlayers[MatchSize.Pairs]--;
+                numMatchSizes[MatchSize.Pairs]--;
                 leftovers += 4;
-                numberOfPlayers[MatchSize.Triples]++;
+                numMatchSizes[MatchSize.Triples]++;
                 leftovers -= 6;
             }
+            Debug.Assert(leftovers == 0, "There shouldn't be any more leftovers");
+            Debug.Assert(SumOfPlayersInMatchSizes(numMatchSizes) == numPlayers, "The match sizes should be distributed exactly");
         }
 
-        public static int SumOfPlayersInMatchSizes(Counter<MatchSize> sizes)
+        public static int SumOfPlayersInMatchSizes(Counter<MatchSize> numMatchSizes)
         {
-            return sizes.Sum(kvp => kvp.Value * kvp.Key.TotalSize);
+            return numMatchSizes.Sum(kvp => kvp.Value * kvp.Key.TotalSize);
         }
 
         public static string GuessFilename(Day day)

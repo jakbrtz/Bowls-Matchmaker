@@ -1107,47 +1107,47 @@
             // 
             // tagDataGridViewTextBoxColumn
             // 
-            this.tagDataGridViewTextBoxColumn.DataPropertyName = "TagNumberForTable";
+            this.tagDataGridViewTextBoxColumn.DataPropertyName = "TagNumberProperty";
             this.tagDataGridViewTextBoxColumn.HeaderText = "#";
             this.tagDataGridViewTextBoxColumn.Name = "tagDataGridViewTextBoxColumn";
             this.tagDataGridViewTextBoxColumn.Width = 30;
             // 
             // nameDataGridViewTextBoxColumn
             // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "NameForTable";
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "NameProperty";
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Width = 200;
             // 
             // PositionPrimary
             // 
-            this.PositionPrimary.DataPropertyName = "PositionPrimaryForTable";
+            this.PositionPrimary.DataPropertyName = "PositionPrimaryProperty";
             this.PositionPrimary.HeaderText = "Position Primary";
             this.PositionPrimary.Name = "PositionPrimary";
             this.PositionPrimary.Width = 110;
             // 
             // GradePrimary
             // 
-            this.GradePrimary.DataPropertyName = "GradePrimaryForTable";
+            this.GradePrimary.DataPropertyName = "GradePrimaryProperty";
             this.GradePrimary.HeaderText = "Grade Primary";
             this.GradePrimary.Name = "GradePrimary";
             // 
             // PositionSecondary
             // 
-            this.PositionSecondary.DataPropertyName = "PositionSecondaryForTable";
+            this.PositionSecondary.DataPropertyName = "PositionSecondaryProperty";
             this.PositionSecondary.HeaderText = "Position Secondary";
             this.PositionSecondary.Name = "PositionSecondary";
             this.PositionSecondary.Width = 110;
             // 
             // GradeSecondary
             // 
-            this.GradeSecondary.DataPropertyName = "GradeSecondaryForTable";
+            this.GradeSecondary.DataPropertyName = "GradeSecondaryProperty";
             this.GradeSecondary.HeaderText = "Grade Secondary";
             this.GradeSecondary.Name = "GradeSecondary";
             // 
             // preferredTeamSizesDataGridViewTextBoxColumn
             // 
-            this.preferredTeamSizesDataGridViewTextBoxColumn.DataPropertyName = "PreferredTeamSizesForTable";
+            this.preferredTeamSizesDataGridViewTextBoxColumn.DataPropertyName = "PreferredTeamSizesProperty";
             this.preferredTeamSizesDataGridViewTextBoxColumn.HeaderText = "Preferred Team Sizes";
             this.preferredTeamSizesDataGridViewTextBoxColumn.Name = "preferredTeamSizesDataGridViewTextBoxColumn";
             this.preferredTeamSizesDataGridViewTextBoxColumn.Width = 120;

@@ -55,7 +55,7 @@ namespace Matchmaker.Data
         }
     }
 
-    // todo: move this to the User Interface
+    #region Formatting
 
     public partial class Player : IFormattable
     {
@@ -69,43 +69,44 @@ namespace Matchmaker.Data
                 .Replace("%visitor", Visitor ? "Visitor" : "Member");
         }
 
-        public string TagNumberForTable
+        public string TagNumberProperty
+
         {
             get => TagNumber;
             set => TagNumber = value;
         }
 
-        public string NameForTable
+        public string NameProperty
         {
             get => Name;
             set => Name = value;
         }
 
-        public Position PositionPrimaryForTable
+        public Position PositionPrimaryProperty
         {
             get => PositionPrimary;
             set => PositionPrimary = value;
         }
 
-        public Position PositionSecondaryForTable
+        public Position PositionSecondaryProperty
         {
             get => PositionSecondary;
             set => PositionSecondary = value;
         }
 
-        public Grade GradePrimaryForTable
+        public Grade GradePrimaryProperty
         {
             get => GradePrimary;
             set => GradePrimary = value;
         }
 
-        public Grade GradeSecondaryForTable
+        public Grade GradeSecondaryProperty
         {
             get => GradeSecondary;
             set => GradeSecondary = value;
         }
 
-        public TeamSize PreferredTeamSizesForTable
+        public TeamSize PreferredTeamSizesProperty
         {
             get => PreferredTeamSizes;
             set => PreferredTeamSizes = value;
@@ -158,4 +159,6 @@ namespace Matchmaker.Data
             }
         }
     }
+
+    #endregion
 }

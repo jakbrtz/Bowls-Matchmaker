@@ -114,7 +114,8 @@
             this.WVWenemies = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWmainposition = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWsecondaryposition = new Matchmaker.UserInterface.Controls.WeightView();
-            this.WVWbadpositiongoodgrade = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWgoodleadsmoveup = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWgoodskipsgetskip = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWunbalancedplayers = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWunbalancedteams = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWteamsize = new Matchmaker.UserInterface.Controls.WeightView();
@@ -154,6 +155,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.LBXhistory = new System.Windows.Forms.ListBox();
             this.SFDhtml = new System.Windows.Forms.SaveFileDialog();
+            this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CMSdeleteday.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -289,9 +291,10 @@
             // CMNaddall
             // 
             this.CMNaddall.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addAllToolStripMenuItem});
+            this.addAllToolStripMenuItem,
+            this.clearAllToolStripMenuItem});
             this.CMNaddall.Name = "CMNaddall";
-            this.CMNaddall.Size = new System.Drawing.Size(114, 26);
+            this.CMNaddall.Size = new System.Drawing.Size(181, 70);
             // 
             // addAllToolStripMenuItem
             // 
@@ -999,7 +1002,8 @@
             this.FLPweights.Controls.Add(this.WVWenemies);
             this.FLPweights.Controls.Add(this.WVWmainposition);
             this.FLPweights.Controls.Add(this.WVWsecondaryposition);
-            this.FLPweights.Controls.Add(this.WVWbadpositiongoodgrade);
+            this.FLPweights.Controls.Add(this.WVWgoodleadsmoveup);
+            this.FLPweights.Controls.Add(this.WVWgoodskipsgetskip);
             this.FLPweights.Controls.Add(this.WVWunbalancedplayers);
             this.FLPweights.Controls.Add(this.WVWunbalancedteams);
             this.FLPweights.Controls.Add(this.WVWteamsize);
@@ -1038,7 +1042,7 @@
             // WVWmainposition
             // 
             this.WVWmainposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWmainposition.Description = "Players should not get positions they don\'t play";
+            this.WVWmainposition.Description = "Players should get their preferred positions";
             this.WVWmainposition.Location = new System.Drawing.Point(3, 155);
             this.WVWmainposition.Name = "WVWmainposition";
             this.WVWmainposition.Size = new System.Drawing.Size(959, 70);
@@ -1048,28 +1052,38 @@
             // WVWsecondaryposition
             // 
             this.WVWsecondaryposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWsecondaryposition.Description = "Players should not get their secondary position";
+            this.WVWsecondaryposition.Description = "Players should get their primary position over their secondary position";
             this.WVWsecondaryposition.Location = new System.Drawing.Point(3, 231);
             this.WVWsecondaryposition.Name = "WVWsecondaryposition";
             this.WVWsecondaryposition.Size = new System.Drawing.Size(959, 70);
             this.WVWsecondaryposition.TabIndex = 2;
             this.WVWsecondaryposition.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
-            // WVWbadpositiongoodgrade
+            // WVWgoodleadsmoveup
             // 
-            this.WVWbadpositiongoodgrade.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWbadpositiongoodgrade.Description = "Good players should not get moved to other positions";
-            this.WVWbadpositiongoodgrade.Location = new System.Drawing.Point(3, 307);
-            this.WVWbadpositiongoodgrade.Name = "WVWbadpositiongoodgrade";
-            this.WVWbadpositiongoodgrade.Size = new System.Drawing.Size(959, 70);
-            this.WVWbadpositiongoodgrade.TabIndex = 8;
-            this.WVWbadpositiongoodgrade.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            this.WVWgoodleadsmoveup.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWgoodleadsmoveup.Description = "Leads G2 + G3 should be as Leads";
+            this.WVWgoodleadsmoveup.Location = new System.Drawing.Point(3, 307);
+            this.WVWgoodleadsmoveup.Name = "WVWgoodleadsmoveup";
+            this.WVWgoodleadsmoveup.Size = new System.Drawing.Size(959, 70);
+            this.WVWgoodleadsmoveup.TabIndex = 8;
+            this.WVWgoodleadsmoveup.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            // 
+            // WVWgoodskipsgetskip
+            // 
+            this.WVWgoodskipsgetskip.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWgoodskipsgetskip.Description = "G1 skips should be as skips";
+            this.WVWgoodskipsgetskip.Location = new System.Drawing.Point(3, 383);
+            this.WVWgoodskipsgetskip.Name = "WVWgoodskipsgetskip";
+            this.WVWgoodskipsgetskip.Size = new System.Drawing.Size(959, 70);
+            this.WVWgoodskipsgetskip.TabIndex = 8;
+            this.WVWgoodskipsgetskip.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
             // WVWunbalancedplayers
             // 
             this.WVWunbalancedplayers.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWunbalancedplayers.Description = "Players should be put against other players of equal skill";
-            this.WVWunbalancedplayers.Location = new System.Drawing.Point(3, 383);
+            this.WVWunbalancedplayers.Location = new System.Drawing.Point(3, 459);
             this.WVWunbalancedplayers.Name = "WVWunbalancedplayers";
             this.WVWunbalancedplayers.Size = new System.Drawing.Size(959, 70);
             this.WVWunbalancedplayers.TabIndex = 6;
@@ -1079,7 +1093,7 @@
             // 
             this.WVWunbalancedteams.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWunbalancedteams.Description = "Teams should be put against other teams of equal skill";
-            this.WVWunbalancedteams.Location = new System.Drawing.Point(3, 459);
+            this.WVWunbalancedteams.Location = new System.Drawing.Point(3, 535);
             this.WVWunbalancedteams.Name = "WVWunbalancedteams";
             this.WVWunbalancedteams.Size = new System.Drawing.Size(959, 70);
             this.WVWunbalancedteams.TabIndex = 7;
@@ -1089,7 +1103,7 @@
             // 
             this.WVWteamsize.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWteamsize.Description = "Players should be in their preferred team size";
-            this.WVWteamsize.Location = new System.Drawing.Point(3, 535);
+            this.WVWteamsize.Location = new System.Drawing.Point(3, 611);
             this.WVWteamsize.Name = "WVWteamsize";
             this.WVWteamsize.Size = new System.Drawing.Size(959, 70);
             this.WVWteamsize.TabIndex = 3;
@@ -1097,7 +1111,7 @@
             // 
             // BTNresetWeights
             // 
-            this.BTNresetWeights.Location = new System.Drawing.Point(7, 615);
+            this.BTNresetWeights.Location = new System.Drawing.Point(7, 691);
             this.BTNresetWeights.Margin = new System.Windows.Forms.Padding(7);
             this.BTNresetWeights.Name = "BTNresetWeights";
             this.BTNresetWeights.Size = new System.Drawing.Size(183, 23);
@@ -1109,7 +1123,7 @@
             // BFFmain
             // 
             this.BFFmain.FileName = "";
-            this.BFFmain.Location = new System.Drawing.Point(3, 648);
+            this.BFFmain.Location = new System.Drawing.Point(3, 724);
             this.BFFmain.Name = "BFFmain";
             this.BFFmain.Size = new System.Drawing.Size(561, 29);
             this.BFFmain.TabIndex = 9;
@@ -1119,7 +1133,7 @@
             // BFFhtml
             // 
             this.BFFhtml.FileName = "";
-            this.BFFhtml.Location = new System.Drawing.Point(3, 683);
+            this.BFFhtml.Location = new System.Drawing.Point(3, 759);
             this.BFFhtml.Name = "BFFhtml";
             this.BFFhtml.Size = new System.Drawing.Size(561, 29);
             this.BFFhtml.TabIndex = 10;
@@ -1128,7 +1142,7 @@
             // 
             // BTNseedefaulthtml
             // 
-            this.BTNseedefaulthtml.Location = new System.Drawing.Point(7, 722);
+            this.BTNseedefaulthtml.Location = new System.Drawing.Point(7, 798);
             this.BTNseedefaulthtml.Margin = new System.Windows.Forms.Padding(7);
             this.BTNseedefaulthtml.Name = "BTNseedefaulthtml";
             this.BTNseedefaulthtml.Size = new System.Drawing.Size(183, 23);
@@ -1488,6 +1502,13 @@
             this.SFDhtml.FileName = "table.html";
             this.SFDhtml.Filter = "HTML file(*.html)|*.html, *.htm";
             // 
+            // clearAllToolStripMenuItem
+            // 
+            this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
+            this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearAllToolStripMenuItem.Text = "Clear All";
+            this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.ClearAllToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1661,7 +1682,8 @@
         private Controls.WeightView WVWenemies;
         private Controls.WeightView WVWmainposition;
         private Controls.WeightView WVWsecondaryposition;
-        private Controls.WeightView WVWbadpositiongoodgrade;
+        private Controls.WeightView WVWgoodskipsgetskip;
+        private Controls.WeightView WVWgoodleadsmoveup;
         private Controls.WeightView WVWunbalancedplayers;
         private Controls.WeightView WVWunbalancedteams;
         private Controls.WeightView WVWteamsize;
@@ -1685,6 +1707,7 @@
         private System.Windows.Forms.Button BTNmax3v2;
         private System.Windows.Forms.NumericUpDown NUD3v2;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
     }
 }
 

@@ -137,6 +137,12 @@ namespace Matchmaker.UserInterface
                 CLBpagePlayers.SetItemChecked(i, true);
         }
 
+        private void ClearAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < CLBpagePlayers.Items.Count; i++)
+                CLBpagePlayers.SetItemChecked(i, false);
+        }
+
         void RefreshFullListOfPlayers()
         {
             RefreshPlayerFilters();
@@ -150,7 +156,8 @@ namespace Matchmaker.UserInterface
             WVWenemies.BindToWeight(weights.PairPlayedTogetherAgainstEachOther);
             WVWmainposition.BindToWeight(weights.IncorrectPosition);
             WVWsecondaryposition.BindToWeight(weights.SecondaryPosition);
-            WVWbadpositiongoodgrade.BindToWeight(weights.BadPositionForGoodGrade);
+            WVWgoodskipsgetskip.BindToWeight(weights.GoodSkipsGetSkip);
+            WVWgoodleadsmoveup.BindToWeight(weights.GoodLeadsMoveUp);
             WVWunbalancedplayers.BindToWeight(weights.UnbalancedPlayers);
             WVWunbalancedteams.BindToWeight(weights.UnbalancedTeams);
             WVWteamsize.BindToWeight(weights.IncorrectTeamSize);

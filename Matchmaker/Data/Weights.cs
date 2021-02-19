@@ -6,7 +6,8 @@
         public Weight PairPlayedTogetherAgainstEachOther = new Weight();
         public Weight IncorrectPosition = new Weight();
         public Weight SecondaryPosition = new Weight();
-        public Weight BadPositionForGoodGrade = new Weight();
+        public Weight GoodSkipsGetSkip = new Weight();
+        public Weight GoodLeadsMoveUp = new Weight();
         public Weight IncorrectTeamSize = new Weight();
         public Weight UnbalancedPlayers = new Weight();
         public Weight UnbalancedTeams = new Weight();
@@ -22,7 +23,8 @@
             PairPlayedTogetherAgainstEachOther.Set(20, 0.75);
             IncorrectPosition.Set(100, 0.75);
             SecondaryPosition.Set(10, 0.75);
-            BadPositionForGoodGrade.Set(20, 0.75);
+            GoodSkipsGetSkip.Set(20, 0.75);
+            GoodLeadsMoveUp.Set(20, 0.75);
             IncorrectTeamSize.Set(100, 0.75);
             UnbalancedPlayers.Set(5, 0.75);
             UnbalancedTeams.Set(5, 0.75);

@@ -213,7 +213,6 @@ namespace Matchmaker.FileOperations
                 Write("SP", ConvertWeight(weights.SecondaryPosition));
                 Write("GP", ConvertWeight(weights.UnbalancedPlayers));
                 Write("GT", ConvertWeight(weights.UnbalancedTeams));
-                Write("PG", ConvertWeight(weights.BadPositionForGoodGrade));
                 FinishSection();
             }
 
@@ -710,9 +709,6 @@ namespace Matchmaker.FileOperations
                         case "GT":
                             weights.UnbalancedTeams = ConvertWeight(value);
                             break;
-                        case "PG":
-                            weights.BadPositionForGoodGrade = ConvertWeight(value);
-                            break;
                     }
                 }
             }
@@ -875,7 +871,8 @@ namespace Matchmaker.FileOperations
                 { "SecondaryPosition", WriteWeight(weights.SecondaryPosition) },
                 { "UnbalancedPlayers", WriteWeight(weights.UnbalancedPlayers) },
                 { "UnbalancedTeams", WriteWeight(weights.UnbalancedTeams) },
-                { "BadPositionForGoodGrade", WriteWeight(weights.BadPositionForGoodGrade) },
+                { "GoodSkipsGetSkip", WriteWeight(weights.GoodSkipsGetSkip) },
+                { "GoodLeadsMoveUp", WriteWeight(weights.GoodLeadsMoveUp) },
             };
 
             Dict WriteWeight(Weight weight) => new Dict {
@@ -1172,7 +1169,8 @@ namespace Matchmaker.FileOperations
                 Read(dict, "SecondaryPosition", ref weights.SecondaryPosition, dictReader: ReadWeight);
                 Read(dict, "UnbalancedPlayers", ref weights.UnbalancedPlayers, dictReader: ReadWeight);
                 Read(dict, "UnbalancedTeams", ref weights.UnbalancedTeams, dictReader: ReadWeight);
-                Read(dict, "BadPositionForGoodGrade", ref weights.BadPositionForGoodGrade, dictReader: ReadWeight);
+                Read(dict, "GoodLeadsMoveUp", ref weights.GoodLeadsMoveUp, dictReader: ReadWeight);
+                Read(dict, "GoodSkipsGetSkip", ref weights.GoodSkipsGetSkip, dictReader: ReadWeight);
             }
 
             Weight ReadWeight(Dict dict)

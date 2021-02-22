@@ -20,22 +20,15 @@ namespace Matchmaker.Algorithms
             }
         }
 
-        public static int DifferenceBetweenPositions(Position position1, Position position2, int size)
+        public static bool PositionCouldBeSecondary(Position position, Player player)
         {
             // This condition stops the program from compiling if I ever change MaxSize
             if (Team.MaxSize == 4)
             {
-                if (position1 == position2) return 0;
-                if (size == 2) return 1;
-                if (size == 3)
-                {
-                    if (position1 == Position.Second || position2 == Position.Second)
-                        return 1;
-                    return 2;
-                }
-                int result = position1 - position2;
-                if (result < 0) result = -result;
-                return result;
+                if (player.PositionSecondary != Position.None) return false;
+                if (player.PositionPrimary == Position.Lead) return position == Position.Second;
+                if (player.PositionPrimary == Position.Second) return true;
+                return position != Position.Lead;
             }
         }
     }

@@ -149,7 +149,7 @@ namespace Matchmaker.Algorithms.Structures
             foreach (var team in match.teams)
                 for (int position = 0; position < Team.MaxSize; position++)
                     if (match.PositionShouldBeFilled((Position)position))
-                        if (IsPenalty(team.Player(position), (Position)position, team.size, out IncorrectPosition penalty))
+                        if (IsPenalty(team.Player(position), (Position)position, out IncorrectPosition penalty))
                             Add(penalty);
             foreach (var team in match.teams)
                 for (int position = 0; position < Team.MaxSize; position++)
@@ -204,7 +204,7 @@ namespace Matchmaker.Algorithms.Structures
             return false;
         }
 
-        public bool IsPenalty(Player player, Position position, int size, out IncorrectPosition penalty)
+        public bool IsPenalty(Player player, Position position, out IncorrectPosition penalty)
         {
             if (player.PositionIsPrimary(position))
             {
@@ -214,9 +214,20 @@ namespace Matchmaker.Algorithms.Structures
 
             bool usedSecondary = player.PositionIsSecondary(position);
             EffectiveGrade effectiveGrade = player.EffectiveGrade(position);
-            double score =
-                (usedSecondary ? weights.SecondaryPosition.Score : weights.IncorrectPosition.Score) *
-                (Tools.DifferenceBetweenPositions(player.PositionPrimary, position, size) * 2 - 1);
+
+            double score;
+            if (usedSecondary)
+            {
+                score = weights.SecondaryPosition.Score;
+            }
+            else if (Tools.PositionCouldBeSecondary(position, player))
+            {
+                score = weights.IncorrectPosition.Score;
+            }
+            else
+            {
+                score = weights.IncorrectPosition.Score * 3;
+            }
 
             if (player.PositionPrimary == Position.Lead && player.GradePrimary != Grade.G1)
             {

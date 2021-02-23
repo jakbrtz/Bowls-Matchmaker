@@ -316,12 +316,12 @@ namespace Matchmaker.UserInterface
         int swapPlayerIndexForFixing = -1;
         private void ScripterFixGames_PlayerClickedOn(int matchIndex, int teamIndex, int position)
         {
-            int playerIndex = Swap.CreatePlayerIndex(matchIndex, teamIndex, position);
+            int playerIndex = Algorithms.Tools.CreatePlayerIndex(matchIndex, teamIndex, position);
             Player player = fixedMatchesDay.matches[matchIndex].teams[teamIndex].players[position];
 
             if (swapPlayerIndexForFixing != -1)
             {
-                Swap swap = new Swap(swapPlayerIndexForFixing, playerIndex, fixedMatchesDay);
+                RegularSwap swap = new RegularSwap(swapPlayerIndexForFixing, playerIndex, fixedMatchesDay);
                 swap.DoSwap();
 
                 swapPlayerIndexForFixing = -1;
@@ -386,7 +386,7 @@ namespace Matchmaker.UserInterface
             // One of the positions was already selected
             if (swapPlayerIndexForFixing == -1) return;
             // The position that was already selected did not have a player there
-            Swap.GetIndiciesForPlayerIndex(swapPlayerIndexForFixing, out int matchIndex, out int teamIndex, out int position);
+            Algorithms.Tools.GetIndiciesForPlayerIndex(swapPlayerIndexForFixing, out int matchIndex, out int teamIndex, out int position);
             if (fixedMatchesDay.matches[matchIndex].teams[teamIndex].players[position] != null) return;
 
             // Move the selected player to the position
@@ -673,7 +673,12 @@ namespace Matchmaker.UserInterface
             }
             else
             {
-                toolStripStatusLabel1.Text = $"Swapped {swap.Player1} with {swap.Player2}"; 
+                toolStripStatusLabel1.Text = swap switch
+                {
+                    RegularSwap s => $"Swapped {s.Player1} with {s.Player2}",
+                    SimpleDoubleSwap s => $"Swapped {s.Player1a} with {s.Player2a} and {s.Player1b} with {s.Player2b}",
+                    _ => throw new NotImplementedException(swap.GetType() + " has not been programmed here yet"), // todo: compile-time code analyzer
+                };
                 DisplayGeneratedDay();
                 RewritePenalties();
             }
@@ -716,7 +721,7 @@ namespace Matchmaker.UserInterface
             // Adjust the position so it points to the player
             position = Array.IndexOf(team.players, player);
             // Find the playerIndex
-            int playerIndex = Swap.CreatePlayerIndex(matchIndex, teamIndex, position);
+            int playerIndex = Algorithms.Tools.CreatePlayerIndex(matchIndex, teamIndex, position);
 
             if (swapPlayerIndex == -1)
             {
@@ -725,7 +730,7 @@ namespace Matchmaker.UserInterface
             }
             else
             {
-                Swap swap = new Swap(swapPlayerIndex, playerIndex, generatedDay);
+                RegularSwap swap = new RegularSwap(swapPlayerIndex, playerIndex, generatedDay);
                 swap.DoSwap();
 
                 CachedPenalties penalties = new CachedPenalties(GetParameters());
@@ -736,7 +741,7 @@ namespace Matchmaker.UserInterface
 
                 RewritePenalties(); 
                 DisplayGeneratedDay();
-                if (swap.match1.isFixed || swap.match2.isFixed)
+                if (swap.InvolvesFixedMatches())
                     DisplayFixedMatches();
             }
         }

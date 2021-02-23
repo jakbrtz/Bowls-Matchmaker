@@ -33,28 +33,48 @@ namespace Matchmaker.Algorithms
             finished = true;
         }
 
-        public Swap DoOneImprovement()
+        public ISwap DoOneImprovement()
         {
-            Swap bestSwap = null;
+            ISwap bestSwap = null;
 
+            void CheckIfSwapIsImprovement(ISwap swap)
+            {
+                if (!swap.IsValid()) return;
+                if (swap.InvolvesFixedMatches()) return;
+                DoSwapAndRecalculate(swap);
+                double score = Score(day);
+                DoSwapAndRecalculate(swap);
+                if (score < BestScore)
+                {
+                    BestScore = score;
+                    bestSwap = swap;
+                }
+            }
+
+            // Simple swaps
             for (int p1 = 0; p1 < day.matches.Count * Match.MaxPlayers; p1++)
             {
                 for (int p2 = 0; p2 < p1; p2++)
                 {
-                    Swap swap = new Swap(p1, p2, day);
-                    if (swap.Player1 != null && swap.Player2 != null && !swap.match1.isFixed && !swap.match2.isFixed)
+                    CheckIfSwapIsImprovement(new RegularSwap(p1, p2, day));
+                }
+            }
+
+            // Paired swaps
+            if (bestSwap == null)
+            {
+                for (int p1 = 0; p1 < day.matches.Count * Match.MaxPlayers; p1++)
+                {
+                    for (int p2 = 0; p2 < p1; p2++)
                     {
-                        DoSwapAndRecalculate(swap);
-                        double score = Score(day);
-                        DoSwapAndRecalculate(swap);
-                        if (score < BestScore)
-                        {
-                            BestScore = score;
-                            bestSwap = swap;
-                        }
+                        // todo: avoid checking the same swap twice:
+                        // p1 % Match.MaxPlayers < Team.MaxPlayers
+                        CheckIfSwapIsImprovement(new SimpleDoubleSwap(p1, p2, day));
                     }
                 }
             }
+
+            // Do swap and return
             if (bestSwap != null)
             {
                 DoSwapAndRecalculate(bestSwap);
@@ -71,11 +91,10 @@ namespace Matchmaker.Algorithms
             return total;
         }
 
-        void DoSwapAndRecalculate(Swap swap)
+        void DoSwapAndRecalculate(ISwap swap)
         {
             swap.DoSwap();
-            penalties.RecalculateScore(swap.match1);
-            penalties.RecalculateScore(swap.match2);
+            swap.RecalculateScore(penalties);
         }
 
         public void GetProgress(out double progress, out double score)

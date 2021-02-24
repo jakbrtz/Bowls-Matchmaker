@@ -1,6 +1,7 @@
 ﻿using Matchmaker.Algorithms.Structures;
 using Matchmaker.Data;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Matchmaker.Algorithms
@@ -21,6 +22,9 @@ namespace Matchmaker.Algorithms
         {
             var penalties = new CachedPenalties(parameters);
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
             Parallel.For(0, attempts, TryGenerate);
 
             void TryGenerate(int i)
@@ -29,6 +33,9 @@ namespace Matchmaker.Algorithms
                 improvers[i] = new DayImprover(day, penalties);
                 improvers[i].Improve();
             }
+
+            sw.Stop();
+            Debug.WriteLine($"Did {attempts} runs in {sw.ElapsedMilliseconds}ms");
 
             Day best = null;
             double bestScore = double.MaxValue;

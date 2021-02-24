@@ -181,6 +181,7 @@ namespace Matchmaker.FileOperations
 
         public static void Input(string filename, IList<Player> players, IList<Day> history, Weights weights)
         {
+            if (!File.Exists(filename)) return;
             using StreamReader sr = new StreamReader(filename);
             string str = sr.ReadToEnd();
             Dict dict = JsonConvert.DeserializeObject<Dict>(str);

@@ -38,19 +38,10 @@ namespace Matchmaker.Data
 
         public override string ToString() => Team1.ToString() + " vs " + Team2.ToString();
 
+        private static readonly int[] _minTeamSizeForPosition = new int[Team.MaxSize] { 0, 2, 3, 1 };
         public static bool PositionShouldBeFilled(Position position, int teamSize)
         {
-            if (Team.MaxSize == 4)
-            {
-                return position switch
-                {
-                    Position.Lead => teamSize > 0,
-                    Position.Second => teamSize > 2,
-                    Position.Third => teamSize > 3,
-                    Position.Skip => teamSize > 1,
-                    _ => throw new System.ArgumentException(),
-                };
-            }
+            return teamSize > _minTeamSizeForPosition[(int)position];
         }
 
         public bool PositionShouldBeFilled(Position position) => PositionShouldBeFilled(position, Size);

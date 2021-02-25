@@ -122,23 +122,19 @@ namespace Matchmaker.Algorithms.Structures
             }
         }
 
-        public double RecalculateScore(Day day)
+        public void RecalculateScore(Day day)
         {
-            double score = 0;
             foreach (Match match in day.matches)
-                score += RecalculateScore(match);
-            return score;
+                RecalculateScore(match);
         }
 
-        public double RecalculateScore(Match match)
+        public void RecalculateScore(Match match)
         {
-            double score = 0;
             match.penalties.Clear();
 
             void Add(Penalty penalty)
             {
                 match.penalties.Add(penalty);
-                score += penalty.Score();
             }
 
             foreach (var team in match.teams)
@@ -167,7 +163,6 @@ namespace Matchmaker.Algorithms.Structures
                 if (IsPenalty(match, out UnbalancedTeams penalty))
                     Add(penalty);
             }
-            return score;
         }
 
         public bool IsPenalty(Player player1, Player player2, out PairAlreadyPlayedInTeam penalty)
@@ -257,7 +252,7 @@ namespace Matchmaker.Algorithms.Structures
 
         public bool IsPenalty(Player player, TeamSize size, out WrongTeamSize penalty)
         {
-            if (player == null || player.PreferredTeamSizes.HasFlag(size))
+            if (player == null || (player.PreferredTeamSizes & size) != 0)
             {
                 penalty = null;
                 return false;

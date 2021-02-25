@@ -17,7 +17,8 @@ namespace Matchmaker.Algorithms
             this.day = day;
             this.penalties = penalties;
 
-            BestScore = penalties.RecalculateScore(day);
+            penalties.RecalculateScore(day);
+            BestScore = Score(day);
         }
 
         public DayImprover(Day day, DayGeneratorParameters parameters) : this(day, new CachedPenalties(parameters)) { }
@@ -53,33 +54,29 @@ namespace Matchmaker.Algorithms
 
             // Simple swaps
             for (int p1 = 0; p1 < day.matches.Count * Match.MaxPlayers; p1++)
-            {
                 for (int p2 = 0; p2 < p1; p2++)
-                {
                     CheckIfSwapIsImprovement(new RegularSwap(p1, p2, day));
-                }
-            }
 
-            // Paired swaps
-            if (bestSwap == null)
-            {
-                for (int p1 = 0; p1 < day.matches.Count * Match.MaxPlayers; p1++)
-                {
-                    for (int p2 = 0; p2 < p1; p2++)
-                    {
-                        // todo: avoid checking the same swap twice:
-                        // p1 % Match.MaxPlayers < Team.MaxPlayers
-                        CheckIfSwapIsImprovement(new SimpleDoubleSwap(p1, p2, day));
-                    }
-                }
-            }
-
-            // Do swap and return
             if (bestSwap != null)
             {
                 DoSwapAndRecalculate(bestSwap);
+                return bestSwap;
             }
-            return bestSwap;
+
+            // Paired swaps
+            for (int p1 = 0; p1 < day.matches.Count * Match.MaxPlayers; p1++)
+                if (p1 % Match.MaxPlayers < Team.MaxSize) // avoid checking the same swap twice
+                    for (int p2 = 0; p2 < p1; p2++)
+                        if (p2 % Match.MaxPlayers < Team.MaxSize) // avoid checking the same swap twice
+                            CheckIfSwapIsImprovement(new SimpleDoubleSwap(p1, p2, day));
+
+            if (bestSwap != null)
+            {
+                DoSwapAndRecalculate(bestSwap);
+                return bestSwap;
+            }
+
+            return null;
         }
 
         double Score(Day day)

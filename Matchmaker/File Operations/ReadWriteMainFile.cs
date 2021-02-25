@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Dict = System.Collections.Generic.Dictionary<string, object>;
@@ -222,8 +223,12 @@ namespace Matchmaker.FileOperations
                         obj = default;
                         return true;
                     }
+                    Debug.Fail($"Could not parse {o}");
                 }
-                // todo: alert that the file hasn't been read correctly
+                else
+                {
+                    Debug.Fail($"Could not find key \"{key}\"");
+                }
                 obj = default;
                 return false;
             }

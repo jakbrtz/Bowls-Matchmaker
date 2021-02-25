@@ -41,16 +41,29 @@ namespace Matchmaker.UserInterface
         {
             if (string.IsNullOrEmpty(Properties.Settings.Default.FileMain))
                 Properties.Settings.Default.FileMain = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\bowls matchmaker\\file.bmm";
+
+            SetUpHTMLscripting();
+            PrepareComboBoxes();
+            LoadSettings();
+            
+            FileLoad();
+        }
+
+        void FileLoad()
+        {
             ReadWriteMainFile.Input(Properties.Settings.Default.FileMain, players, history, weights);
 
             SCBfixedmatchplayers.SortBy = (obj, str) => Search.RelevanceToSearch(obj as Player, str);
-            SetUpHTMLscripting();
+            
             RefreshPageMatchesPlayers();
-            DoBindingStuff();
-            PrepareComboBoxes();
-            LoadSettings();
+            RefreshFullListOfPlayers();
+            RefreshHistoryList();
+            BindWeights();
 
-            if (players.Count == 0) BTNmainPlayers.PerformClick();
+            if (players.Count == 0)
+                BTNmainPlayers.PerformClick();
+            else
+                BTNplayers.PerformClick();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -86,14 +99,6 @@ namespace Matchmaker.UserInterface
         #endregion
 
         #region data binding
-
-        void DoBindingStuff()
-        {
-            RefreshFullListOfPlayers();
-            RefreshHistoryList();
-
-            BindWeights();
-        }
 
         void PrepareComboBoxes()
         {

@@ -83,7 +83,6 @@ namespace Matchmaker.Algorithms.Structures
         public bool IsValid()
         {
             return Player1a != null && Player1b != null && Player2a != null && Player2b != null;
-            // todo: check if this is faster than match1.PositionShouldBeFilled((Position)position1) && match2.PositionShouldBeFilled((Position)position2);
         }
 
         public bool InvolvesFixedMatches()

@@ -14,8 +14,6 @@
             return score;
         }
 
-        public static int MaxScore = Enums.Grades.Length;
-
         public override string ToString()
         {
             string result = "";

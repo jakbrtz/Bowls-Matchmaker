@@ -21,10 +21,10 @@ namespace Matchmaker.Algorithms.Structures
 
         public RegularSwap(int playerIndex1, int playerIndex2, Day day)
         {
-            Tools.GetIndiciesForPlayerIndex(playerIndex1, out int matchIndex1, out int teamIndex1, out position1);
+            GetIndiciesForPlayerIndex(playerIndex1, out int matchIndex1, out int teamIndex1, out position1);
             match1 = day.matches[matchIndex1];
             team1 = match1.teams[teamIndex1];
-            Tools.GetIndiciesForPlayerIndex(playerIndex2, out int matchIndex2, out int teamIndex2, out position2);
+            GetIndiciesForPlayerIndex(playerIndex2, out int matchIndex2, out int teamIndex2, out position2);
             match2 = day.matches[matchIndex2];
             team2 = match2.teams[teamIndex2];
         }
@@ -63,6 +63,18 @@ namespace Matchmaker.Algorithms.Structures
             get => team2.players[position2];
             set => team2.players[position2] = value;
         }
+
+        public static void GetIndiciesForPlayerIndex(int playerIndex, out int matchIndex, out int teamIndex, out int position)
+        {
+            matchIndex = playerIndex / Match.MaxPlayers;
+            teamIndex = playerIndex % Match.MaxPlayers / Team.MaxSize;
+            position = playerIndex % Team.MaxSize;
+        }
+
+        public static int CreatePlayerIndex(int matchIndex, int teamIndex, int position)
+        {
+            return matchIndex * Match.MaxPlayers + teamIndex * Team.MaxSize + position;
+        }
     }
 
     public class SimpleDoubleSwap : ISwap
@@ -74,9 +86,9 @@ namespace Matchmaker.Algorithms.Structures
 
         public SimpleDoubleSwap(int playerIndex1, int playerIndex2, Day day)
         {
-            Tools.GetIndiciesForPlayerIndex(playerIndex1, out int matchIndex1, out _, out position1);
+            GetIndiciesForPlayerIndex(playerIndex1, out int matchIndex1, out position1);
             match1 = day.matches[matchIndex1];
-            Tools.GetIndiciesForPlayerIndex(playerIndex2, out int matchIndex2, out _, out position2);
+            GetIndiciesForPlayerIndex(playerIndex2, out int matchIndex2, out position2);
             match2 = day.matches[matchIndex2];
         }
 
@@ -129,6 +141,12 @@ namespace Matchmaker.Algorithms.Structures
         {
             get => match2.Team2.players[position2];
             set => match2.Team2.players[position2] = value;
+        }
+
+        public static void GetIndiciesForPlayerIndex(int playerIndex, out int matchIndex, out int position)
+        {
+            matchIndex = playerIndex / Team.MaxSize;
+            position = playerIndex % Team.MaxSize;
         }
     }
 }

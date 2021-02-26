@@ -31,18 +31,6 @@ namespace Matchmaker.Algorithms
                 return position != Position.Lead;
             }
         }
-
-        public static void GetIndiciesForPlayerIndex(int playerIndex, out int matchIndex, out int teamIndex, out int position)
-        {
-            matchIndex = playerIndex / Match.MaxPlayers;
-            teamIndex = playerIndex % Match.MaxPlayers / Team.MaxSize;
-            position = playerIndex % Team.MaxSize;
-        }
-
-        public static int CreatePlayerIndex(int matchIndex, int teamIndex, int position)
-        {
-            return matchIndex * Match.MaxPlayers + teamIndex * Team.MaxSize + position;
-        }
     }
 
     public interface IAlgorithmWithProgress

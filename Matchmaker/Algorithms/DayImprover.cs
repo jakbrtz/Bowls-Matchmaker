@@ -64,11 +64,9 @@ namespace Matchmaker.Algorithms
             }
 
             // Paired swaps
-            for (int p1 = 0; p1 < day.matches.Count * Match.MaxPlayers; p1++)
-                if (p1 % Match.MaxPlayers < Team.MaxSize) // avoid checking the same swap twice
-                    for (int p2 = 0; p2 < p1; p2++)
-                        if (p2 % Match.MaxPlayers < Team.MaxSize) // avoid checking the same swap twice
-                            CheckIfSwapIsImprovement(new SimpleDoubleSwap(p1, p2, day));
+            for (int p1 = 0; p1 < day.matches.Count * Team.MaxSize; p1++)
+                for (int p2 = 0; p2 < p1; p2++)
+                    CheckIfSwapIsImprovement(new SimpleDoubleSwap(p1, p2, day));
 
             if (bestSwap != null)
             {

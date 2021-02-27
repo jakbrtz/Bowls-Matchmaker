@@ -105,6 +105,8 @@
     <Compile Include="Data Handling\Search.cs" />
     <Compile Include="Data Handling\Sorts.cs" />
     <Compile Include="Data\EnumsAndStructs\MatchSize.cs" />
+    <Compile Include="File Operations\TableReader.cs" />
+    <Compile Include="File Operations\TableWriter.cs" />
     <Compile Include="User Interface\StringConverters\EnumConverter.cs" />
     <Compile Include="Data\Day.cs" />
     <Compile Include="Data\EnumsAndStructs\EffectiveGrade.cs" />

@@ -5,6 +5,7 @@ using Matchmaker.Data;
 using Matchmaker.DataHandling;
 using Matchmaker.FileOperations;
 using Matchmaker.UserInterface.Controls;
+using Matchmaker.UserInterface.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -133,7 +134,7 @@ namespace Matchmaker.UserInterface
 
             CLBpagePlayers.Items.Clear();
             foreach (Player player in relevantPlayers)
-                CLBpagePlayers.Items.Add(player, playersSelectedForDay.Contains(player));
+                CLBpagePlayers.Items.Add(new PlayerViewModel(player), playersSelectedForDay.Contains(player));
         }
 
         private void AddAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -254,7 +255,7 @@ namespace Matchmaker.UserInterface
 
         private void CLBpagePlayers_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            Player player = CLBpagePlayers.Items[e.Index] as Player;
+            Player player = (CLBpagePlayers.Items[e.Index] as PlayerViewModel).player;
             if (e.NewValue == CheckState.Checked)
                 playersSelectedForDay.Add(player);
             else
@@ -864,8 +865,8 @@ namespace Matchmaker.UserInterface
             PlayerListFilter = m => m.Visitor;
         }
 
-        Func<Player, bool> _filter = p => true;
-        Func<Player, bool> PlayerListFilter
+        Func<PlayerViewModel, bool> _filter = p => true;
+        Func<PlayerViewModel, bool> PlayerListFilter
         {
             get => _filter;
             set
@@ -877,7 +878,7 @@ namespace Matchmaker.UserInterface
 
         void RefreshPlayerFilters()
         {
-            playerBindingSource.DataSource = players.Where(PlayerListFilter).ToList();
+            playerBindingSource.DataSource = players.Select(p => new PlayerViewModel(p)).Where(PlayerListFilter).ToList();
         }
 
         private void BTNsortnameplayers_Click(object sender, EventArgs e)
@@ -901,7 +902,7 @@ namespace Matchmaker.UserInterface
             };
             players.Add(player);
             RefreshPlayerFilters();
-            int rowIndex = (playerBindingSource.DataSource as List<Player>).IndexOf(player);
+            int rowIndex = (playerBindingSource.DataSource as List<PlayerViewModel>).FindIndex(p => p.player == player);
             dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex].Cells[1];
             dataGridView1.BeginEdit(true);
         }
@@ -925,10 +926,10 @@ namespace Matchmaker.UserInterface
             foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
                 if (!indicies.Contains(cell.RowIndex))
                     indicies.Add(cell.RowIndex);
-            List<Player> playersInGrid = playerBindingSource.DataSource as List<Player>;
+            List<PlayerViewModel> playersInGrid = playerBindingSource.DataSource as List<PlayerViewModel>;
             List<Player> selectedPlayers = new List<Player>();
             foreach (int rowIndex in indicies)
-                selectedPlayers.Add(playersInGrid[rowIndex]);
+                selectedPlayers.Add(playersInGrid[rowIndex].player);
 
             // Confirmation
             string listPlayersForMessage = Tools.ShortListDescription(selectedPlayers);

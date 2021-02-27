@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Matchmaker.Data
+﻿namespace Matchmaker.Data
 {
-    public partial class Player
+    public class Player
     {
         public int ID;
         public string TagNumber = "";
@@ -53,64 +51,6 @@ namespace Matchmaker.Data
                 positionIsSecondary = positionIsSecondary,
             };
         }
-    }
-
-    #region Formatting
-
-    public partial class Player : IFormattable
-    {
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            if (format == null) return ToString();
-            return format
-                .Replace("%name", string.IsNullOrEmpty(Name) ? TagNumber : Name)
-                .Replace("%tag", string.IsNullOrEmpty(TagNumber) ? "(visitor)" : TagNumber)
-                .Replace("%position", PositionPrimary.ToString())
-                .Replace("%visitor", Visitor ? "Visitor" : "Member");
-        }
-
-        public string TagNumberProperty
-
-        {
-            get => TagNumber;
-            set => TagNumber = value;
-        }
-
-        public string NameProperty
-        {
-            get => Name;
-            set => Name = value;
-        }
-
-        public Position PositionPrimaryProperty
-        {
-            get => PositionPrimary;
-            set => PositionPrimary = value;
-        }
-
-        public Position PositionSecondaryProperty
-        {
-            get => PositionSecondary;
-            set => PositionSecondary = value;
-        }
-
-        public Grade GradePrimaryProperty
-        {
-            get => GradePrimary;
-            set => GradePrimary = value;
-        }
-
-        public Grade GradeSecondaryProperty
-        {
-            get => GradeSecondary;
-            set => GradeSecondary = value;
-        }
-
-        public TeamSize PreferredTeamSizesProperty
-        {
-            get => PreferredTeamSizes;
-            set => PreferredTeamSizes = value;
-        }
 
         public PositionPreference PositionPreference
         {
@@ -159,6 +99,4 @@ namespace Matchmaker.Data
             }
         }
     }
-
-    #endregion
 }

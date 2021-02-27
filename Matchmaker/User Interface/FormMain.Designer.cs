@@ -1189,54 +1189,54 @@
             // 
             // tagDataGridViewTextBoxColumn
             // 
-            this.tagDataGridViewTextBoxColumn.DataPropertyName = "TagNumberProperty";
+            this.tagDataGridViewTextBoxColumn.DataPropertyName = "TagNumber";
             this.tagDataGridViewTextBoxColumn.HeaderText = "#";
             this.tagDataGridViewTextBoxColumn.Name = "tagDataGridViewTextBoxColumn";
             this.tagDataGridViewTextBoxColumn.Width = 30;
             // 
             // nameDataGridViewTextBoxColumn
             // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "NameProperty";
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Width = 200;
             // 
             // PositionPrimary
             // 
-            this.PositionPrimary.DataPropertyName = "PositionPrimaryProperty";
+            this.PositionPrimary.DataPropertyName = "PositionPrimary";
             this.PositionPrimary.HeaderText = "Position Primary";
             this.PositionPrimary.Name = "PositionPrimary";
             this.PositionPrimary.Width = 110;
             // 
             // GradePrimary
             // 
-            this.GradePrimary.DataPropertyName = "GradePrimaryProperty";
+            this.GradePrimary.DataPropertyName = "GradePrimary";
             this.GradePrimary.HeaderText = "Grade Primary";
             this.GradePrimary.Name = "GradePrimary";
             // 
             // PositionSecondary
             // 
-            this.PositionSecondary.DataPropertyName = "PositionSecondaryProperty";
+            this.PositionSecondary.DataPropertyName = "PositionSecondary";
             this.PositionSecondary.HeaderText = "Position Secondary";
             this.PositionSecondary.Name = "PositionSecondary";
             this.PositionSecondary.Width = 110;
             // 
             // GradeSecondary
             // 
-            this.GradeSecondary.DataPropertyName = "GradeSecondaryProperty";
+            this.GradeSecondary.DataPropertyName = "GradeSecondary";
             this.GradeSecondary.HeaderText = "Grade Secondary";
             this.GradeSecondary.Name = "GradeSecondary";
             // 
             // preferredTeamSizesDataGridViewTextBoxColumn
             // 
-            this.preferredTeamSizesDataGridViewTextBoxColumn.DataPropertyName = "PreferredTeamSizesProperty";
+            this.preferredTeamSizesDataGridViewTextBoxColumn.DataPropertyName = "PreferredTeamSizes";
             this.preferredTeamSizesDataGridViewTextBoxColumn.HeaderText = "Preferred Team Sizes";
             this.preferredTeamSizesDataGridViewTextBoxColumn.Name = "preferredTeamSizesDataGridViewTextBoxColumn";
             this.preferredTeamSizesDataGridViewTextBoxColumn.Width = 120;
             // 
             // playerBindingSource
             // 
-            this.playerBindingSource.DataSource = typeof(Matchmaker.Data.Player);
+            this.playerBindingSource.DataSource = typeof(Matchmaker.UserInterface.ViewModel.PlayerViewModel);
             this.playerBindingSource.AddingNew += new System.ComponentModel.AddingNewEventHandler(this.PlayerBindingSource_AddingNew);
             // 
             // panel2

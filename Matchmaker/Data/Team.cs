@@ -25,10 +25,6 @@
         /// </summary>
         public Player Player(Position position)
         {
-            // TODO: check if this is reasonably faster than:
-            // if positionshouldbefilled
-            //    return players[position]
-            // return recursive call
             var result = players[(int)position];
             if (result != null || PositionShouldBeFilled(position)) return result;
             return Player(position - 1);

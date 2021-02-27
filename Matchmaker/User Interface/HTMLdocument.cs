@@ -212,6 +212,3 @@ namespace Matchmaker.UserInterface
 
     public enum HTMLmode { ViewHistory, ConfirmMatches, FixMatches }
 }
-
-// todo: 
-// how to remove header/footer from page? (edit registry)

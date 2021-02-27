@@ -122,8 +122,8 @@ namespace Matchmaker.Algorithms
                                 if (list[i].PositionPrimary != list[chosen].PositionPrimary)
                                     return list[i].PositionPrimary > list[chosen].PositionPrimary;
                                 // If the player's secondary position is the target then they are a good choice
-                                bool chosenIsSecondary = list[chosen].PositionIsSecondary((Position)targetPosition);
-                                bool currentIsSecondary = list[i].PositionIsSecondary((Position)targetPosition);
+                                bool chosenIsSecondary = list[chosen].PositionSecondary == (Position)targetPosition;
+                                bool currentIsSecondary = list[i].PositionSecondary == (Position)targetPosition;
                                 if (chosenIsSecondary && !currentIsSecondary) return false;
                                 if (!chosenIsSecondary && currentIsSecondary) return true;
                                 // Pick the player with the better grade

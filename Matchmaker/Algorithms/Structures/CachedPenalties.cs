@@ -201,13 +201,13 @@ namespace Matchmaker.Algorithms.Structures
 
         public bool IsPenalty(Player player, Position position, out IncorrectPosition penalty)
         {
-            if (player.PositionIsPrimary(position))
+            if (player.PositionPrimary == position)
             {
                 penalty = null;
                 return false;
             }
 
-            bool usedSecondary = player.PositionIsSecondary(position);
+            bool usedSecondary = player.PositionSecondary == position;
             EffectiveGrade effectiveGrade = player.EffectiveGrade(position);
 
             double score;

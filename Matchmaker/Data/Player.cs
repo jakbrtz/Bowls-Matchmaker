@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Matchmaker.Data
+﻿namespace Matchmaker.Data
 {
     public class Player
     {
@@ -18,31 +16,6 @@ namespace Matchmaker.Data
         public override string ToString() => Name + (string.IsNullOrEmpty(TagNumber) ? " (visitor)" : $" ({TagNumber})");
 
         public override int GetHashCode() => ID;
-
-        public EffectiveGrade EffectiveGrade(Position possiblePosition)
-        {
-            bool positionIsPrimary = PositionPrimary == possiblePosition;
-            bool positionIsSecondary = PositionSecondary == possiblePosition;
-
-            Grade grade;
-            if (positionIsPrimary)
-                grade = GradePrimary;
-            else if (positionIsSecondary)
-                grade = GradeSecondary;
-            else if (GradeSecondary > GradePrimary && PositionSecondary != Position.None)
-                grade = GradeSecondary;
-            else
-                grade = GradePrimary;
-
-            Debug.Assert(grade != Grade.None);
-
-            return new EffectiveGrade
-            {
-                grade = grade,
-                positionIsPrimary = positionIsPrimary,
-                positionIsSecondary = positionIsSecondary,
-            };
-        }
 
         public PositionPreference PositionPreference
         {

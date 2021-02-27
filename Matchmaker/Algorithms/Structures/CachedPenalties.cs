@@ -208,7 +208,7 @@ namespace Matchmaker.Algorithms.Structures
             }
 
             bool usedSecondary = player.PositionSecondary == position;
-            EffectiveGrade effectiveGrade = player.EffectiveGrade(position);
+            EffectiveGrade effectiveGrade = new EffectiveGrade(player, position);
 
             double score;
             if (usedSecondary)
@@ -275,7 +275,7 @@ namespace Matchmaker.Algorithms.Structures
 
         public bool IsPenalty(Player player1, Player player2, Position position, out UnbalancedPlayers penalty)
         {
-            if (player1.EffectiveGrade(position).Score() != player2.EffectiveGrade(position).Score())
+            if (new EffectiveGrade(player1, position).Score() != new EffectiveGrade(player2, position).Score())
             {
                 unbalancedPlayerDictionary.TryGetValue(player1, out HistoryOfPenalty historical1);
                 unbalancedPlayerDictionary.TryGetValue(player2, out HistoryOfPenalty historical2);
@@ -284,9 +284,9 @@ namespace Matchmaker.Algorithms.Structures
                 penalty = new UnbalancedPlayers
                 {
                     player1 = player1,
-                    grade1 = player1.EffectiveGrade(position),
+                    grade1 = new EffectiveGrade(player1, position),
                     player2 = player2,
-                    grade2 = player2.EffectiveGrade(position),
+                    grade2 = new EffectiveGrade(player2, position),
                     historical = historical,
                     score = weights.UnbalancedPlayers.Score,
                 };
@@ -303,8 +303,8 @@ namespace Matchmaker.Algorithms.Structures
             {
                 if (match.PositionShouldBeFilled((Position)position))
                 {
-                    difference += match.Team1.Player(position).EffectiveGrade((Position)position).Score();
-                    difference -= match.Team2.Player(position).EffectiveGrade((Position)position).Score();
+                    difference += new EffectiveGrade(match.Team1.Player(position), (Position)position).Score();
+                    difference -= new EffectiveGrade(match.Team2.Player(position), (Position)position).Score();
                 }
             }
             if (difference == 0)
@@ -319,8 +319,8 @@ namespace Matchmaker.Algorithms.Structures
             {
                 if (match.PositionShouldBeFilled((Position)position))
                 {
-                    team1Grades[position] = match.Team1.Player(position).EffectiveGrade((Position)position);
-                    team2Grades[position] = match.Team2.Player(position).EffectiveGrade((Position)position);
+                    team1Grades[position] = new EffectiveGrade(match.Team1.Player(position), (Position)position);
+                    team2Grades[position] = new EffectiveGrade(match.Team2.Player(position), (Position)position);
                 }
             }
             penalty = new UnbalancedTeams

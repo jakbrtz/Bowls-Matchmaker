@@ -1,6 +1,7 @@
 ﻿using CustomControls;
 using Matchmaker.Data;
 using Matchmaker.DataHandling;
+using Matchmaker.UserInterface.StringConverters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -193,25 +194,25 @@ namespace Matchmaker.FileOperations
                         player.Name = data[i];
                         break;
                     case "Primary Position":
-                        player.PositionPrimary = Enums.ParsePosition(data[i]);
+                        player.PositionPrimary = EnumStringConverter.ParsePosition(data[i]);
                         break;
                     case "Primary Grade":
-                        player.GradePrimary = Enums.ParseGrade(data[i]);
+                        player.GradePrimary = EnumStringConverter.ParseGrade(data[i]);
                         break;
                     case "Secondary Position":
-                        player.PositionSecondary = Enums.ParsePosition(data[i]);
+                        player.PositionSecondary = EnumStringConverter.ParsePosition(data[i]);
                         break;
                     case "Secondary Grade":
-                        player.GradeSecondary = Enums.ParseGrade(data[i]);
+                        player.GradeSecondary = EnumStringConverter.ParseGrade(data[i]);
                         break;
                     case "Primary Position and Grade":
-                        player.PreferencePrimary = Enums.ParsePositionAndGrade(data[i]);
+                        player.PreferencePrimary = EnumStringConverter.ParsePositionAndGrade(data[i]);
                         break;
                     case "Secondary Position and Grade":
-                        player.PreferenceSecondary = Enums.ParsePositionAndGrade(data[i]);
+                        player.PreferenceSecondary = EnumStringConverter.ParsePositionAndGrade(data[i]);
                         break;
                     case "Team Size":
-                        player.PreferredTeamSizes = Enums.TryParseTeamSize(data[i], out TeamSize ts) ? ts : TeamSize.Any;
+                        player.PreferredTeamSizes = EnumStringConverter.TryParseTeamSize(data[i], out TeamSize ts) ? ts : TeamSize.Any;
                         break;
                 }
             }

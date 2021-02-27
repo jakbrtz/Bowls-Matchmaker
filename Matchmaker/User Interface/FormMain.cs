@@ -5,6 +5,7 @@ using Matchmaker.Data;
 using Matchmaker.DataHandling;
 using Matchmaker.FileOperations;
 using Matchmaker.UserInterface.Controls;
+using Matchmaker.UserInterface.StringConverters;
 using Matchmaker.UserInterface.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -109,7 +110,7 @@ namespace Matchmaker.UserInterface
             GradeSecondary.DataSource = Enums.GradesIncludingNone;
             preferredTeamSizesDataGridViewTextBoxColumn.DataSource = Enums.TeamSizes;
 
-            StringConverter.AddAttributesToEnumsAndStructs();
+            EnumStringConverter.AddAttributesToEnumsAndStructs();
         }
 
         void RefreshHistoryList()
@@ -375,7 +376,7 @@ namespace Matchmaker.UserInterface
                     if (!team.PositionShouldBeFilled((Position)position))
                         team.players[position] = null;
             swapPlayerIndexForFixing = -1;
-            toolStripStatusLabel1.Text = $"Changed a match to {Enums.NameOfTeamSize(value)}";
+            toolStripStatusLabel1.Text = $"Changed a match to {EnumStringConverter.NameOfTeamSize(value)}";
             DisplayFixedMatches();
         }
 

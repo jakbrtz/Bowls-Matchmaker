@@ -1,4 +1,5 @@
 ﻿using Matchmaker.Data;
+using Matchmaker.UserInterface.StringConverters;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -139,10 +140,10 @@ namespace Matchmaker.UserInterface
         static string GetControlForTeamSize(Day day, int matchIndex, HTMLmode mode)
         {
             Match match = day.matches[matchIndex];
-            if (mode != HTMLmode.FixMatches) return Enums.NameOfTeamSize(match.Size);
+            if (mode != HTMLmode.FixMatches) return EnumStringConverter.NameOfTeamSize(match.Size);
             string controls = string.Format(dropDownTeamSizeStart, matchIndex);
             for (int size = Team.MinSize; size <= Team.MaxSize; size++)
-                controls += string.Format(match.Size == size ? dropDownTeamSizeOptionSelected : dropDownTeamSizeOptionNotSelected, size, Enums.NameOfTeamSize(size));
+                controls += string.Format(match.Size == size ? dropDownTeamSizeOptionSelected : dropDownTeamSizeOptionNotSelected, size, EnumStringConverter.NameOfTeamSize(size));
             controls += dropDownTeamSizeEnd;
             return controls;
         }

@@ -105,7 +105,7 @@
     <Compile Include="Data Handling\Search.cs" />
     <Compile Include="Data Handling\Sorts.cs" />
     <Compile Include="Data\EnumsAndStructs\MatchSize.cs" />
-    <Compile Include="User Interface\StringConverter.cs" />
+    <Compile Include="User Interface\StringConverters\EnumConverter.cs" />
     <Compile Include="Data\Day.cs" />
     <Compile Include="Data\EnumsAndStructs\EffectiveGrade.cs" />
     <Compile Include="Data\EnumsAndStructs\Grade.cs" />
@@ -155,7 +155,13 @@
     <Compile Include="User Interface\Controls\WeightView.Designer.cs">
       <DependentUpon>WeightView.cs</DependentUpon>
     </Compile>
+    <Compile Include="User Interface\StringConverters\GradeConverter.cs" />
     <Compile Include="User Interface\ViewModel\PlayerViewModel.cs" />
+    <Compile Include="User Interface\StringConverters\PositionAndGradeConverter.cs" />
+    <Compile Include="User Interface\StringConverters\PositionPreferenceAndGradeConverter.cs" />
+    <Compile Include="User Interface\StringConverters\PositionPreferenceConverter.cs" />
+    <Compile Include="User Interface\StringConverters\PositionConverter.cs" />
+    <Compile Include="User Interface\StringConverters\TeamSizeConverter.cs" />
     <EmbeddedResource Include="User Interface\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>

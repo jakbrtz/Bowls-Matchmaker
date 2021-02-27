@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Matchmaker.UserInterface.StringConverters; // TODO: do not reference UserInterface from here
+using System.Collections.Generic;
 
 namespace Matchmaker.Data
 {

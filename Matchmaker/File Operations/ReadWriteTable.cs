@@ -5,6 +5,7 @@ using System.Linq;
 using ClosedXML.Excel;
 using Matchmaker.Data;
 using Matchmaker.DataHandling;
+using Matchmaker.UserInterface.StringConverters;
 using Day = Matchmaker.Data.Day;
 
 namespace Matchmaker.FileOperations

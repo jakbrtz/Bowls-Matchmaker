@@ -1010,14 +1010,14 @@
             // 
             this.FLPweights.AutoScroll = true;
             this.FLPweights.AutoSize = true;
-            this.FLPweights.Controls.Add(this.WVWpairsplaytogether);
-            this.FLPweights.Controls.Add(this.WVWenemies);
             this.FLPweights.Controls.Add(this.WVWmainposition);
             this.FLPweights.Controls.Add(this.WVWsecondaryposition);
-            this.FLPweights.Controls.Add(this.WVWgoodleadsmoveup);
-            this.FLPweights.Controls.Add(this.WVWgoodskipsgetskip);
+            this.FLPweights.Controls.Add(this.WVWpairsplaytogether);
+            this.FLPweights.Controls.Add(this.WVWenemies);
             this.FLPweights.Controls.Add(this.WVWunbalancedplayers);
             this.FLPweights.Controls.Add(this.WVWunbalancedteams);
+            this.FLPweights.Controls.Add(this.WVWgoodleadsmoveup);
+            this.FLPweights.Controls.Add(this.WVWgoodskipsgetskip);
             this.FLPweights.Controls.Add(this.WVWteamsize);
             this.FLPweights.Controls.Add(this.BTNresetWeights);
             this.FLPweights.Controls.Add(this.BFFmain);
@@ -1035,7 +1035,7 @@
             // 
             this.WVWpairsplaytogether.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWpairsplaytogether.Description = "Pairs of players should not have multiple games as teammates";
-            this.WVWpairsplaytogether.Location = new System.Drawing.Point(3, 3);
+            this.WVWpairsplaytogether.Location = new System.Drawing.Point(3, 155);
             this.WVWpairsplaytogether.Name = "WVWpairsplaytogether";
             this.WVWpairsplaytogether.Size = new System.Drawing.Size(959, 70);
             this.WVWpairsplaytogether.TabIndex = 0;
@@ -1045,7 +1045,7 @@
             // 
             this.WVWenemies.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWenemies.Description = "Pairs of players should not have multiple games against each other";
-            this.WVWenemies.Location = new System.Drawing.Point(3, 79);
+            this.WVWenemies.Location = new System.Drawing.Point(3, 231);
             this.WVWenemies.Name = "WVWenemies";
             this.WVWenemies.Size = new System.Drawing.Size(959, 70);
             this.WVWenemies.TabIndex = 4;
@@ -1055,7 +1055,7 @@
             // 
             this.WVWmainposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWmainposition.Description = "Players should get their preferred positions";
-            this.WVWmainposition.Location = new System.Drawing.Point(3, 155);
+            this.WVWmainposition.Location = new System.Drawing.Point(3, 3);
             this.WVWmainposition.Name = "WVWmainposition";
             this.WVWmainposition.Size = new System.Drawing.Size(959, 70);
             this.WVWmainposition.TabIndex = 1;
@@ -1065,7 +1065,7 @@
             // 
             this.WVWsecondaryposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWsecondaryposition.Description = "Players should get their primary position over their secondary position";
-            this.WVWsecondaryposition.Location = new System.Drawing.Point(3, 231);
+            this.WVWsecondaryposition.Location = new System.Drawing.Point(3, 79);
             this.WVWsecondaryposition.Name = "WVWsecondaryposition";
             this.WVWsecondaryposition.Size = new System.Drawing.Size(959, 70);
             this.WVWsecondaryposition.TabIndex = 2;
@@ -1075,7 +1075,7 @@
             // 
             this.WVWgoodleadsmoveup.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWgoodleadsmoveup.Description = "Leads G2 + G3 should be as Leads";
-            this.WVWgoodleadsmoveup.Location = new System.Drawing.Point(3, 307);
+            this.WVWgoodleadsmoveup.Location = new System.Drawing.Point(3, 459);
             this.WVWgoodleadsmoveup.Name = "WVWgoodleadsmoveup";
             this.WVWgoodleadsmoveup.Size = new System.Drawing.Size(959, 70);
             this.WVWgoodleadsmoveup.TabIndex = 8;
@@ -1085,7 +1085,7 @@
             // 
             this.WVWgoodskipsgetskip.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWgoodskipsgetskip.Description = "G1 skips should be as skips";
-            this.WVWgoodskipsgetskip.Location = new System.Drawing.Point(3, 383);
+            this.WVWgoodskipsgetskip.Location = new System.Drawing.Point(3, 535);
             this.WVWgoodskipsgetskip.Name = "WVWgoodskipsgetskip";
             this.WVWgoodskipsgetskip.Size = new System.Drawing.Size(959, 70);
             this.WVWgoodskipsgetskip.TabIndex = 8;
@@ -1095,7 +1095,7 @@
             // 
             this.WVWunbalancedplayers.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWunbalancedplayers.Description = "Players should be put against other players of equal skill";
-            this.WVWunbalancedplayers.Location = new System.Drawing.Point(3, 459);
+            this.WVWunbalancedplayers.Location = new System.Drawing.Point(3, 307);
             this.WVWunbalancedplayers.Name = "WVWunbalancedplayers";
             this.WVWunbalancedplayers.Size = new System.Drawing.Size(959, 70);
             this.WVWunbalancedplayers.TabIndex = 6;
@@ -1105,7 +1105,7 @@
             // 
             this.WVWunbalancedteams.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.WVWunbalancedteams.Description = "Teams should be put against other teams of equal skill";
-            this.WVWunbalancedteams.Location = new System.Drawing.Point(3, 535);
+            this.WVWunbalancedteams.Location = new System.Drawing.Point(3, 383);
             this.WVWunbalancedteams.Name = "WVWunbalancedteams";
             this.WVWunbalancedteams.Size = new System.Drawing.Size(959, 70);
             this.WVWunbalancedteams.TabIndex = 7;

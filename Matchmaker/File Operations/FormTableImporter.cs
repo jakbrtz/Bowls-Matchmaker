@@ -216,6 +216,10 @@ namespace Matchmaker.FileOperations
                         break;
                 }
             }
+            // Validate
+            if (player.PositionPrimary == Position.None) player.PositionPrimary = Position.Lead;
+            if (player.GradePrimary == Grade.None) player.GradePrimary = Grade.G2;
+            if (player.PositionSecondary != Position.None && player.GradeSecondary == Grade.None) player.GradeSecondary = player.GradePrimary;
         }
     }
 }

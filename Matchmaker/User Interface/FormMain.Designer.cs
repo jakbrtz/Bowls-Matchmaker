@@ -41,6 +41,7 @@
             this.BTNmainMatch = new System.Windows.Forms.Button();
             this.CMNaddall = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -53,6 +54,7 @@
             this.editHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OFDplayersinday = new System.Windows.Forms.OpenFileDialog();
             this.SFDplayersinday = new System.Windows.Forms.SaveFileDialog();
+            this.SFDhtml = new System.Windows.Forms.SaveFileDialog();
             this.tabControlMain = new CustomControls.TabControlWithoutHeader();
             this.pageMainMatch = new System.Windows.Forms.TabPage();
             this.tabControlMatches = new CustomControls.TabControlWithoutHeader();
@@ -154,8 +156,6 @@
             this.BTNprintHistory = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.LBXhistory = new System.Windows.Forms.ListBox();
-            this.SFDhtml = new System.Windows.Forms.SaveFileDialog();
-            this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CMSdeleteday.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -294,14 +294,21 @@
             this.addAllToolStripMenuItem,
             this.clearAllToolStripMenuItem});
             this.CMNaddall.Name = "CMNaddall";
-            this.CMNaddall.Size = new System.Drawing.Size(181, 70);
+            this.CMNaddall.Size = new System.Drawing.Size(119, 48);
             // 
             // addAllToolStripMenuItem
             // 
             this.addAllToolStripMenuItem.Name = "addAllToolStripMenuItem";
-            this.addAllToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.addAllToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.addAllToolStripMenuItem.Text = "Add All";
             this.addAllToolStripMenuItem.Click += new System.EventHandler(this.AddAllToolStripMenuItem_Click);
+            // 
+            // clearAllToolStripMenuItem
+            // 
+            this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
+            this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.clearAllToolStripMenuItem.Text = "Clear All";
+            this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.ClearAllToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -370,6 +377,11 @@
             // SFDplayersinday
             // 
             this.SFDplayersinday.Filter = "Text Files(*.txt)|*.txt";
+            // 
+            // SFDhtml
+            // 
+            this.SFDhtml.FileName = "table.html";
+            this.SFDhtml.Filter = "HTML file(*.html)|*.html, *.htm";
             // 
             // tabControlMain
             // 
@@ -1204,6 +1216,8 @@
             // PositionPrimary
             // 
             this.PositionPrimary.DataPropertyName = "PositionPrimary";
+            this.PositionPrimary.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.PositionPrimary.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PositionPrimary.HeaderText = "Position Primary";
             this.PositionPrimary.Name = "PositionPrimary";
             this.PositionPrimary.Width = 110;
@@ -1211,12 +1225,16 @@
             // GradePrimary
             // 
             this.GradePrimary.DataPropertyName = "GradePrimary";
+            this.GradePrimary.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.GradePrimary.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GradePrimary.HeaderText = "Grade Primary";
             this.GradePrimary.Name = "GradePrimary";
             // 
             // PositionSecondary
             // 
             this.PositionSecondary.DataPropertyName = "PositionSecondary";
+            this.PositionSecondary.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.PositionSecondary.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PositionSecondary.HeaderText = "Position Secondary";
             this.PositionSecondary.Name = "PositionSecondary";
             this.PositionSecondary.Width = 110;
@@ -1224,12 +1242,16 @@
             // GradeSecondary
             // 
             this.GradeSecondary.DataPropertyName = "GradeSecondary";
+            this.GradeSecondary.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.GradeSecondary.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GradeSecondary.HeaderText = "Grade Secondary";
             this.GradeSecondary.Name = "GradeSecondary";
             // 
             // preferredTeamSizesDataGridViewTextBoxColumn
             // 
             this.preferredTeamSizesDataGridViewTextBoxColumn.DataPropertyName = "PreferredTeamSizes";
+            this.preferredTeamSizesDataGridViewTextBoxColumn.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.Nothing;
+            this.preferredTeamSizesDataGridViewTextBoxColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.preferredTeamSizesDataGridViewTextBoxColumn.HeaderText = "Preferred Team Sizes";
             this.preferredTeamSizesDataGridViewTextBoxColumn.Name = "preferredTeamSizesDataGridViewTextBoxColumn";
             this.preferredTeamSizesDataGridViewTextBoxColumn.Width = 120;
@@ -1497,18 +1519,6 @@
             this.LBXhistory.TabIndex = 6;
             this.LBXhistory.SelectedIndexChanged += new System.EventHandler(this.LBXhistory_SelectedIndexChanged);
             // 
-            // SFDhtml
-            // 
-            this.SFDhtml.FileName = "table.html";
-            this.SFDhtml.Filter = "HTML file(*.html)|*.html, *.htm";
-            // 
-            // clearAllToolStripMenuItem
-            // 
-            this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
-            this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.clearAllToolStripMenuItem.Text = "Clear All";
-            this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.ClearAllToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1658,13 +1668,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ContextMenuStrip CMSdeleteplayer;
         private System.Windows.Forms.ToolStripMenuItem deletePlayerToolStripMenuItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tagDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn PositionPrimary;
-        private System.Windows.Forms.DataGridViewComboBoxColumn GradePrimary;
-        private System.Windows.Forms.DataGridViewComboBoxColumn PositionSecondary;
-        private System.Windows.Forms.DataGridViewComboBoxColumn GradeSecondary;
-        private System.Windows.Forms.DataGridViewComboBoxColumn preferredTeamSizesDataGridViewTextBoxColumn;
         private System.Windows.Forms.SplitContainer SCTNhistory;
         private System.Windows.Forms.TextBox TBXhtml;
         private System.Windows.Forms.WebBrowser WEBfixmatches;
@@ -1708,6 +1711,13 @@
         private System.Windows.Forms.NumericUpDown NUD3v2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tagDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn PositionPrimary;
+        private System.Windows.Forms.DataGridViewComboBoxColumn GradePrimary;
+        private System.Windows.Forms.DataGridViewComboBoxColumn PositionSecondary;
+        private System.Windows.Forms.DataGridViewComboBoxColumn GradeSecondary;
+        private System.Windows.Forms.DataGridViewComboBoxColumn preferredTeamSizesDataGridViewTextBoxColumn;
     }
 }
 

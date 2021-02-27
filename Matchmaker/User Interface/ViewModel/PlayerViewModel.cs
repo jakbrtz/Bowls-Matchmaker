@@ -41,22 +41,36 @@ namespace Matchmaker.UserInterface.ViewModel
             set => player.PositionPrimary = value;
         }
 
-        public Position PositionSecondary
-        {
-            get => player.PositionSecondary;
-            set => player.PositionSecondary = value;
-        }
-
         public Grade GradePrimary
         {
             get => player.GradePrimary;
             set => player.GradePrimary = value;
         }
 
+        public Position PositionSecondary
+        {
+            get => player.PositionSecondary;
+            set
+            {
+                player.PositionSecondary = value;
+                if (value != Position.None && GradeSecondary == Grade.None) GradeSecondary = GradePrimary;
+            }
+        }
+
         public Grade GradeSecondary
         {
-            get => player.GradeSecondary;
-            set => player.GradeSecondary = value;
+            get 
+            {
+                if (PositionSecondary == Position.None)
+                    return Grade.None;
+                return player.GradeSecondary; 
+            }
+            set
+            {
+                player.GradeSecondary = value;
+                if (value == Grade.None) PositionSecondary = Position.None;
+                else if (PositionSecondary == Position.None) PositionSecondary = PositionPrimary == Position.Second ? Position.Lead : Position.Second;
+            }
         }
 
         public TeamSize PreferredTeamSizes

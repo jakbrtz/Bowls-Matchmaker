@@ -1,4 +1,6 @@
-﻿namespace Matchmaker.Data
+﻿using System.Diagnostics;
+
+namespace Matchmaker.Data
 {
     public class Player
     {
@@ -31,6 +33,8 @@
                 grade = GradeSecondary;
             else
                 grade = GradePrimary;
+
+            Debug.Assert(grade != Grade.None);
 
             return new EffectiveGrade
             {

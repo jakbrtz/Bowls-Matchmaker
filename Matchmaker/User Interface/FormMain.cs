@@ -106,7 +106,7 @@ namespace Matchmaker.UserInterface
             PositionPrimary.DataSource = Enums.Positions;
             PositionSecondary.DataSource = Enums.PositionsIncludingNone;
             GradePrimary.DataSource = Enums.Grades;
-            GradeSecondary.DataSource = Enums.Grades;
+            GradeSecondary.DataSource = Enums.GradesIncludingNone;
             preferredTeamSizesDataGridViewTextBoxColumn.DataSource = Enums.TeamSizes;
 
             StringConverter.AddAttributesToEnumsAndStructs();
@@ -909,8 +909,19 @@ namespace Matchmaker.UserInterface
 
         private void DataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
+            if (e.RowIndex == -1) return;
             var dataGrid = (DataGridView)sender;
-            if (e.Button == MouseButtons.Right && e.RowIndex != -1)
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.ColumnIndex == -1) return;
+                if (dataGrid.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn)
+                {
+                    dataGrid.CurrentCell = dataGrid[e.ColumnIndex, e.RowIndex];
+                    dataGrid.BeginEdit(true);
+                    ((ComboBox)dataGrid.EditingControl).DroppedDown = true;
+                }
+            }
+            if (e.Button == MouseButtons.Right)
             {
                 var row = dataGrid.Rows[e.RowIndex];
                 dataGrid.CurrentCell = row.Cells[e.ColumnIndex == -1 ? 1 : e.ColumnIndex];

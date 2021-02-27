@@ -41,6 +41,11 @@ namespace Matchmaker.Data
 
         public static bool TryParsePositionAndGrade(string value, out PositionAndGrade positionAndGrade)
         {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                positionAndGrade = new PositionAndGrade { position = Position.None, grade = Grade.None };
+                return true;
+            }
             for (int i = value.Length; i >= 0; i--)
             {
                 string positionStr;
@@ -69,7 +74,7 @@ namespace Matchmaker.Data
             {
                 if (TryParsePosition(value, out Position position))
                 {
-                    positionAndGrade = new PositionAndGrade { position = position };
+                    positionAndGrade = new PositionAndGrade { position = position, grade = Grade.G2 };
                     return true;
                 }
             }

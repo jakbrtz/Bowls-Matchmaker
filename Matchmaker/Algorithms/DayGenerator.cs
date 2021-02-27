@@ -56,95 +56,91 @@ namespace Matchmaker.Algorithms
         Day RandomDay()
         {
             Day day = new Day();
-            SetUpMatchSizes();
-            PlacePlayersAccordingToPosition();
-            return day;
 
-            void SetUpMatchSizes()
+            foreach (var matchSizeAndCount in parameters.numMatchSizes)
+                for (int i = 0; i < matchSizeAndCount.Value; i++)
+                    day.matches.Add(new Match(matchSizeAndCount.Key, false));
+
+            // The players could be placed randomly, but the improver algorithm takes a lot less time if players are placed in the correct position
+
+            // Randomly rearrange the list of players
+            List<Player> playersClone = new List<Player>(parameters.players);
+            playersClone.Shuffle();
+
+            // Assign each player to their primary position
+            List<Player>[] playersPerPosition = new List<Player>[Team.MaxSize];
+            for (int position = 0; position < Team.MaxSize; position++)
+                playersPerPosition[position] = new List<Player>();
+            foreach (Player player in playersClone)
+                playersPerPosition[(int)player.PositionPrimary].Add(player);
+
+            // Look at how many players are requested for each position
+            int[] requestedPlayers = new int[Team.MaxSize];
+            foreach (Match match in day.matches)
+                foreach (Team team in match.teams)
+                    for (int position = 0; position < Team.MaxSize; position++)
+                        if (team.PositionShouldBeFilled((Position)position))
+                            requestedPlayers[position]++;
+
+            for (int position = 0; position < Team.MaxSize; position++)
             {
-                foreach (var matchSizeAndCount in parameters.numMatchSizes)
-                    for (int i = 0; i < matchSizeAndCount.Value; i++)
-                        day.matches.Add(new Match(matchSizeAndCount.Key, false));
-            }
+                // If earlier positions require more players, give players from this group
+                for (int earlierPosition = 0; earlierPosition < position; earlierPosition++)
+                    while (playersPerPosition[earlierPosition].Count < requestedPlayers[earlierPosition] && playersPerPosition[position].Count > 0)
+                        MovePlayer(earlierPosition);
+                // If this group has too many players, give to the next group
+                while (playersPerPosition[position].Count > requestedPlayers[position])
+                    MovePlayer(position + 1);
 
-            void PlacePlayersAccordingToPosition()
-            {
-                // The players can be placed randomly, but the algorithm takes a lot less time if players are placed in the correct position
-
-                // Randomly rearrange the list of players
-                List<Player> playersClone = new List<Player>(parameters.players);
-                playersClone.Shuffle();
-
-                // Assign each player to their primary position
-                List<Player>[] playersPerPosition = new List<Player>[Team.MaxSize];
-                for (int position = 0; position < Team.MaxSize; position++)
-                    playersPerPosition[position] = new List<Player>();
-                foreach (Player player in playersClone)
-                    playersPerPosition[(int)player.PositionPrimary].Add(player);
-
-                // Look at how many players are requested for each position
-                int[] requestedPlayers = new int[Team.MaxSize];
-                foreach (Match match in day.matches)
-                    foreach (Team team in match.teams)
-                        for (int position = 0; position < Team.MaxSize; position++)
-                            if (team.PositionShouldBeFilled((Position)position))
-                                requestedPlayers[position]++;
-
-                for (int position = 0; position < Team.MaxSize; position++)
+                void MovePlayer(int targetPosition)
                 {
-                    // If earlier positions require more players, give players from this group
-                    for (int earlierPosition = 0; earlierPosition < position; earlierPosition++)
-                        while (playersPerPosition[earlierPosition].Count < requestedPlayers[earlierPosition] && playersPerPosition[position].Count > 0)
-                            MovePlayer(earlierPosition);
-                    // If this group has too many players, give to the next group
-                    while (playersPerPosition[position].Count > requestedPlayers[position])
-                        MovePlayer(position + 1);
+                    var list = playersPerPosition[position];
 
-                    void MovePlayer(int targetPosition)
+                    // Pick a player to get moved
+                    int chosen = -1;
+                    for (int i = 0; i < list.Count; i++)
                     {
-                        var list = playersPerPosition[position];
-
-                        // Pick a player to get moved
-                        int chosen = -1;
-                        for (int i = 0; i < list.Count; i++)
+                        if (IsBetter())
                         {
-                            if (IsBetter())
-                            {
-                                chosen = i;
-                            }
-
-                            bool IsBetter()
-                            {
-                                // If we haven't chosen anything yet then this must be better
-                                if (chosen == -1) return true;
-                                // If one player's primary position is closer to the target then they are a good choice
-                                // This can only happen if the target is later than the current position
-                                if (list[i].PositionPrimary != list[chosen].PositionPrimary)
-                                    return list[i].PositionPrimary > list[chosen].PositionPrimary;
-                                // If the player's secondary position is the target then they are a good choice
-                                bool chosenIsSecondary = list[chosen].PositionSecondary == (Position)targetPosition;
-                                bool currentIsSecondary = list[i].PositionSecondary == (Position)targetPosition;
-                                if (chosenIsSecondary && !currentIsSecondary) return false;
-                                if (!chosenIsSecondary && currentIsSecondary) return true;
-                                // Pick the player with the better grade
-                                return list[i].GradePrimary < list[chosen].GradePrimary;
-                            }
+                            chosen = i;
                         }
 
-                        // Move the player
-                        playersPerPosition[targetPosition].Add(list[chosen]);
-                        list.RemoveAt(chosen);
+                        bool IsBetter()
+                        {
+                            // If we haven't chosen anything yet then this must be better
+                            if (chosen == -1) return true;
+                            // If one player's primary position is closer to the target then they are a good choice
+                            // This can only happen if the target is later than the current position
+                            if (list[i].PositionPrimary != list[chosen].PositionPrimary)
+                                return list[i].PositionPrimary > list[chosen].PositionPrimary;
+                            // If the player's secondary position is the target then they are a good choice
+                            bool chosenIsSecondary = list[chosen].PositionSecondary == (Position)targetPosition;
+                            bool currentIsSecondary = list[i].PositionSecondary == (Position)targetPosition;
+                            if (chosenIsSecondary && !currentIsSecondary) return false;
+                            if (!chosenIsSecondary && currentIsSecondary) return true;
+                            // Pick the player with the worse grade (unless the target is Lead, in that case pick the better grade)
+                            return (Position)targetPosition == Position.Lead
+                                ? list[i].GradePrimary > list[chosen].GradePrimary
+                                : list[i].GradePrimary > list[chosen].GradePrimary;
+                        }
                     }
-                }
 
-                // Insert the players into the day
-                int[] index = new int[Team.MaxSize];
-                foreach (Match match in day.matches)
-                    foreach (Team team in match.teams)
-                        for (int position = 0; position < Team.MaxSize; position++)
-                            if (team.PositionShouldBeFilled((Position)position))
-                                team.players[position] = playersPerPosition[position][index[position]++];
+                    // Move the player
+                    playersPerPosition[targetPosition].Add(list[chosen]);
+                    list.RemoveAt(chosen);
+                }
             }
+
+            // Insert the players into the day
+            int[] index = new int[Team.MaxSize];
+            foreach (Match match in day.matches)
+                foreach (Team team in match.teams)
+                    for (int position = 0; position < Team.MaxSize; position++)
+                        if (team.PositionShouldBeFilled((Position)position))
+                            team.players[position] = playersPerPosition[position][index[position]++];
+
+
+            return day;
         }
 
         public void GetProgress(out double progress, out double score)

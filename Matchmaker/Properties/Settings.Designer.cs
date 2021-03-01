@@ -46,5 +46,17 @@ namespace Matchmaker.Properties {
                 this["FileHTML"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FileElements {
+            get {
+                return ((string)(this["FileElements"]));
+            }
+            set {
+                this["FileElements"] = value;
+            }
+        }
     }
 }

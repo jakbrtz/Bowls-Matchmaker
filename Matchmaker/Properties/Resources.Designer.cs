@@ -61,36 +61,53 @@ namespace Matchmaker.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {
+        ///    &quot;repeatMarker&quot;: &quot;&lt;!--repeat--&gt;&quot;,
+        ///    &quot;invisible&quot;: &quot;style=\&quot;display:none; \&quot;&quot;,
+        ///    &quot;hyperlinkedPlayer&quot;: &quot;&lt;a href=\&quot;javascript:window.external.ClickOnPlayer({0}, {1}, {2})\&quot; style=\&quot;color:#000000; text-decoration: none;\&quot;&gt;{3}&lt;/a&gt;&quot;,
+        ///    &quot;typeRinkFunction&quot;: &quot;TypeRink({0}, this.value)&quot;,
+        ///    &quot;dropDownTeamSizeStart&quot;: &quot;&lt;select onChange=\&quot;window.external.SelectSize({0}, this.value)\&quot;&gt;&quot;,
+        ///    &quot;dropDownTeamSizeOptionNotSelected&quot;: &quot;&lt;option value = \&quot;{0}\&quot; &gt;{1}&lt;/option&gt;&quot;,
+        ///    &quot;dropDownTeamSizeOptionSelected&quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string elements {
+            get {
+                return ResourceManager.GetString("elements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;html&gt;
-        ///&lt;head&gt;
-        ///	&lt;style&gt;
-        ///		p {
-        ///			font-family: &quot;Calibri&quot;,&quot;sans-serif&quot;;
-        ///			padding: 1;
-        ///			margin-top: 1pt;
-        ///			margin-right: 3pt;
-        ///			margin-bottom: 1pt;
-        ///			margin-left: 3pt;
-        ///		}
+        ///	&lt;head&gt;
+        ///		&lt;style&gt;
         ///
-        ///		.firstColumn {
-        ///			border-left: solid windowtext 3.0pt;
-        ///			border-right: solid windowtext 3.0pt;
-        ///		}
+        ///			h1 {
+        ///				font: 22px Arial, sans-serif;
+        ///				font-weight: bold;
+        ///				margin-top: 1pt;
+        ///				margin-bottom: 1pt;
+        ///			}
         ///
-        ///		.secondColumn {
-        ///			border-right: solid windowtext 1.0pt;
-        ///		}
+        ///			h2 {
+        ///				font: 14px Arial, sans-serif;
+        ///				text-decoration:underline;
+        ///				text-align:left;
+        ///				margin-top: 1pt;
+        ///				margin-right: 3pt;
+        ///				margin-bottom: 3pt;
+        ///				margin-left: 3pt;
+        ///			}
         ///
-        ///		.thirdColumn {
-        ///			border-right: solid windowtext 3.0pt;
-        ///		}
+        ///			p {
+        ///				font: 20px Arial, sans-serif;
+        ///				margin-top: 1pt;
+        ///				margin-right: 3pt;
+        ///				margin-bottom: 1pt;
+        ///				margin-left: 3pt;
+        ///			}
         ///
-        ///		@media print {
-        ///			tbody {
-        ///				display: block;
-        ///				break-inside: avoid-page;
-        /// [rest of string was truncated]&quot;;.
+        ///			.rink {
+        ///		 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string table {
             get {

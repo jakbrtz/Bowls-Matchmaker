@@ -50,8 +50,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.CMSdeleteplayer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deletePlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CMSeditHTML = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editHTMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OFDplayersinday = new System.Windows.Forms.OpenFileDialog();
             this.SFDplayersinday = new System.Windows.Forms.SaveFileDialog();
             this.SFDhtml = new System.Windows.Forms.SaveFileDialog();
@@ -148,9 +146,7 @@
             this.BTNsortnameplayers = new System.Windows.Forms.Button();
             this.BTNsorttagplayers = new System.Windows.Forms.Button();
             this.pageMainHistory = new System.Windows.Forms.TabPage();
-            this.SCTNhistory = new System.Windows.Forms.SplitContainer();
             this.WEBhistory = new System.Windows.Forms.WebBrowser();
-            this.TBXhtml = new System.Windows.Forms.TextBox();
             this.panel8 = new System.Windows.Forms.Panel();
             this.BTNexportplayersinday = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
@@ -164,7 +160,6 @@
             this.CMNaddall.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.CMSdeleteplayer.SuspendLayout();
-            this.CMSeditHTML.SuspendLayout();
             this.tabControlMain.SuspendLayout();
             this.pageMainMatch.SuspendLayout();
             this.tabControlMatches.SuspendLayout();
@@ -195,10 +190,6 @@
             this.panel2.SuspendLayout();
             this.SideBarPlayers.SuspendLayout();
             this.pageMainHistory.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SCTNhistory)).BeginInit();
-            this.SCTNhistory.Panel1.SuspendLayout();
-            this.SCTNhistory.Panel2.SuspendLayout();
-            this.SCTNhistory.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel4.SuspendLayout();
             this.SuspendLayout();
@@ -357,20 +348,6 @@
             this.deletePlayerToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.deletePlayerToolStripMenuItem.Text = "Delete Player";
             this.deletePlayerToolStripMenuItem.Click += new System.EventHandler(this.DeletePlayerToolStripMenuItem_Click);
-            // 
-            // CMSeditHTML
-            // 
-            this.CMSeditHTML.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.editHTMLToolStripMenuItem});
-            this.CMSeditHTML.Name = "CMSeditHTML";
-            this.CMSeditHTML.Size = new System.Drawing.Size(130, 26);
-            // 
-            // editHTMLToolStripMenuItem
-            // 
-            this.editHTMLToolStripMenuItem.Name = "editHTMLToolStripMenuItem";
-            this.editHTMLToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.editHTMLToolStripMenuItem.Text = "Edit HTML";
-            this.editHTMLToolStripMenuItem.Click += new System.EventHandler(this.EditHTMLToolStripMenuItem_Click);
             // 
             // OFDplayersinday
             // 
@@ -1409,7 +1386,7 @@
             // 
             // pageMainHistory
             // 
-            this.pageMainHistory.Controls.Add(this.SCTNhistory);
+            this.pageMainHistory.Controls.Add(this.WEBhistory);
             this.pageMainHistory.Controls.Add(this.panel8);
             this.pageMainHistory.Controls.Add(this.panel4);
             this.pageMainHistory.Location = new System.Drawing.Point(4, 22);
@@ -1418,25 +1395,6 @@
             this.pageMainHistory.TabIndex = 2;
             this.pageMainHistory.Text = "History";
             this.pageMainHistory.UseVisualStyleBackColor = true;
-            // 
-            // SCTNhistory
-            // 
-            this.SCTNhistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SCTNhistory.Location = new System.Drawing.Point(200, 62);
-            this.SCTNhistory.Name = "SCTNhistory";
-            this.SCTNhistory.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // SCTNhistory.Panel1
-            // 
-            this.SCTNhistory.Panel1.Controls.Add(this.WEBhistory);
-            // 
-            // SCTNhistory.Panel2
-            // 
-            this.SCTNhistory.Panel2.Controls.Add(this.TBXhtml);
-            this.SCTNhistory.Panel2Collapsed = true;
-            this.SCTNhistory.Size = new System.Drawing.Size(782, 406);
-            this.SCTNhistory.SplitterDistance = 203;
-            this.SCTNhistory.TabIndex = 5;
             // 
             // WEBhistory
             // 
@@ -1447,20 +1405,6 @@
             this.WEBhistory.Name = "WEBhistory";
             this.WEBhistory.Size = new System.Drawing.Size(782, 406);
             this.WEBhistory.TabIndex = 3;
-            // 
-            // TBXhtml
-            // 
-            this.TBXhtml.AcceptsTab = true;
-            this.TBXhtml.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TBXhtml.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TBXhtml.Location = new System.Drawing.Point(0, 0);
-            this.TBXhtml.Multiline = true;
-            this.TBXhtml.Name = "TBXhtml";
-            this.TBXhtml.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.TBXhtml.Size = new System.Drawing.Size(150, 46);
-            this.TBXhtml.TabIndex = 0;
-            this.TBXhtml.Text = "  ";
-            this.TBXhtml.Leave += new System.EventHandler(this.TBXhtml_Leave);
             // 
             // panel8
             // 
@@ -1499,7 +1443,6 @@
             // BTNprintHistory
             // 
             this.BTNprintHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BTNprintHistory.ContextMenuStrip = this.CMSeditHTML;
             this.BTNprintHistory.Location = new System.Drawing.Point(6, 33);
             this.BTNprintHistory.Name = "BTNprintHistory";
             this.BTNprintHistory.Size = new System.Drawing.Size(128, 23);
@@ -1558,7 +1501,6 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.CMSdeleteplayer.ResumeLayout(false);
-            this.CMSeditHTML.ResumeLayout(false);
             this.tabControlMain.ResumeLayout(false);
             this.pageMainMatch.ResumeLayout(false);
             this.tabControlMatches.ResumeLayout(false);
@@ -1597,11 +1539,6 @@
             this.SideBarPlayers.ResumeLayout(false);
             this.SideBarPlayers.PerformLayout();
             this.pageMainHistory.ResumeLayout(false);
-            this.SCTNhistory.Panel1.ResumeLayout(false);
-            this.SCTNhistory.Panel2.ResumeLayout(false);
-            this.SCTNhistory.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SCTNhistory)).EndInit();
-            this.SCTNhistory.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1686,8 +1623,6 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ContextMenuStrip CMSdeleteplayer;
         private System.Windows.Forms.ToolStripMenuItem deletePlayerToolStripMenuItem;
-        private System.Windows.Forms.SplitContainer SCTNhistory;
-        private System.Windows.Forms.TextBox TBXhtml;
         private System.Windows.Forms.WebBrowser WEBfixmatches;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button BTNaddfixedmatch;
@@ -1718,8 +1653,6 @@
         private System.Windows.Forms.Button BTNexportplayersinday;
         private System.Windows.Forms.OpenFileDialog OFDplayersinday;
         private System.Windows.Forms.SaveFileDialog SFDplayersinday;
-        private System.Windows.Forms.ContextMenuStrip CMSeditHTML;
-        private System.Windows.Forms.ToolStripMenuItem editHTMLToolStripMenuItem;
         private System.Windows.Forms.Button BTNseedefaulthtml;
         private System.Windows.Forms.SaveFileDialog SFDhtml;
         private System.Windows.Forms.Button BTNmax4v3;

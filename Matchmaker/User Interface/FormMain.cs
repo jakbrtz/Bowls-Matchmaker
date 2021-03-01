@@ -96,7 +96,6 @@ namespace Matchmaker.UserInterface
             WEBfixmatches.ObjectForScripting = scripterFixGames;
 
             DisplayFixedMatches();
-            TBXhtml.Text = HTMLdocument.format;
         }
 
         #endregion
@@ -1063,26 +1062,6 @@ namespace Matchmaker.UserInterface
                 if (SFDplayersinday.ShowDialog() == DialogResult.Cancel) continue;
                 ReadWriteTable.ExportPlayersFromDay(SFDplayersinday.FileName, day);
             }
-        }
-
-        private void EditHTMLToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (SCTNhistory.Panel2Collapsed)
-            {
-                SCTNhistory.Panel2Collapsed = false;
-                WEBhistory.IsWebBrowserContextMenuEnabled = true;
-            }
-            else
-            {
-                SCTNhistory.Panel2Collapsed = true;
-                WEBhistory.IsWebBrowserContextMenuEnabled = false;
-            }
-        }
-
-        private void TBXhtml_Leave(object sender, EventArgs e)
-        {
-            HTMLdocument.format = TBXhtml.Text;
-            HTMLformatedChanged();
         }
 
         #endregion

@@ -802,10 +802,8 @@ namespace Matchmaker.UserInterface
         {
             BFFmain.FileName = Properties.Settings.Default.FileMain;
             BFFhtml.FileName = Properties.Settings.Default.FileHTML;
-            BFFhtmlElements.FileName = Properties.Settings.Default.FileElements;
 
-            ReadWriteHTML.ReloadFormat(Properties.Settings.Default.FileHTML);
-            ReadWriteHTML.ReloadElements(Properties.Settings.Default.FileElements);
+            HTMLdocument.ReloadFormat(Properties.Settings.Default.FileHTML);
         }
 
         private void WVW_WeightChanged(object sender, EventArgs e)
@@ -831,15 +829,7 @@ namespace Matchmaker.UserInterface
         {
             Properties.Settings.Default.FileHTML = BFFhtml.FileName;
             Properties.Settings.Default.Save();
-            ReadWriteHTML.ReloadFormat(Properties.Settings.Default.FileHTML);
-            HTMLformatedChanged();
-        }
-
-        private void BFFhtmlElements_FileNameChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.FileElements = BFFhtmlElements.FileName;
-            Properties.Settings.Default.Save();
-            ReadWriteHTML.ReloadElements(Properties.Settings.Default.FileElements);
+            HTMLdocument.ReloadFormat(Properties.Settings.Default.FileHTML);
             HTMLformatedChanged();
         }
 
@@ -855,11 +845,6 @@ namespace Matchmaker.UserInterface
             using StreamWriter streamWriter = new StreamWriter(SFDhtml.FileName);
             streamWriter.Write(Properties.Resources.table);
             Process.Start("notepad.exe", SFDhtml.FileName);
-
-            if (SFDhtmlelements.ShowDialog() == DialogResult.Cancel) return;
-            using StreamWriter streamWriterElements = new StreamWriter(SFDhtmlelements.FileName);
-            streamWriterElements.Write(Properties.Resources.elements);
-            Process.Start("notepad.exe", SFDhtmlelements.FileName);
         }
 
         #endregion

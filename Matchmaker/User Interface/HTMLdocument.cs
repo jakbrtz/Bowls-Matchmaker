@@ -9,8 +9,39 @@ namespace Matchmaker.UserInterface
 {
     public static class HTMLdocument
     {
+        const string repeatMarker = "<!--repeat-->";
+        const string invisible = "style=\"display:none; \"";
+        const string hyperlinkedPlayer = "<a href=\"javascript:window.external.ClickOnPlayer({0}, {1}, {2})\" style=\"color:#000000; text-decoration: none;\">{3}</a>";
+        const string typeRinkFunction = "TypeRink({0}, this.value)";
+        const string dropDownTeamSizeStart = "<select onChange=\"window.external.SelectSize({0}, this.value)\">";
+        const string dropDownTeamSizeOptionNotSelected = "<option value = \"{0}\" >{1}</option>";
+        const string dropDownTeamSizeOptionSelected = "<option value = \"{0}\" selected>{1}</option>";
+        const string dropDownTeamSizeEnd = "</select>";
+        const string empty = "&nbsp;";
+        const string deleteMatch = "<button onclick=\"window.external.DeleteMatch({0})\">Delete</button>";
+        const string typeDateFunction = "TypeDate(this.value)";
+        const string oninputFunction = "oninput=\"window.external.{0}\" ";
+        const string borderlessClass = "class=\"borderless\"";
+        const string textboxWithProperties = "<input type=\"text\" value=\"{0}\" placeholder=\"{1}\" {2} {3} \">";
+        const string deletedPlayer = "[deleted]";
+        const string noPlayerSelected = "[no player selected]";
+        const string rinkPlaceHolder = "#";
+        const string datePlaceholder = "Date";
+
         public static string format = Properties.Resources.table;
-        public static HTMLelements elements = new HTMLelements();
+
+        public static void ReloadFormat(string directory)
+        {
+            if (File.Exists(directory))
+            {
+                using StreamReader streamReader = new StreamReader(directory);
+                format = streamReader.ReadToEnd();
+            }
+            else
+            {
+                format = Properties.Resources.table;
+            }
+        }
 
         public static string GenerateDays(List<Day> history)
         {
@@ -22,7 +53,7 @@ namespace Matchmaker.UserInterface
 
         public static string GenerateDay(Day day, HTMLmode mode)
         {
-            var split = format.Split(new[] { elements.repeatMarker }, StringSplitOptions.None);
+            var split = format.Split(new[] { repeatMarker }, StringSplitOptions.None);
 
             string result = "";
             for (int i = 0; i < split.Length; i++)
@@ -65,10 +96,10 @@ namespace Matchmaker.UserInterface
                 .Replace("%third2pref%",  GetPosition(day, matchIndex, 1, Position.Third,  mode))
                 .Replace("%skip1pref%",   GetPosition(day, matchIndex, 0, Position.Skip,   mode))
                 .Replace("%skip2pref%",   GetPosition(day, matchIndex, 1, Position.Skip,   mode))
-                .Replace("%leadvisible%",   match.PositionShouldBeFilled(Position.Lead)   ? "" : elements.invisible)
-                .Replace("%secondvisible%", match.PositionShouldBeFilled(Position.Second) ? "" : elements.invisible)
-                .Replace("%thirdvisible%",  match.PositionShouldBeFilled(Position.Third)  ? "" : elements.invisible)
-                .Replace("%skipvisible%",   match.PositionShouldBeFilled(Position.Skip)   ? "" : elements.invisible)
+                .Replace("%leadvisible%",   match.PositionShouldBeFilled(Position.Lead)   ? "" : invisible)
+                .Replace("%secondvisible%", match.PositionShouldBeFilled(Position.Second) ? "" : invisible)
+                .Replace("%thirdvisible%",  match.PositionShouldBeFilled(Position.Third)  ? "" : invisible)
+                .Replace("%skipvisible%",   match.PositionShouldBeFilled(Position.Skip)   ? "" : invisible)
                 ;
             return Substitute(result, day, mode);
         }
@@ -79,11 +110,11 @@ namespace Matchmaker.UserInterface
             Team team = match.teams[teamIndex];
             if (!match.PositionShouldBeFilled(position)) return "";
             Player player = mode == HTMLmode.FixMatches ? team.players[(int)position] : team.Player(position);
-            if (player == null && mode == HTMLmode.ViewHistory) return elements.deletedPlayer;
-            string name = player?.Name ?? elements.noPlayerSelected;
+            if (player == null && mode == HTMLmode.ViewHistory) return deletedPlayer;
+            string name = player?.Name ?? noPlayerSelected;
             if (string.IsNullOrEmpty(name)) name = player.TagNumber;
             if (mode == HTMLmode.ViewHistory) return name;
-            return string.Format(elements.hyperlinkedPlayer, matchIndex, teamIndex, (int)position, name);
+            return string.Format(hyperlinkedPlayer, matchIndex, teamIndex, (int)position, name);
         }
 
         static string GetPosition(Day day, int matchIndex, int teamIndex, Position position, HTMLmode mode)
@@ -102,32 +133,24 @@ namespace Matchmaker.UserInterface
 
         static string GetControlForRink(Day day, int matchIndex, HTMLmode mode)
         {
-            return TextboxOrPlainText(
-                mode != HTMLmode.ViewHistory, 
-                day.matches[matchIndex].rink, 
-                elements.rinkPlaceHolder, 
-                string.Format(elements.typeRinkFunction, matchIndex), 
-                false);
+            return TextboxOrPlainText(mode != HTMLmode.ViewHistory, day.matches[matchIndex].rink, rinkPlaceHolder, string.Format(typeRinkFunction, matchIndex), false);
         }
 
         static string GetControlForTeamSize(Day day, int matchIndex, HTMLmode mode)
         {
             Match match = day.matches[matchIndex];
             if (mode != HTMLmode.FixMatches) return EnumStringConverter.NameOfTeamSize(match.Size);
-            string controls = string.Format(elements.dropDownTeamSizeStart, matchIndex);
+            string controls = string.Format(dropDownTeamSizeStart, matchIndex);
             for (int size = Team.MinSize; size <= Team.MaxSize; size++)
-                controls += string.Format(
-                    match.Size == size ? elements.dropDownTeamSizeOptionSelected : elements.dropDownTeamSizeOptionNotSelected, 
-                    size, 
-                    EnumStringConverter.NameOfTeamSize(size));
-            controls += elements.dropDownTeamSizeEnd;
+                controls += string.Format(match.Size == size ? dropDownTeamSizeOptionSelected : dropDownTeamSizeOptionNotSelected, size, EnumStringConverter.NameOfTeamSize(size));
+            controls += dropDownTeamSizeEnd;
             return controls;
         }
 
         static string GetControlForDelete(int matchIndex, HTMLmode mode)
         {
-            if (mode != HTMLmode.FixMatches) return elements.empty;
-            return string.Format(elements.deleteMatch, matchIndex);
+            if (mode != HTMLmode.FixMatches) return empty;
+            return string.Format(deleteMatch, matchIndex);
         }
 
         public static string Substitute(string doc, Day day, HTMLmode mode)
@@ -138,29 +161,17 @@ namespace Matchmaker.UserInterface
 
         static string GetControlForDate(Day day, HTMLmode mode)
         {
-            return TextboxOrPlainText(mode != HTMLmode.ViewHistory, day.date, elements.datePlaceholder, elements.typeDateFunction, true);
+            return TextboxOrPlainText(mode != HTMLmode.ViewHistory, day.date, datePlaceholder, typeDateFunction, true);
         }
 
         static string TextboxOrPlainText(bool textbox, string value, string placeholder, string function, bool border)
         {
             return textbox
-                ? string.Format(
-                    elements.textboxWithProperties, 
-                    value, 
-                    placeholder, 
-                    string.IsNullOrEmpty(function) ? "" : string.Format(elements.oninputFunction, function), 
-                    border ? "" : elements.borderlessClass)
+                ? string.Format(textboxWithProperties, value, placeholder, string.IsNullOrEmpty(function) ? "" : string.Format(oninputFunction, function), border ? "" : borderlessClass)
                 : string.IsNullOrEmpty(value)
-                ? elements.empty
+                ? empty
                 : value;
         }
-    }
-
-    public class HTMLelements
-    {
-        public string repeatMarker, invisible, hyperlinkedPlayer, typeRinkFunction, dropDownTeamSizeStart, dropDownTeamSizeOptionNotSelected,
-         dropDownTeamSizeOptionSelected, dropDownTeamSizeEnd, empty, deleteMatch, typeDateFunction, oninputFunction, borderlessClass,
-         textboxWithProperties, deletedPlayer, noPlayerSelected, rinkPlaceHolder, datePlaceholder;
     }
 
     [ComVisible(true)]

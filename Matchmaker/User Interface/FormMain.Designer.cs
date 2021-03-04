@@ -110,19 +110,18 @@
             this.BTNconfirmbeforecreating = new System.Windows.Forms.Button();
             this.pageMainSettings = new System.Windows.Forms.TabPage();
             this.FLPweights = new CustomControls.AnchorFlowLayoutPanel();
-            this.WVWmainposition = new Matchmaker.UserInterface.Controls.WeightView();
-            this.WVWsecondaryposition = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWpairsplaytogether = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWenemies = new Matchmaker.UserInterface.Controls.WeightView();
-            this.WVWunbalancedplayers = new Matchmaker.UserInterface.Controls.WeightView();
-            this.WVWunbalancedteams = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWmainposition = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWsecondaryposition = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWgoodleadsmoveup = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWgoodskipsgetskip = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWunbalancedplayers = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWunbalancedteams = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWteamsize = new Matchmaker.UserInterface.Controls.WeightView();
             this.BTNresetWeights = new System.Windows.Forms.Button();
             this.BFFmain = new CustomControls.BrowseForFile();
             this.BFFhtml = new CustomControls.BrowseForFile();
-            this.BFFhtmlElements = new CustomControls.BrowseForFile();
             this.BTNseedefaulthtml = new System.Windows.Forms.Button();
             this.pageMainPlayers = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -153,7 +152,6 @@
             this.BTNprintHistory = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.LBXhistory = new System.Windows.Forms.ListBox();
-            this.SFDhtmlelements = new System.Windows.Forms.SaveFileDialog();
             this.CMSdeleteday.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -1001,7 +999,6 @@
             this.FLPweights.Controls.Add(this.BTNresetWeights);
             this.FLPweights.Controls.Add(this.BFFmain);
             this.FLPweights.Controls.Add(this.BFFhtml);
-            this.FLPweights.Controls.Add(this.BFFhtmlElements);
             this.FLPweights.Controls.Add(this.BTNseedefaulthtml);
             this.FLPweights.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FLPweights.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -1010,26 +1007,6 @@
             this.FLPweights.Size = new System.Drawing.Size(982, 468);
             this.FLPweights.TabIndex = 12;
             this.FLPweights.WrapContents = false;
-            // 
-            // WVWmainposition
-            // 
-            this.WVWmainposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWmainposition.Description = "Players should get their preferred positions";
-            this.WVWmainposition.Location = new System.Drawing.Point(3, 3);
-            this.WVWmainposition.Name = "WVWmainposition";
-            this.WVWmainposition.Size = new System.Drawing.Size(959, 70);
-            this.WVWmainposition.TabIndex = 1;
-            this.WVWmainposition.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
-            // 
-            // WVWsecondaryposition
-            // 
-            this.WVWsecondaryposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWsecondaryposition.Description = "Players should get their primary position over their secondary position";
-            this.WVWsecondaryposition.Location = new System.Drawing.Point(3, 79);
-            this.WVWsecondaryposition.Name = "WVWsecondaryposition";
-            this.WVWsecondaryposition.Size = new System.Drawing.Size(959, 70);
-            this.WVWsecondaryposition.TabIndex = 2;
-            this.WVWsecondaryposition.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
             // WVWpairsplaytogether
             // 
@@ -1051,25 +1028,25 @@
             this.WVWenemies.TabIndex = 4;
             this.WVWenemies.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
-            // WVWunbalancedplayers
+            // WVWmainposition
             // 
-            this.WVWunbalancedplayers.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWunbalancedplayers.Description = "Players should be put against other players of equal skill";
-            this.WVWunbalancedplayers.Location = new System.Drawing.Point(3, 307);
-            this.WVWunbalancedplayers.Name = "WVWunbalancedplayers";
-            this.WVWunbalancedplayers.Size = new System.Drawing.Size(959, 70);
-            this.WVWunbalancedplayers.TabIndex = 6;
-            this.WVWunbalancedplayers.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            this.WVWmainposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWmainposition.Description = "Players should get their preferred positions";
+            this.WVWmainposition.Location = new System.Drawing.Point(3, 3);
+            this.WVWmainposition.Name = "WVWmainposition";
+            this.WVWmainposition.Size = new System.Drawing.Size(959, 70);
+            this.WVWmainposition.TabIndex = 1;
+            this.WVWmainposition.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
-            // WVWunbalancedteams
+            // WVWsecondaryposition
             // 
-            this.WVWunbalancedteams.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWunbalancedteams.Description = "Teams should be put against other teams of equal skill";
-            this.WVWunbalancedteams.Location = new System.Drawing.Point(3, 383);
-            this.WVWunbalancedteams.Name = "WVWunbalancedteams";
-            this.WVWunbalancedteams.Size = new System.Drawing.Size(959, 70);
-            this.WVWunbalancedteams.TabIndex = 7;
-            this.WVWunbalancedteams.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            this.WVWsecondaryposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWsecondaryposition.Description = "Players should get their primary position over their secondary position";
+            this.WVWsecondaryposition.Location = new System.Drawing.Point(3, 79);
+            this.WVWsecondaryposition.Name = "WVWsecondaryposition";
+            this.WVWsecondaryposition.Size = new System.Drawing.Size(959, 70);
+            this.WVWsecondaryposition.TabIndex = 2;
+            this.WVWsecondaryposition.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
             // WVWgoodleadsmoveup
             // 
@@ -1090,6 +1067,26 @@
             this.WVWgoodskipsgetskip.Size = new System.Drawing.Size(959, 70);
             this.WVWgoodskipsgetskip.TabIndex = 8;
             this.WVWgoodskipsgetskip.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            // 
+            // WVWunbalancedplayers
+            // 
+            this.WVWunbalancedplayers.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWunbalancedplayers.Description = "Players should be put against other players of equal skill";
+            this.WVWunbalancedplayers.Location = new System.Drawing.Point(3, 307);
+            this.WVWunbalancedplayers.Name = "WVWunbalancedplayers";
+            this.WVWunbalancedplayers.Size = new System.Drawing.Size(959, 70);
+            this.WVWunbalancedplayers.TabIndex = 6;
+            this.WVWunbalancedplayers.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            // 
+            // WVWunbalancedteams
+            // 
+            this.WVWunbalancedteams.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWunbalancedteams.Description = "Teams should be put against other teams of equal skill";
+            this.WVWunbalancedteams.Location = new System.Drawing.Point(3, 383);
+            this.WVWunbalancedteams.Name = "WVWunbalancedteams";
+            this.WVWunbalancedteams.Size = new System.Drawing.Size(959, 70);
+            this.WVWunbalancedteams.TabIndex = 7;
+            this.WVWunbalancedteams.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
             // WVWteamsize
             // 
@@ -1132,19 +1129,9 @@
             this.BFFhtml.Visible = false;
             this.BFFhtml.FileNameChanged += new System.EventHandler(this.BFFhtml_FileNameChanged);
             // 
-            // BFFhtmlElements
-            // 
-            this.BFFhtmlElements.FileName = "";
-            this.BFFhtmlElements.Location = new System.Drawing.Point(3, 794);
-            this.BFFhtmlElements.Name = "BFFhtmlElements";
-            this.BFFhtmlElements.Size = new System.Drawing.Size(561, 29);
-            this.BFFhtmlElements.TabIndex = 12;
-            this.BFFhtmlElements.Visible = false;
-            this.BFFhtmlElements.FileNameChanged += new System.EventHandler(this.BFFhtmlElements_FileNameChanged);
-            // 
             // BTNseedefaulthtml
             // 
-            this.BTNseedefaulthtml.Location = new System.Drawing.Point(7, 833);
+            this.BTNseedefaulthtml.Location = new System.Drawing.Point(7, 798);
             this.BTNseedefaulthtml.Margin = new System.Windows.Forms.Padding(7);
             this.BTNseedefaulthtml.Name = "BTNseedefaulthtml";
             this.BTNseedefaulthtml.Size = new System.Drawing.Size(183, 23);
@@ -1475,11 +1462,6 @@
             this.LBXhistory.TabIndex = 6;
             this.LBXhistory.SelectedIndexChanged += new System.EventHandler(this.LBXhistory_SelectedIndexChanged);
             // 
-            // SFDhtmlelements
-            // 
-            this.SFDhtmlelements.FileName = "elements.json";
-            this.SFDhtmlelements.Filter = "JSON file(*.json)|*.json";
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1669,8 +1651,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn PositionSecondary;
         private System.Windows.Forms.DataGridViewComboBoxColumn GradeSecondary;
         private System.Windows.Forms.DataGridViewComboBoxColumn preferredTeamSizesDataGridViewTextBoxColumn;
-        private CustomControls.BrowseForFile BFFhtmlElements;
-        private System.Windows.Forms.SaveFileDialog SFDhtmlelements;
     }
 }
 

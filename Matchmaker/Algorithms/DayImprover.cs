@@ -104,7 +104,7 @@ namespace Matchmaker.Algorithms
                 int numberOfPlayers = 0;
                 for (int matchIndex = 0; matchIndex < day.matches.Count; matchIndex++)
                     numberOfPlayers += day.matches[matchIndex].Team1.size + day.matches[matchIndex].Team2.size;
-                progress = (double)improvementsMade / numberOfPlayers;
+                progress = 2 * (double)improvementsMade / numberOfPlayers;
                 if (progress > 1) progress = 1;
             }
 

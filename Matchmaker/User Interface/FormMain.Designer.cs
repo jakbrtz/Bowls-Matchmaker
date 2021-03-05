@@ -1235,7 +1235,7 @@
             // 
             // playerBindingSource
             // 
-            this.playerBindingSource.DataSource = typeof(Matchmaker.UserInterface.ViewModel.PlayerViewModel);
+            this.playerBindingSource.DataSource = typeof(Matchmaker.UserInterface.Intermediate.PlayerIntermediate);
             this.playerBindingSource.AddingNew += new System.ComponentModel.AddingNewEventHandler(this.PlayerBindingSource_AddingNew);
             // 
             // panel2

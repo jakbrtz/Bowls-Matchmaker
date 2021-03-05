@@ -1,13 +1,13 @@
 ﻿using Matchmaker.Data;
 using System;
 
-namespace Matchmaker.UserInterface.ViewModel
+namespace Matchmaker.UserInterface.Intermediate
 {
-    public class PlayerViewModel : IFormattable
+    public class PlayerIntermediate : IFormattable
     {
         public readonly Player player;
 
-        public PlayerViewModel(Player player)
+        public PlayerIntermediate(Player player)
         {
             this.player = player;
         }

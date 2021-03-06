@@ -110,14 +110,14 @@
             this.BTNconfirmbeforecreating = new System.Windows.Forms.Button();
             this.pageMainSettings = new System.Windows.Forms.TabPage();
             this.FLPweights = new CustomControls.AnchorFlowLayoutPanel();
-            this.WVWpairsplaytogether = new Matchmaker.UserInterface.Controls.WeightView();
-            this.WVWenemies = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWmainposition = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWsecondaryposition = new Matchmaker.UserInterface.Controls.WeightView();
-            this.WVWgoodleadsmoveup = new Matchmaker.UserInterface.Controls.WeightView();
-            this.WVWgoodskipsgetskip = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWpairsplaytogether = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWenemies = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWunbalancedplayers = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWunbalancedteams = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWgoodleadsmoveup = new Matchmaker.UserInterface.Controls.WeightView();
+            this.WVWgoodskipsgetskip = new Matchmaker.UserInterface.Controls.WeightView();
             this.WVWteamsize = new Matchmaker.UserInterface.Controls.WeightView();
             this.BTNresetWeights = new System.Windows.Forms.Button();
             this.BFFmain = new CustomControls.BrowseForFile();
@@ -1008,26 +1008,6 @@
             this.FLPweights.TabIndex = 12;
             this.FLPweights.WrapContents = false;
             // 
-            // WVWpairsplaytogether
-            // 
-            this.WVWpairsplaytogether.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWpairsplaytogether.Description = "Pairs of players should not have multiple games as teammates";
-            this.WVWpairsplaytogether.Location = new System.Drawing.Point(3, 155);
-            this.WVWpairsplaytogether.Name = "WVWpairsplaytogether";
-            this.WVWpairsplaytogether.Size = new System.Drawing.Size(959, 70);
-            this.WVWpairsplaytogether.TabIndex = 0;
-            this.WVWpairsplaytogether.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
-            // 
-            // WVWenemies
-            // 
-            this.WVWenemies.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWenemies.Description = "Pairs of players should not have multiple games against each other";
-            this.WVWenemies.Location = new System.Drawing.Point(3, 231);
-            this.WVWenemies.Name = "WVWenemies";
-            this.WVWenemies.Size = new System.Drawing.Size(959, 70);
-            this.WVWenemies.TabIndex = 4;
-            this.WVWenemies.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
-            // 
             // WVWmainposition
             // 
             this.WVWmainposition.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -1048,25 +1028,25 @@
             this.WVWsecondaryposition.TabIndex = 2;
             this.WVWsecondaryposition.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
-            // WVWgoodleadsmoveup
+            // WVWpairsplaytogether
             // 
-            this.WVWgoodleadsmoveup.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWgoodleadsmoveup.Description = "Leads G2 + G3 should be as Leads";
-            this.WVWgoodleadsmoveup.Location = new System.Drawing.Point(3, 459);
-            this.WVWgoodleadsmoveup.Name = "WVWgoodleadsmoveup";
-            this.WVWgoodleadsmoveup.Size = new System.Drawing.Size(959, 70);
-            this.WVWgoodleadsmoveup.TabIndex = 8;
-            this.WVWgoodleadsmoveup.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            this.WVWpairsplaytogether.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWpairsplaytogether.Description = "Pairs of players should not have multiple games as teammates";
+            this.WVWpairsplaytogether.Location = new System.Drawing.Point(3, 155);
+            this.WVWpairsplaytogether.Name = "WVWpairsplaytogether";
+            this.WVWpairsplaytogether.Size = new System.Drawing.Size(959, 70);
+            this.WVWpairsplaytogether.TabIndex = 0;
+            this.WVWpairsplaytogether.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
-            // WVWgoodskipsgetskip
+            // WVWenemies
             // 
-            this.WVWgoodskipsgetskip.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.WVWgoodskipsgetskip.Description = "G1 skips should be as skips";
-            this.WVWgoodskipsgetskip.Location = new System.Drawing.Point(3, 535);
-            this.WVWgoodskipsgetskip.Name = "WVWgoodskipsgetskip";
-            this.WVWgoodskipsgetskip.Size = new System.Drawing.Size(959, 70);
-            this.WVWgoodskipsgetskip.TabIndex = 8;
-            this.WVWgoodskipsgetskip.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            this.WVWenemies.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWenemies.Description = "Pairs of players should not have multiple games against each other";
+            this.WVWenemies.Location = new System.Drawing.Point(3, 231);
+            this.WVWenemies.Name = "WVWenemies";
+            this.WVWenemies.Size = new System.Drawing.Size(959, 70);
+            this.WVWenemies.TabIndex = 4;
+            this.WVWenemies.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
             // WVWunbalancedplayers
             // 
@@ -1087,6 +1067,26 @@
             this.WVWunbalancedteams.Size = new System.Drawing.Size(959, 70);
             this.WVWunbalancedteams.TabIndex = 7;
             this.WVWunbalancedteams.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            // 
+            // WVWgoodleadsmoveup
+            // 
+            this.WVWgoodleadsmoveup.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWgoodleadsmoveup.Description = "Leads G2 + G3 should be as Leads";
+            this.WVWgoodleadsmoveup.Location = new System.Drawing.Point(3, 459);
+            this.WVWgoodleadsmoveup.Name = "WVWgoodleadsmoveup";
+            this.WVWgoodleadsmoveup.Size = new System.Drawing.Size(959, 70);
+            this.WVWgoodleadsmoveup.TabIndex = 8;
+            this.WVWgoodleadsmoveup.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
+            // 
+            // WVWgoodskipsgetskip
+            // 
+            this.WVWgoodskipsgetskip.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.WVWgoodskipsgetskip.Description = "G1 skips should be as skips";
+            this.WVWgoodskipsgetskip.Location = new System.Drawing.Point(3, 535);
+            this.WVWgoodskipsgetskip.Name = "WVWgoodskipsgetskip";
+            this.WVWgoodskipsgetskip.Size = new System.Drawing.Size(959, 70);
+            this.WVWgoodskipsgetskip.TabIndex = 8;
+            this.WVWgoodskipsgetskip.WeightChanged += new System.EventHandler(this.WVW_WeightChanged);
             // 
             // WVWteamsize
             // 
@@ -1440,10 +1440,12 @@
             // 
             // panel4
             // 
+            this.panel4.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.panel4.Controls.Add(this.LBXhistory);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
+            this.panel4.Padding = new System.Windows.Forms.Padding(3);
             this.panel4.Size = new System.Drawing.Size(200, 468);
             this.panel4.TabIndex = 2;
             // 
@@ -1455,10 +1457,10 @@
             this.LBXhistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LBXhistory.FormattingEnabled = true;
             this.LBXhistory.IntegralHeight = false;
-            this.LBXhistory.Location = new System.Drawing.Point(0, 0);
+            this.LBXhistory.Location = new System.Drawing.Point(3, 3);
             this.LBXhistory.Name = "LBXhistory";
             this.LBXhistory.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.LBXhistory.Size = new System.Drawing.Size(200, 468);
+            this.LBXhistory.Size = new System.Drawing.Size(194, 462);
             this.LBXhistory.TabIndex = 6;
             this.LBXhistory.SelectedIndexChanged += new System.EventHandler(this.LBXhistory_SelectedIndexChanged);
             // 

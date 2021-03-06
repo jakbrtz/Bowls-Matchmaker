@@ -42,7 +42,7 @@ namespace Matchmaker.UserInterface
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(Properties.Settings.Default.FileMain) || Properties.Settings.Default.FileMain.Equals(ReadWriteMainFile.OldFileName, StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrEmpty(Properties.Settings.Default.FileMain))
                 Properties.Settings.Default.FileMain = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\bowls matchmaker\\data.json";
 
             SetUpHTMLscripting();

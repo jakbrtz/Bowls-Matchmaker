@@ -180,11 +180,8 @@ namespace Matchmaker.FileOperations
             };
         }
 
-        public static readonly string OldFileName = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\bowls matchmaker\\file.bmm";
-
         public static void Input(string filename, IList<Player> players, IList<Day> history, Weights weights)
         {
-            if (!File.Exists(filename)) filename = OldFileName;
             if (!File.Exists(filename)) return;
             using StreamReader sr = new StreamReader(filename);
             string str = sr.ReadToEnd();

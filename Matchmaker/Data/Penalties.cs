@@ -1,7 +1,4 @@
-﻿using Matchmaker.UserInterface.StringConverters; // TODO: do not reference UserInterface from here
-using System.Collections.Generic;
-
-namespace Matchmaker.Data
+﻿namespace Matchmaker.Data
 {
     public struct PairOfPlayers
     {
@@ -34,10 +31,6 @@ namespace Matchmaker.Data
         public HistoryOfPenalty historical = new HistoryOfPenalty();
         public double score = 0;
 
-        public abstract string Reason(IList<Day> history);
-
-        public override string ToString() => Score() + ": " + Reason(null);
-
         public double Score() => score + historical.score;
     }
 
@@ -46,26 +39,6 @@ namespace Matchmaker.Data
         public double score;
         public int mostRecentGameIndex;
         public int numberOfOccurences;
-
-        public string CiteOccurence(IList<Day> history)
-        {
-            if (numberOfOccurences == 0) return "";
-            string result = "This has happened ";
-            result += numberOfOccurences switch
-            {
-                1 => "once",
-                2 => "twice",
-                _ => numberOfOccurences + " times",
-            };
-            result += ", most recently on ";
-            if (mostRecentGameIndex == -1)
-                result += "[deleted]";
-            else if (history == null)
-                result += mostRecentGameIndex;
-            else
-                result += history[mostRecentGameIndex];
-            return result;
-        }
 
         public void IncreaseScore(double increaseBy)
         {
@@ -107,14 +80,7 @@ namespace Matchmaker.Data
         public Player player1;
         public Player player2;
 
-        public override string Reason(IList<Day> history)
-        {
-            string result = "";
-            result += player1 + " & " + player2;
-            result += " played with each other already. ";
-            result += historical.CiteOccurence(history);
-            return result;
-        }
+        public override string ToString() => $"PairAlreadyPlayedInTeam: {player1} & {player2}";
     }
 
     public class PairAlreadyPlayedAgainstEachOther : Penalty
@@ -122,14 +88,7 @@ namespace Matchmaker.Data
         public Player player1;
         public Player player2;
 
-        public override string Reason(IList<Day> history)
-        {
-            string result = "";
-            result += player1 + " & " + player2;
-            result += " played against each other already. ";
-            result += historical.CiteOccurence(history);
-            return result;
-        }
+        public override string ToString() => $"PairAlreadyPlayedAgainstEachOther: {player1} & {player2}";
     }
 
     public class IncorrectPosition : Penalty
@@ -140,15 +99,7 @@ namespace Matchmaker.Data
         public bool usedSecondary;
         public Grade grade;
 
-        public override string Reason(IList<Day> history)
-        {
-            string result = $"{player} ({grade.ToUserFriendlyString()}) wanted {wantedPosition.ToUserFriendlyString()} but got {givenPosition.ToUserFriendlyString()}";
-            if (usedSecondary)
-                result += " (second choice)";
-            result += ". ";
-            result += historical.CiteOccurence(history);
-            return result;
-        }
+        public override string ToString() => $"IncorrectPosition: {player} ({grade}) wanted {wantedPosition} but got {givenPosition}. Secondary = {usedSecondary}";
     }
 
     public class WrongTeamSize : Penalty
@@ -157,12 +108,7 @@ namespace Matchmaker.Data
         public TeamSize wantedSize;
         public TeamSize givenSize;
 
-        public override string Reason(IList<Day> history)
-        {
-            string result = $"{player} wanted to play {wantedSize.ToUserFriendlyString()} but got {givenSize.ToUserFriendlyString()}. ";
-            result += historical.CiteOccurence(history);
-            return result;
-        }
+        public override string ToString() => $"WrongTeamSize: {player} wanted {wantedSize} but got {givenSize}";
     }
 
     public class UnbalancedPlayers : Penalty
@@ -172,12 +118,7 @@ namespace Matchmaker.Data
         public EffectiveGrade grade1;
         public EffectiveGrade grade2;
 
-        public override string Reason(IList<Day> history)
-        {
-            string result = $"{player1} & {player2} are not an even match. ({grade1} vs {grade2}). ";
-            result += historical.CiteOccurence(history);
-            return result;
-        }
+        public override string ToString() => $"UnbalancedPlayers: {player1} vs {player2} = {grade1} vs {grade2}";
     }
 
     public class UnbalancedTeams : Penalty
@@ -186,9 +127,9 @@ namespace Matchmaker.Data
         public EffectiveGrade[] team1Grades;
         public EffectiveGrade[] team2Grades;
 
-        public override string Reason(IList<Day> history)
+        public override string ToString()
         {
-            string result = $"{match} is not an even match. ";
+            string result = $"UnbalancedTeams: ";
             for (int position = 0; position < Team.MaxSize; position++)
                 if (match.Team1.PositionShouldBeFilled((Position)position))
                     result += team1Grades[position] + " ";

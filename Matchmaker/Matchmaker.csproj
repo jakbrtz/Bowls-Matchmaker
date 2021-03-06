@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="File Operations\ReadWriteTable.cs" />
     <Compile Include="User Interface\ProgressUpdater.cs" />
+    <Compile Include="User Interface\StringConverters\PenaltyConverter.cs" />
     <Compile Include="User Interface\Tools.cs" />
     <Compile Include="Algorithms\DayGenerator.cs" />
     <Compile Include="File Operations\ReadWriteMainFile.cs" />

@@ -703,7 +703,7 @@ namespace Matchmaker.UserInterface
             TBXnewdayConsole.Clear();
             TBXnewdayConsole.Text += $"Total score: {Math.Round(generatedDay.matches.Sum(match => match.penalties.Sum(penalty => penalty.Score())), 3)}{Environment.NewLine}";
             foreach (var Penalty in generatedDay.matches.SelectMany(match => match.penalties).OrderByDescending(penalty => penalty.Score()))
-                TBXnewdayConsole.Text += Math.Round(Penalty.Score(), 3) + "\t" + Penalty.Reason(history) + Environment.NewLine;
+                TBXnewdayConsole.Text += Math.Round(Penalty.Score(), 3) + "\t" + PenaltyConverter.Convert(Penalty) + " " + PenaltyConverter.CiteOccurence(Penalty, history) + Environment.NewLine;
             if (generatedDay.matches.All(match => match.penalties.Count == 0))
                 TBXnewdayConsole.Text += "Perfect score!" + Environment.NewLine + "I could not find anything wrong with these matches" + Environment.NewLine;
             TBXnewdayConsole.SelectionStart = 0;

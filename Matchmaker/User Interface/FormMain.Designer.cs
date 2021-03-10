@@ -123,6 +123,7 @@
             this.BFFmain = new CustomControls.BrowseForFile();
             this.BFFhtml = new CustomControls.BrowseForFile();
             this.BTNseedefaulthtml = new System.Windows.Forms.Button();
+            this.BTNprintersettings = new System.Windows.Forms.Button();
             this.pageMainPlayers = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tagDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -1000,6 +1001,7 @@
             this.FLPweights.Controls.Add(this.BFFmain);
             this.FLPweights.Controls.Add(this.BFFhtml);
             this.FLPweights.Controls.Add(this.BTNseedefaulthtml);
+            this.FLPweights.Controls.Add(this.BTNprintersettings);
             this.FLPweights.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FLPweights.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.FLPweights.Location = new System.Drawing.Point(0, 0);
@@ -1140,6 +1142,17 @@
             this.BTNseedefaulthtml.UseVisualStyleBackColor = true;
             this.BTNseedefaulthtml.Visible = false;
             this.BTNseedefaulthtml.Click += new System.EventHandler(this.BTNseedefaulthtml_Click);
+            // 
+            // BTNprintersettings
+            // 
+            this.BTNprintersettings.Location = new System.Drawing.Point(7, 835);
+            this.BTNprintersettings.Margin = new System.Windows.Forms.Padding(7);
+            this.BTNprintersettings.Name = "BTNprintersettings";
+            this.BTNprintersettings.Size = new System.Drawing.Size(183, 23);
+            this.BTNprintersettings.TabIndex = 12;
+            this.BTNprintersettings.Text = "Printer Settings";
+            this.BTNprintersettings.UseVisualStyleBackColor = true;
+            this.BTNprintersettings.Click += new System.EventHandler(this.BTNprintersettings_Click);
             // 
             // pageMainPlayers
             // 
@@ -1387,7 +1400,7 @@
             // 
             this.WEBhistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WEBhistory.IsWebBrowserContextMenuEnabled = false;
-            this.WEBhistory.Location = new System.Drawing.Point(0, 0);
+            this.WEBhistory.Location = new System.Drawing.Point(200, 62);
             this.WEBhistory.MinimumSize = new System.Drawing.Size(20, 20);
             this.WEBhistory.Name = "WEBhistory";
             this.WEBhistory.Size = new System.Drawing.Size(782, 406);
@@ -1653,6 +1666,7 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn PositionSecondary;
         private System.Windows.Forms.DataGridViewComboBoxColumn GradeSecondary;
         private System.Windows.Forms.DataGridViewComboBoxColumn preferredTeamSizesDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button BTNprintersettings;
     }
 }
 

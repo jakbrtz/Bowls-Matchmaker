@@ -7,7 +7,6 @@ using Matchmaker.FileOperations;
 using Matchmaker.UserInterface.Controls;
 using Matchmaker.UserInterface.StringConverters;
 using Matchmaker.UserInterface.Intermediate;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -96,6 +95,7 @@ namespace Matchmaker.UserInterface
             WEBfixmatches.ObjectForScripting = scripterFixGames;
 
             DisplayFixedMatches();
+            WEBhistory.DocumentText = "";
         }
 
         #endregion
@@ -847,6 +847,11 @@ namespace Matchmaker.UserInterface
             Process.Start("notepad.exe", SFDhtml.FileName);
         }
 
+        private void BTNprintersettings_Click(object sender, EventArgs e)
+        {
+            WEBhistory.ShowPageSetupDialog();
+        }
+
         #endregion
 
         #region players list screen
@@ -1027,16 +1032,7 @@ namespace Matchmaker.UserInterface
 
         private void BTNprintHistory_Click(object sender, EventArgs e)
         {
-            // todo: make sure this actually works
-            using RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Internet Explorer\PageSetup", true);
-            if (key == null) return;
-            string old_footer = (string)key.GetValue("footer");
-            string old_header = (string)key.GetValue("header");
-            key.SetValue("footer", "");
-            key.SetValue("header", "");
             WEBhistory.ShowPrintDialog();
-            key.SetValue("footer", old_footer);
-            key.SetValue("header", old_header);
         }
 
         private void BTNexportplayersinday_Click(object sender, EventArgs e)

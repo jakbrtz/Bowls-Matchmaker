@@ -98,6 +98,7 @@
     <Compile Include="Algorithms\DayImprover.cs" />
     <Compile Include="Algorithms\Structures\CachedPenalties.cs" />
     <Compile Include="Algorithms\Structures\DayGeneratorParameters.cs" />
+    <Compile Include="Algorithms\Structures\PairOfPlayers.cs" />
     <Compile Include="Algorithms\Structures\Swap.cs" />
     <Compile Include="Algorithms\Tools.cs" />
     <Compile Include="Collections\Counter.cs" />

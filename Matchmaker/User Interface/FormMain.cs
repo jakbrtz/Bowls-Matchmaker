@@ -128,14 +128,37 @@ namespace Matchmaker.UserInterface
             this.players.Add(player);
         }
 
-        public void RefreshPageMatchesPlayers(bool isTyping = false)
+        public void RefreshPageMatchesPlayers(bool highlightWhenDone = false)
         {
-            var relevantPlayers = players.Where(player => Search.Filter(player, TBXfilterPagePlayers.Text));
-            if (isTyping) relevantPlayers = relevantPlayers.OrderBy(player => Search.RelevanceToSearch(player, TBXfilterPagePlayers.Text));
+            Player selected = CurrentlySelectedPlayer();
 
             CLBpagePlayers.Items.Clear();
-            foreach (Player player in relevantPlayers)
+            foreach (Player player in players)
                 CLBpagePlayers.Items.Add(new PlayerIntermediate(player), playersSelectedForDay.Contains(player));
+
+            if (highlightWhenDone) HighlightPlayer(selected);
+        }
+
+        Player CurrentlySelectedPlayer() => (CLBpagePlayers.SelectedItem as PlayerIntermediate)?.player;
+
+        public void HighlightPlayer(Player originalSelection)
+        {
+            Player selection = originalSelection;
+
+            bool searching = !string.IsNullOrEmpty(TBXfilterPagePlayers.Text);
+            bool originalIsGood = originalSelection != null && 
+                new PlayerIntermediate(originalSelection).ToString(CLBpagePlayers.FormatString, null).StartsWith(TBXfilterPagePlayers.Text, StringComparison.OrdinalIgnoreCase);
+
+            if (searching && !originalIsGood)
+            {
+                var bestMatch = Search.GetBestMatch(players, TBXfilterPagePlayers.Text);
+                if (bestMatch != null)
+                {
+                    selection = bestMatch;
+                }
+            }
+
+            CLBpagePlayers.SelectedIndex = players.IndexOf(selection);
         }
 
         private void AddAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -237,21 +260,21 @@ namespace Matchmaker.UserInterface
 
         private void TBXfilterPagePlayers_TextChanged(object sender, EventArgs e)
         {
-            RefreshPageMatchesPlayers(isTyping: true);
+            HighlightPlayer(CurrentlySelectedPlayer());
         }
 
         private void BTNsortnamematches_Click(object sender, EventArgs e)
         {
             players.Sort(Sorts.PlayerCompare);
             CLBpagePlayers.FormatString = "%name - %position";
-            RefreshPageMatchesPlayers();
+            RefreshPageMatchesPlayers(highlightWhenDone: true); 
         }
 
         private void BTNsorttagmatches_Click(object sender, EventArgs e)
         {
             players.Sort(Sorts.TagNumberCompare);
             CLBpagePlayers.FormatString = "%tag - %name - %position";
-            RefreshPageMatchesPlayers();
+            RefreshPageMatchesPlayers(highlightWhenDone: true);
         }
 
         private void CLBpagePlayers_ItemCheck(object sender, ItemCheckEventArgs e)

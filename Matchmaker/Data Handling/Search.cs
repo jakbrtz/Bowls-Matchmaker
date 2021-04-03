@@ -1,5 +1,6 @@
 ﻿using Matchmaker.Data;
 using System;
+using System.Collections.Generic;
 
 namespace Matchmaker.DataHandling
 {
@@ -11,11 +12,6 @@ namespace Matchmaker.DataHandling
         {
             if (string.IsNullOrEmpty(search)) return true;
             return SimplifySearch(player.Name).IndexOf(SimplifySearch(search), StringComparison.OrdinalIgnoreCase) != -1 || player.TagNumber?.Contains(search) == true;
-        }
-
-        public static bool IsGreatMatch(Player player, string search)
-        {
-            return SimplifySearch(player.Name).Equals(SimplifySearch(search), StringComparison.OrdinalIgnoreCase) || player.TagNumber?.Equals(search) == true;
         }
 
         public static int RelevanceToSearch(Player player, string search)
@@ -47,6 +43,39 @@ namespace Matchmaker.DataHandling
             }
             if (numberOfMatchingWords == 0) return int.MaxValue;
             return (bignumber - numberOfMatchingWords) * bignumber + earliestMatchingWord;
+        }
+
+        public static Player GetExactMatch(List<Player> players, string search, HashSet<Player> ignore = null)
+        {
+            foreach (Player player in players)
+                if (ignore?.Contains(player) != true)
+                    if (IsExactMatch(player, search))
+                        return player;
+            return null;
+        }
+
+        public static bool IsExactMatch(Player player, string search)
+        {
+            return SimplifySearch(player.Name).Equals(SimplifySearch(search), StringComparison.OrdinalIgnoreCase) || player.TagNumber?.Equals(search) == true;
+        }
+
+        public static Player GetBestMatch(List<Player> players, string search, HashSet<Player> ignore = null)
+        {
+            Player bestMatch = null;
+            int bestMatchRelevance = int.MaxValue;
+            foreach (Player player in players)
+            {
+                if (ignore?.Contains(player) != true && Search.Filter(player, search))
+                {
+                    int relevance = Search.RelevanceToSearch(player, search);
+                    if (relevance < bestMatchRelevance)
+                    {
+                        bestMatchRelevance = relevance;
+                        bestMatch = player;
+                    }
+                }
+            }
+            return bestMatch;
         }
     }
 }

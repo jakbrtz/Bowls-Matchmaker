@@ -249,7 +249,7 @@ namespace Matchmaker.UserInterface
         {
             tabControlMain.SelectedTab = pageMainMatch;
             tabControlMatches.SelectedTab = pageViewMatch;
-            BTNnewgamesgo.PerformClick();
+            NewGames(false);
         }
 
         #endregion
@@ -559,7 +559,7 @@ namespace Matchmaker.UserInterface
 
         #region create matches
 
-        bool GetParameters(out DayGeneratorParameters parameters, bool validate)
+        bool GetParameters(out DayGeneratorParameters parameters, bool validate, bool fromScratch)
         {
             parameters = null;
 
@@ -628,13 +628,14 @@ namespace Matchmaker.UserInterface
                 history = history,
                 weights = weights,
                 numMatchSizes = numMatchSizes,
+                existingDay = fromScratch ? null : generatedDay,
             };
             return true;
         }
 
-        DayGeneratorParameters GetParameters()
+        DayGeneratorParameters GetParameters(bool fromScratch)
         {
-            GetParameters(out var result, false);
+            GetParameters(out var result, false, fromScratch);
             return result;
         }
 
@@ -653,7 +654,12 @@ namespace Matchmaker.UserInterface
 
         private void BTNnewgamesgo_Click(object sender, EventArgs e)
         {
-            if (!GetParameters(out var parameters, true))
+            NewGames(true);
+        }
+
+        private void NewGames(bool fromScratch)
+        {
+            if (!GetParameters(out var parameters, true, fromScratch))
             {
                 return;
             }
@@ -696,7 +702,7 @@ namespace Matchmaker.UserInterface
 
         private void BTNimprove_Click(object sender, EventArgs e)
         {
-            var swap = new DayImprover(generatedDay, GetParameters()).DoOneImprovement();
+            var swap = new DayImprover(generatedDay, GetParameters(false)).DoOneImprovement();
             if (swap == null)
             {
                 toolStripStatusLabel1.Text = "Could not find an improvement";
@@ -763,7 +769,7 @@ namespace Matchmaker.UserInterface
                 RegularSwap swap = new RegularSwap(swapPlayerIndex, playerIndex, generatedDay);
                 swap.DoSwap();
 
-                CachedPenalties penalties = new CachedPenalties(GetParameters());
+                CachedPenalties penalties = new CachedPenalties(GetParameters(false));
                 penalties.RecalculateScore(generatedDay);
 
                 swapPlayerIndex = -1;

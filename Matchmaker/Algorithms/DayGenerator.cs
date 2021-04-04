@@ -1,4 +1,5 @@
 ﻿using Matchmaker.Algorithms.Structures;
+using Matchmaker.Collections;
 using Matchmaker.Data;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,15 +9,18 @@ namespace Matchmaker.Algorithms
 {
     public class DayGenerator : IAlgorithmWithProgress
     {
-        const int attempts = 5;
+        const int defaultAttempts = 5;
 
         private readonly DayGeneratorParameters parameters;
+        private readonly int attempts;
+        private readonly DayImprover[] improvers;
+
         public DayGenerator(DayGeneratorParameters parameters)
         {
             this.parameters = parameters;
+            this.attempts = parameters.existingDay == null ? defaultAttempts : 1;
+            this.improvers = new DayImprover[attempts];
         }
-
-        readonly DayImprover[] improvers = new DayImprover[attempts];
 
         public Day Generate()
         {
@@ -48,7 +52,8 @@ namespace Matchmaker.Algorithms
                 }
             }
 
-            best.matches.Shuffle();
+            if (parameters.existingDay == null)
+                best.matches.Shuffle();
 
             return best;
         }
@@ -57,14 +62,64 @@ namespace Matchmaker.Algorithms
         {
             Day day = new Day();
 
-            foreach (var matchSizeAndCount in parameters.numMatchSizes)
+            // Make a clone of data from parameters
+            Counter<MatchSize> numMatchSizesClone = new Counter<MatchSize>(parameters.numMatchSizes);
+            List<Player> playersClone;
+
+            // If we have an existing day, try to copy matches across
+            if (parameters.existingDay != null)
+            {
+                HashSet<Player> playersAsSet = new HashSet<Player>(parameters.players);
+                foreach (Match match in parameters.existingDay.matches)
+                {
+                    // Make sure we need a match with this size
+                    MatchSize matchSize = match.GetMatchSize();
+                    if (numMatchSizesClone[matchSize] > 0)
+                    {
+                        // Check that all players from that match are still needed in this match
+                        bool allPlayersInExisting = true;
+                        foreach (Team team in match.teams)
+                            foreach (Player player in team.players)
+                                if (player != null)
+                                    if (!playersAsSet.Contains(player))
+                                        allPlayersInExisting = false;
+                        if (allPlayersInExisting)
+                        {
+                            // Create a new match
+                            Match copiedMatch = new Match(matchSize, match.isFixed);
+                            day.matches.Add(copiedMatch);
+                            // Copy the players from the existing match
+                            for (int teamIndex = 0; teamIndex < 2; teamIndex++)
+                            {
+                                for (int position = 0; position < Team.MaxSize; position++)
+                                {
+                                    Player player = match.teams[teamIndex].players[position];
+                                    copiedMatch.teams[teamIndex].players[position] = player;
+                                    playersAsSet.Remove(player);
+                                }
+                            }
+                            // Record that we've used a match of this size already
+                            numMatchSizesClone[matchSize]--;
+                        }
+                    }
+                }
+
+                playersClone = new List<Player>(playersAsSet);
+            }
+            else
+            {
+                playersClone = new List<Player>(parameters.players);
+            }
+
+            // Create blank matches
+            List<Match> matchesToAdd = new List<Match>();
+            foreach (var matchSizeAndCount in numMatchSizesClone)
                 for (int i = 0; i < matchSizeAndCount.Value; i++)
-                    day.matches.Add(new Match(matchSizeAndCount.Key, false));
+                    matchesToAdd.Add(new Match(matchSizeAndCount.Key, false));
 
             // The players could be placed randomly, but the improver algorithm takes a lot less time if players are placed in the correct position
 
             // Randomly rearrange the list of players
-            List<Player> playersClone = new List<Player>(parameters.players);
             playersClone.Shuffle();
 
             // Assign each player to their primary position
@@ -76,7 +131,7 @@ namespace Matchmaker.Algorithms
 
             // Look at how many players are requested for each position
             int[] requestedPlayers = new int[Team.MaxSize];
-            foreach (Match match in day.matches)
+            foreach (Match match in matchesToAdd)
                 foreach (Team team in match.teams)
                     for (int position = 0; position < Team.MaxSize; position++)
                         if (team.PositionShouldBeFilled((Position)position))
@@ -131,14 +186,17 @@ namespace Matchmaker.Algorithms
                 }
             }
 
-            // Insert the players into the day
+            // Insert the players into the list of matches to add
             int[] index = new int[Team.MaxSize];
-            foreach (Match match in day.matches)
+            foreach (Match match in matchesToAdd)
                 foreach (Team team in match.teams)
                     for (int position = 0; position < Team.MaxSize; position++)
                         if (team.PositionShouldBeFilled((Position)position))
                             team.players[position] = playersPerPosition[position][index[position]++];
 
+            // Add the matches to the day
+            foreach (Match match in matchesToAdd)
+                day.matches.Add(match);
 
             return day;
         }

@@ -10,5 +10,6 @@ namespace Matchmaker.Algorithms.Structures
         public IList<Day> history;
         public Weights weights;
         public Counter<MatchSize> numMatchSizes;
+        public Day existingDay;
     }
 }

@@ -7,6 +7,14 @@ namespace Matchmaker.Collections
     {
         readonly Dictionary<TKey, int> counts = new Dictionary<TKey, int>();
 
+        public Counter() { }
+
+        public Counter(IEnumerable<KeyValuePair<TKey, int>> collection) : this()
+        {
+            foreach (var kvp in collection)
+                Add(kvp.Key, kvp.Value);
+        }
+
         public int this[TKey key]
         {
             get => counts.TryGetValue(key, out int value) ? value : 0;

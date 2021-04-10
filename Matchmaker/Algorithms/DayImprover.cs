@@ -40,8 +40,8 @@ namespace Matchmaker.Algorithms
 
             void CheckIfSwapIsImprovement(ISwap swap)
             {
-                if (!swap.IsValid()) return;
-                if (swap.InvolvesFixedMatches()) return;
+                if (!swap.IsPossible()) return;
+                if (!swap.IsAllowed()) return;
                 DoSwapAndRecalculate(swap);
                 double score = Score(day);
                 DoSwapAndRecalculate(swap);

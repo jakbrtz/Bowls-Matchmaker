@@ -63,6 +63,7 @@ namespace Matchmaker.FileOperations
             Dict WriteMatch(Match match) => new Dict {
                 { "Rink", match.rink },
                 { "isFixed", match.isFixed },
+                { "dontModify", match.dontModify },
                 { "Team1", TeamAsString(match.Team1) },
                 { "Team2", TeamAsString(match.Team2) },
                 { "penalties", match.penalties.Select(WritePenalty) }
@@ -325,6 +326,7 @@ namespace Matchmaker.FileOperations
                 Match match = new Match();
                 Read(dict, "Rink", ref match.rink);
                 Read(dict, "isFixed", ref match.isFixed);
+                Read(dict, "dontModify", ref match.dontModify);
                 if (TryRead(dict, "Team1", out string team1String))
                     ReadTeamStringIntoTeam(match.Team1, team1String);
                 if (TryRead(dict, "Team2", out string team2String))

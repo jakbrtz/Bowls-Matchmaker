@@ -86,7 +86,7 @@ namespace Matchmaker.Algorithms
                         if (allPlayersInExisting)
                         {
                             // Create a new match
-                            Match copiedMatch = new Match(matchSize, match.isFixed);
+                            Match copiedMatch = new Match(matchSize, match.isFixed, true);
                             copiedMatch.rink = match.rink;
                             day.matches.Add(copiedMatch);
                             // Copy the players from the existing match
@@ -116,7 +116,7 @@ namespace Matchmaker.Algorithms
             List<Match> matchesToAdd = new List<Match>();
             foreach (var matchSizeAndCount in numMatchSizesClone)
                 for (int i = 0; i < matchSizeAndCount.Value; i++)
-                    matchesToAdd.Add(new Match(matchSizeAndCount.Key, false));
+                    matchesToAdd.Add(new Match(matchSizeAndCount.Key, false, false));
 
             // The players could be placed randomly, but the improver algorithm takes a lot less time if players are placed in the correct position
 

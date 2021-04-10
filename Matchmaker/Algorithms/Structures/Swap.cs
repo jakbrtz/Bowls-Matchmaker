@@ -4,8 +4,8 @@ namespace Matchmaker.Algorithms.Structures
 {
     public interface ISwap
     {
-        public bool IsValid();
-        public bool InvolvesFixedMatches();
+        public bool IsPossible();
+        public bool IsAllowed();
         public void DoSwap();
         public void RecalculateScore(CachedPenalties penalties);
     }
@@ -29,14 +29,14 @@ namespace Matchmaker.Algorithms.Structures
             team2 = match2.teams[teamIndex2];
         }
 
-        public bool IsValid()
+        public bool IsPossible()
         {
             return Player1 != null && Player2 != null;
         }
 
-        public bool InvolvesFixedMatches()
+        public bool IsAllowed()
         {
-            return match1.isFixed || match2.isFixed;
+            return !match1.isFixed && !match2.isFixed && !match1.dontModify && !match2.dontModify;
         }
 
         public void DoSwap()
@@ -92,14 +92,14 @@ namespace Matchmaker.Algorithms.Structures
             match2 = day.matches[matchIndex2];
         }
 
-        public bool IsValid()
+        public bool IsPossible()
         {
             return Player1a != null && Player1b != null && Player2a != null && Player2b != null;
         }
 
-        public bool InvolvesFixedMatches()
+        public bool IsAllowed()
         {
-            return match1.isFixed || match2.isFixed;
+            return !match1.isFixed && !match2.isFixed && !match1.dontModify && !match2.dontModify;
         }
 
         public void DoSwap()

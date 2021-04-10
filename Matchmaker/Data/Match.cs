@@ -14,6 +14,8 @@ namespace Matchmaker.Data
 
         public bool isFixed;
 
+        public bool dontModify;
+
         public Team Team1 => teams[0];
         public Team Team2 => teams[1];
         public int Size => Team1.size > Team2.size ? Team1.size : Team2.size;
@@ -24,10 +26,11 @@ namespace Matchmaker.Data
             teams[1] = new Team();
         }
 
-        public Match(MatchSize size, bool isFixed) : this()
+        public Match(MatchSize size, bool isFixed, bool dontModify) : this()
         {
             SetTeamSize(size);
             this.isFixed = isFixed;
+            this.dontModify = dontModify;
         }
 
         public void SetTeamSize(MatchSize size)

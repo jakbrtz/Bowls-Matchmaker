@@ -329,7 +329,7 @@ namespace Matchmaker.UserInterface
                     date = DateTime.Now.ToString("d", CultureInfo.CurrentCulture)
                 };
             }
-            fixedMatchesDay.matches.Add(new Match(MatchSize.Triples, true));
+            fixedMatchesDay.matches.Add(new Match(MatchSize.Triples, true, false));
             DisplayFixedMatches();
         }
 
@@ -777,8 +777,7 @@ namespace Matchmaker.UserInterface
 
                 RewritePenalties(); 
                 DisplayGeneratedDay();
-                if (swap.InvolvesFixedMatches())
-                    DisplayFixedMatches();
+                DisplayFixedMatches();
             }
         }
 

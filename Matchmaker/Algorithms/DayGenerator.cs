@@ -87,6 +87,7 @@ namespace Matchmaker.Algorithms
                         {
                             // Create a new match
                             Match copiedMatch = new Match(matchSize, match.isFixed);
+                            copiedMatch.rink = match.rink;
                             day.matches.Add(copiedMatch);
                             // Copy the players from the existing match
                             for (int teamIndex = 0; teamIndex < 2; teamIndex++)

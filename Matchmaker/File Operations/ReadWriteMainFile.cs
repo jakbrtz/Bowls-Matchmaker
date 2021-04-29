@@ -199,32 +199,15 @@ namespace Matchmaker.FileOperations
             {
                 if (d.TryGetValue(key, out object o))
                 {
-                    if (o is T t)
+                    try
                     {
-                        obj = t;
+                        obj = Read(o, converter, dictReader);
                         return true;
                     }
-                    if (converter != null && o is string s)
+                    catch (InvalidDataException e)
                     {
-                        obj = converter(s);
-                        return true;
+                        Debug.Fail(e.Message);
                     }
-                    if (dictReader != null && o is JObject jo)
-                    {
-                        obj = dictReader(jo.ToObject<Dict>());
-                        return true;
-                    }
-                    if (o is JToken j)
-                    {
-                        obj = j.ToObject<T>();
-                        return true;
-                    }
-                    if (o is null)
-                    {
-                        obj = default;
-                        return true;
-                    }
-                    Debug.Fail($"Could not parse {o}");
                 }
                 else
                 {
@@ -234,9 +217,29 @@ namespace Matchmaker.FileOperations
                 return false;
             }
 
-            void Read<T>(Dict dictionary, string key, ref T field, Func<string, T> converter = null, Func<Dict, T> dictReader = null)
+            T Read<T>(object o, Func<string, T> converter = null, Func<Dict, T> dictReader = null)
             {
-                if (TryRead(dictionary, key, out T obj, converter, dictReader)) field = obj;
+                if (o is T t)
+                {
+                    return t;
+                }
+                if (converter != null && o is string s)
+                {
+                    return converter(s);
+                }
+                if (dictReader != null && o is JObject jo)
+                {
+                    return dictReader(jo.ToObject<Dict>());
+                }
+                if (o is JToken j)
+                {
+                    return j.ToObject<T>();
+                }
+                if (o is null)
+                {
+                    return default;
+                }
+                throw new InvalidDataException($"Could not convert {o} to {typeof(T)}");
             }
 
             Player ConvertPlayer(string data)
@@ -278,14 +281,22 @@ namespace Matchmaker.FileOperations
             void ReadPlayer(Dict dict)
             {
                 Player player = new Player();
-                Read(dict, "Name", ref player.Name);
-                Read(dict, "TagNumber", ref player.TagNumber);
-                Read(dict, "ID", ref player.ID);
-                Read(dict, "PositionPrimary", ref player.PositionPrimary, ConvertEnum<Position>);
-                Read(dict, "PositionSecondary", ref player.PositionSecondary, ConvertEnum<Position>);
-                Read(dict, "GradePrimary", ref player.GradePrimary, ConvertEnum<Grade>);
-                Read(dict, "GradeSecondary", ref player.GradeSecondary, ConvertEnum<Grade>);
-                Read(dict, "PreferredTeamSizes", ref player.PreferredTeamSizes, ConvertEnum<TeamSize>);
+
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "Name": player.Name = Read<string>(kvp.Value); break;
+                        case "TagNumber": player.TagNumber = Read<string>(kvp.Value); break;
+                        case "ID": player.ID = Read<int>(kvp.Value); break;
+                        case "PositionPrimary": player.PositionPrimary = Read(kvp.Value, converter: ConvertEnum<Position>); break;
+                        case "PositionSecondary": player.PositionSecondary = Read(kvp.Value, converter: ConvertEnum<Position>); break;
+                        case "GradePrimary": player.GradePrimary = Read(kvp.Value, converter: ConvertEnum<Grade>); break;
+                        case "GradeSecondary": player.GradeSecondary = Read(kvp.Value, converter: ConvertEnum<Grade>); break;
+                        case "PreferredTeamSizes": player.PreferredTeamSizes = Read(kvp.Value, converter: ConvertEnum<TeamSize>); break;
+                    }
+                }
+
                 players.Add(player);
             }
 
@@ -300,9 +311,14 @@ namespace Matchmaker.FileOperations
             void ReadDay(Dict dict)
             {
                 Day day = new Day();
-                Read(dict, "date", ref day.date);
-                if (TryRead(dict, "matches", out List<Dict> matches))
-                    ReadMatches(matches, day);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "date": day.date = Read<string>(kvp.Value); break;
+                        case "matches": ReadMatches(Read<List<Dict>>(kvp.Value), day); break;
+                    }
+                }
                 history.Add(day);
             }
 
@@ -316,23 +332,27 @@ namespace Matchmaker.FileOperations
 
             void ReadMatch(Dict dict, Day day)
             {
-                void ReadTeamStringIntoTeam(Team team, string str)
+                void ReadTeamStringIntoTeam(Team team, object obj)
                 {
+                    string str = Read<string>(obj);
                     string[] playerIDs = str.Split(',');
                     team.size = playerIDs.Length;
                     LoadIntoBiggerArray(playerIDs, ConvertPlayer, team.players);
                 }
 
                 Match match = new Match();
-                Read(dict, "Rink", ref match.rink);
-                Read(dict, "isFixed", ref match.isFixed);
-                Read(dict, "dontModify", ref match.dontModify);
-                if (TryRead(dict, "Team1", out string team1String))
-                    ReadTeamStringIntoTeam(match.Team1, team1String);
-                if (TryRead(dict, "Team2", out string team2String))
-                    ReadTeamStringIntoTeam(match.Team2, team2String);
-                if (TryRead(dict, "penalties", out List<Dict> penalties))
-                    ReadPenalties(penalties, match);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "Rink": match.rink = Read<string>(kvp.Value); break;
+                        case "isFixed": match.isFixed = Read<bool>(kvp.Value); break;
+                        case "dontModify": match.dontModify = Read<bool>(kvp.Value); break;
+                        case "Team1": ReadTeamStringIntoTeam(match.Team1, kvp.Value); break;
+                        case "Team2": ReadTeamStringIntoTeam(match.Team2, kvp.Value); break;
+                        case "penalties": ReadPenalties(Read<List<Dict>>(kvp.Value), match); break;
+                    }
+                }
                 day.matches.Add(match);
             }
 
@@ -375,77 +395,114 @@ namespace Matchmaker.FileOperations
             void ReadPenaltyPAIRALREADYPLAYEDINTEAM(Dict dict, Match match)
             {
                 PairAlreadyPlayedInTeam penalty = new PairAlreadyPlayedInTeam();
-                Read(dict, "historical.mostRecentGameIndex", ref penalty.historical.mostRecentGameIndex);
-                Read(dict, "historical.numberOfOccurences", ref penalty.historical.numberOfOccurences);
-                Read(dict, "historical.score", ref penalty.historical.score);
-                Read(dict, "player1", ref penalty.player1, ConvertPlayer);
-                Read(dict, "player2", ref penalty.player2, ConvertPlayer);
-                Read(dict, "score", ref penalty.score);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "historical.mostRecentGameIndex": penalty.historical.mostRecentGameIndex = Read<int>(kvp.Value); break;
+                        case "historical.numberOfOccurences": penalty.historical.numberOfOccurences = Read<int>(kvp.Value); break;
+                        case "historical.score": penalty.historical.score = Read<double>(kvp.Value); break;
+                        case "player1": penalty.player1 = Read(kvp.Value, ConvertPlayer); break;
+                        case "player2": penalty.player2 = Read(kvp.Value, ConvertPlayer); break;
+                        case "score": penalty.score = Read<double>(kvp.Value); break;
+                    }
+                }
                 match.penalties.Add(penalty);
             }
 
             void ReadPenaltyPAIRALREADYPLAYEDAGAINSTEACHOTHER(Dict dict, Match match)
             {
-                PairAlreadyPlayedAgainstEachOther penalty = new PairAlreadyPlayedAgainstEachOther(); 
-                Read(dict, "historical.mostRecentGameIndex", ref penalty.historical.mostRecentGameIndex);
-                Read(dict, "historical.numberOfOccurences", ref penalty.historical.numberOfOccurences);
-                Read(dict, "historical.score", ref penalty.historical.score);
-                Read(dict, "player1", ref penalty.player1, ConvertPlayer);
-                Read(dict, "player2", ref penalty.player2, ConvertPlayer);
-                Read(dict, "score", ref penalty.score);
+                PairAlreadyPlayedAgainstEachOther penalty = new PairAlreadyPlayedAgainstEachOther();
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "historical.mostRecentGameIndex": penalty.historical.mostRecentGameIndex = Read<int>(kvp.Value); break;
+                        case "historical.numberOfOccurences": penalty.historical.numberOfOccurences = Read<int>(kvp.Value); break;
+                        case "historical.score": penalty.historical.score = Read<double>(kvp.Value); break;
+                        case "player1": penalty.player1 = Read(kvp.Value, ConvertPlayer); break;
+                        case "player2": penalty.player2 = Read(kvp.Value, ConvertPlayer); break;
+                        case "score": penalty.score = Read<double>(kvp.Value); break;
+                    }
+                }
                 match.penalties.Add(penalty);
             }
 
             void ReadPenaltyINCORRECTPOSITION(Dict dict, Match match)
             {
-                IncorrectPosition penalty = new IncorrectPosition();
-                Read(dict, "historical.mostRecentGameIndex", ref penalty.historical.mostRecentGameIndex);
-                Read(dict, "historical.numberOfOccurences", ref penalty.historical.numberOfOccurences);
-                Read(dict, "historical.score", ref penalty.historical.score);
-                Read(dict, "player", ref penalty.player, ConvertPlayer);
-                Read(dict, "score", ref penalty.score);
-                Read(dict, "givenPosition", ref penalty.givenPosition, ConvertEnum<Position>);
-                Read(dict, "wantedPosition", ref penalty.wantedPosition, ConvertEnum<Position>);
-                Read(dict, "usedSecondary", ref penalty.usedSecondary);
-                Read(dict, "grade", ref penalty.grade);
+                IncorrectPosition penalty = new IncorrectPosition(); 
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "historical.mostRecentGameIndex": penalty.historical.mostRecentGameIndex = Read<int>(kvp.Value); break;
+                        case "historical.numberOfOccurences": penalty.historical.numberOfOccurences = Read<int>(kvp.Value); break;
+                        case "historical.score": penalty.historical.score = Read<double>(kvp.Value); break;
+                        case "player": penalty.player = Read(kvp.Value, ConvertPlayer); break;
+                        case "score": penalty.score = Read<double>(kvp.Value); break;
+                        case "givenPosition": penalty.givenPosition = Read(kvp.Value, converter: ConvertEnum<Position>); break;
+                        case "wantedPosition": penalty.wantedPosition = Read(kvp.Value, converter: ConvertEnum<Position>); break;
+                        case "usedSecondary": penalty.usedSecondary = Read<bool>(kvp.Value); break;
+                        case "grade": penalty.grade = Read(kvp.Value, converter: ConvertEnum<Grade>); break;
+                    }
+                }
                 match.penalties.Add(penalty);
             }
 
             void ReadPenaltyWRONGTEAMSIZE(Dict dict, Match match)
             {
                 WrongTeamSize penalty = new WrongTeamSize();
-                Read(dict, "historical.mostRecentGameIndex", ref penalty.historical.mostRecentGameIndex);
-                Read(dict, "historical.numberOfOccurences", ref penalty.historical.numberOfOccurences);
-                Read(dict, "historical.score", ref penalty.historical.score);
-                Read(dict, "player", ref penalty.player, ConvertPlayer);
-                Read(dict, "score", ref penalty.score);
-                Read(dict, "givenSize", ref penalty.givenSize, ConvertEnum<TeamSize>);
-                Read(dict, "wantedSize", ref penalty.wantedSize, ConvertEnum<TeamSize>);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "historical.mostRecentGameIndex": penalty.historical.mostRecentGameIndex = Read<int>(kvp.Value); break;
+                        case "historical.numberOfOccurences": penalty.historical.numberOfOccurences = Read<int>(kvp.Value); break;
+                        case "historical.score": penalty.historical.score = Read<double>(kvp.Value); break;
+                        case "player": penalty.player = Read(kvp.Value, ConvertPlayer); break;
+                        case "score": penalty.score = Read<double>(kvp.Value); break;
+                        case "givenSize": penalty.givenSize = Read(kvp.Value, converter: ConvertEnum<TeamSize>); break;
+                        case "wantedSize": penalty.wantedSize = Read(kvp.Value, converter: ConvertEnum<TeamSize>); break;
+                    }
+                }
                 match.penalties.Add(penalty);
             }
 
             void ReadPenaltyUNBALANCEDPLAYERS(Dict dict, Match match)
             {
                 UnbalancedPlayers penalty = new UnbalancedPlayers();
-                Read(dict, "historical.mostRecentGameIndex", ref penalty.historical.mostRecentGameIndex);
-                Read(dict, "historical.numberOfOccurences", ref penalty.historical.numberOfOccurences);
-                Read(dict, "historical.score", ref penalty.historical.score);
-                Read(dict, "player1", ref penalty.player1, ConvertPlayer);
-                Read(dict, "player2", ref penalty.player2, ConvertPlayer);
-                Read(dict, "grade1", ref penalty.grade1, dictReader: ReadEffectiveGrade);
-                Read(dict, "grade2", ref penalty.grade2, dictReader: ReadEffectiveGrade);
-                Read(dict, "score", ref penalty.score);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "historical.mostRecentGameIndex": penalty.historical.mostRecentGameIndex = Read<int>(kvp.Value); break;
+                        case "historical.numberOfOccurences": penalty.historical.numberOfOccurences = Read<int>(kvp.Value); break;
+                        case "historical.score": penalty.historical.score = Read<double>(kvp.Value); break;
+                        case "player1": penalty.player1 = Read(kvp.Value, ConvertPlayer); break;
+                        case "player2": penalty.player2 = Read(kvp.Value, ConvertPlayer); break;
+                        case "grade1": penalty.grade1 = Read(kvp.Value, dictReader: ReadEffectiveGrade); break;
+                        case "grade2": penalty.grade2 = Read(kvp.Value, dictReader: ReadEffectiveGrade); break;
+                        case "score": penalty.score = Read<double>(kvp.Value); break;
+                    }
+                }
                 match.penalties.Add(penalty);
             }
 
             void ReadPenaltyUNBALANCEDTEAMS(Dict dict, Match match)
             {
                 UnbalancedTeams penalty = new UnbalancedTeams();
-                Read(dict, "score", ref penalty.score);
-                if (TryRead(dict, "team1Grades", out List<Dict> team1Grades))
-                    penalty.team1Grades = ReadEffectiveGrades(team1Grades);
-                if (TryRead(dict, "team2Grades", out List<Dict> team2Grades))
-                    penalty.team2Grades = ReadEffectiveGrades(team2Grades);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "historical.mostRecentGameIndex": penalty.historical.mostRecentGameIndex = Read<int>(kvp.Value); break;
+                        case "historical.numberOfOccurences": penalty.historical.numberOfOccurences = Read<int>(kvp.Value); break;
+                        case "historical.score": penalty.historical.score = Read<double>(kvp.Value); break;
+                        case "score": penalty.score = Read<double>(kvp.Value); break;
+                        case "team1Grades": penalty.team1Grades = ReadEffectiveGrades(Read<List<Dict>>(kvp.Value)); break;
+                        case "team2Grades": penalty.team2Grades = ReadEffectiveGrades(Read<List<Dict>>(kvp.Value)); break;
+                    }
+                }
                 penalty.match = match;
                 match.penalties.Add(penalty);
             }
@@ -460,30 +517,48 @@ namespace Matchmaker.FileOperations
             EffectiveGrade ReadEffectiveGrade(Dict dict)
             {
                 EffectiveGrade effectiveGrade = new EffectiveGrade();
-                Read(dict, "grade", ref effectiveGrade.grade, ConvertEnum<Grade>);
-                Read(dict, "positionIsPrimary", ref effectiveGrade.positionIsPrimary);
-                Read(dict, "positionIsSecondary", ref effectiveGrade.positionIsSecondary);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "grade": effectiveGrade.grade = Read(kvp.Value, converter: ConvertEnum<Grade>); break;
+                        case "positionIsPrimary": effectiveGrade.positionIsPrimary = Read<bool>(kvp.Value); break;
+                        case "positionIsSecondary": effectiveGrade.positionIsSecondary = Read<bool>(kvp.Value); break;
+                    }
+                }
                 return effectiveGrade;
             }
 
             void ReadWeights(Dict dict)
             {
-                Read(dict, "IncorrectPosition", ref weights.IncorrectPosition, dictReader: ReadWeight);
-                Read(dict, "IncorrectTeamSize", ref weights.IncorrectTeamSize, dictReader: ReadWeight);
-                Read(dict, "PairPlayedTogetherAgainstEachOther", ref weights.PairPlayedTogetherAgainstEachOther, dictReader: ReadWeight);
-                Read(dict, "PairPlayedTogetherInTeam", ref weights.PairPlayedTogetherInTeam, dictReader: ReadWeight);
-                Read(dict, "SecondaryPosition", ref weights.SecondaryPosition, dictReader: ReadWeight);
-                Read(dict, "UnbalancedPlayers", ref weights.UnbalancedPlayers, dictReader: ReadWeight);
-                Read(dict, "UnbalancedTeams", ref weights.UnbalancedTeams, dictReader: ReadWeight);
-                Read(dict, "GoodLeadsMoveUp", ref weights.GoodLeadsMoveUp, dictReader: ReadWeight);
-                Read(dict, "GoodSkipsGetSkip", ref weights.GoodSkipsGetSkip, dictReader: ReadWeight);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "IncorrectPosition": weights.IncorrectPosition = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "IncorrectTeamSize": weights.IncorrectTeamSize = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "PairPlayedTogetherAgainstEachOther": weights.PairPlayedTogetherAgainstEachOther = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "PairPlayedTogetherInTeam": weights.PairPlayedTogetherInTeam = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "SecondaryPosition": weights.SecondaryPosition = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "UnbalancedPlayers": weights.UnbalancedPlayers = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "UnbalancedTeams": weights.UnbalancedTeams = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "GoodLeadsMoveUp": weights.GoodLeadsMoveUp = Read(kvp.Value, dictReader: ReadWeight); break;
+                        case "GoodSkipsGetSkip": weights.GoodSkipsGetSkip = Read(kvp.Value, dictReader: ReadWeight); break;
+                    }
+                }
             }
 
             Weight ReadWeight(Dict dict)
             {
                 Weight weight = new Weight();
-                Read(dict, "Score", ref weight.Score);
-                Read(dict, "Multiplier", ref weight.Multiplier);
+                foreach (var kvp in dict)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "Score": weight.Score = Read<double>(kvp.Value); break;
+                        case "Multiplier": weight.Multiplier = Read<double>(kvp.Value); break;
+                    }
+                }
                 return weight;
             }
         }

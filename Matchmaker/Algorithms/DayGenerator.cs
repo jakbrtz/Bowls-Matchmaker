@@ -69,40 +69,81 @@ namespace Matchmaker.Algorithms
             // If we have an existing day, try to copy matches across
             if (parameters.existingDay != null)
             {
+                List<Match> possibleMatchesToClone = new List<Match>();
                 HashSet<Player> playersAsSet = new HashSet<Player>(parameters.players);
+
+                // Get a list of matches that can be cloned
                 foreach (Match match in parameters.existingDay.matches)
                 {
-                    // Make sure we need a match with this size
-                    MatchSize matchSize = match.GetMatchSize();
-                    if (numMatchSizesClone[matchSize] > 0)
+                    // Check that all players from that match are still needed in this match
+                    bool allPlayersInExisting = true;
+                    foreach (Team team in match.teams)
+                        foreach (Player player in team.players)
+                            if (player != null)
+                                if (!playersAsSet.Contains(player))
+                                    allPlayersInExisting = false;
+                    if (allPlayersInExisting)
+                        possibleMatchesToClone.Add(match);
+                }
+
+                // Pick the matches with the best scores
+                foreach (var kvp in numMatchSizesClone)
+                {
+                    MatchSize matchSize = kvp.Key;
+                    int amountNeeded = kvp.Value;
+                    foreach (Match match in possibleMatchesToClone)
                     {
-                        // Check that all players from that match are still needed in this match
-                        bool allPlayersInExisting = true;
-                        foreach (Team team in match.teams)
-                            foreach (Player player in team.players)
-                                if (player != null)
-                                    if (!playersAsSet.Contains(player))
-                                        allPlayersInExisting = false;
-                        if (allPlayersInExisting)
+                        if (match.GetMatchSize().Equals(matchSize))
                         {
-                            // Create a new match
-                            Match copiedMatch = new Match(matchSize, match.isFixed, true);
-                            copiedMatch.rink = match.rink;
-                            day.matches.Add(copiedMatch);
-                            // Copy the players from the existing match
-                            for (int teamIndex = 0; teamIndex < 2; teamIndex++)
-                            {
-                                for (int position = 0; position < Team.MaxSize; position++)
-                                {
-                                    Player player = match.teams[teamIndex].players[position];
-                                    copiedMatch.teams[teamIndex].players[position] = player;
-                                    playersAsSet.Remove(player);
-                                }
-                            }
-                            // Record that we've used a match of this size already
-                            numMatchSizesClone[matchSize]--;
+                            amountNeeded--;
                         }
                     }
+                    // If we have too many matches, get rid of the bad ones
+                    while (amountNeeded < 0)
+                    {
+                        double worstScore = double.MinValue;
+                        Match worstMatch = null;
+                        foreach (Match match in possibleMatchesToClone)
+                        {
+                            if (match.GetMatchSize().Equals(matchSize))
+                            {
+                                double score = Score(match);
+                                if (score > worstScore)
+                                {
+                                    worstScore = score;
+                                    worstMatch = match;
+                                }
+                            }
+                        }
+                        possibleMatchesToClone.Remove(worstMatch);
+                        amountNeeded++;
+                    }
+                }
+
+                // Clone the matches
+                foreach (Match match in possibleMatchesToClone)
+                {
+                    MatchSize matchSize = match.GetMatchSize();
+
+                    // Create a new match
+                    Match copiedMatch = new Match(matchSize, match.isFixed, true);
+                    copiedMatch.rink = match.rink;
+                    day.matches.Add(copiedMatch);
+
+                    // Copy the players from the existing match
+                    for (int teamIndex = 0; teamIndex < 2; teamIndex++)
+                    {
+                        for (int position = 0; position < Team.MaxSize; position++)
+                        {
+                            Player player = match.teams[teamIndex].players[position];
+                            copiedMatch.teams[teamIndex].players[position] = player;
+                            playersAsSet.Remove(player);
+                        }
+                    }
+
+                    // Record that we've used a match of this size already
+                    numMatchSizesClone[matchSize]--;
+                    Debug.Assert(numMatchSizesClone[matchSize] >= 0, "The required number of matches should not drop below 0");
                 }
 
                 playersClone = new List<Player>(playersAsSet);
@@ -223,6 +264,14 @@ namespace Matchmaker.Algorithms
         {
             GetProgress(out double progress, out double score);
             return $"DayGenerator: {progress * 100: 0.##}% score = {score: 0.##}";
+        }
+
+        private double Score(Match match)
+        {
+            double score = 0;
+            foreach (Penalty penalty in match.penalties)
+                score += penalty.score;
+            return score;
         }
     }
 }

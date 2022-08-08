@@ -262,6 +262,15 @@ namespace Matchmaker.UserInterface
         {
             HighlightPlayer(CurrentlySelectedPlayer());
         }
+        private void TBXfilterPagePlayers_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13 && CLBpagePlayers.Items.Count > 0 && CLBpagePlayers.SelectedIndex >= 0 && TBXfilterPagePlayers.Text?.Length > 0)
+            {
+                CLBpagePlayers.SetItemChecked(CLBpagePlayers.SelectedIndex, true);
+                TBXfilterPagePlayers.Text = "";
+                TBXfilterPagePlayers.SelectionStart = 0; // todo: the control should handle this automatically
+            }
+        }
 
         private void BTNsortnamematches_Click(object sender, EventArgs e)
         {

@@ -59,9 +59,6 @@
             this.pagePlayers = new System.Windows.Forms.TabPage();
             this.CLBpagePlayers = new System.Windows.Forms.CheckedListBox();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.BTNimportplayersforday = new System.Windows.Forms.Button();
-            this.BTNsorttagmatches = new System.Windows.Forms.Button();
-            this.BTNsortnamematches = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.TBXfilterPagePlayers = new CustomControls.WaterMarkTextBox();
@@ -411,7 +408,6 @@
             // 
             // CLBpagePlayers
             // 
-            this.CLBpagePlayers.CheckOnClick = true;
             this.CLBpagePlayers.ContextMenuStrip = this.CMNaddall;
             this.CLBpagePlayers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CLBpagePlayers.FormatString = "%name - %position";
@@ -425,9 +421,6 @@
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.BTNimportplayersforday);
-            this.panel6.Controls.Add(this.BTNsorttagmatches);
-            this.panel6.Controls.Add(this.BTNsortnamematches);
             this.panel6.Controls.Add(this.label6);
             this.panel6.Controls.Add(this.label1);
             this.panel6.Controls.Add(this.TBXfilterPagePlayers);
@@ -436,39 +429,6 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(774, 58);
             this.panel6.TabIndex = 3;
-            // 
-            // BTNimportplayersforday
-            // 
-            this.BTNimportplayersforday.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BTNimportplayersforday.Location = new System.Drawing.Point(541, 31);
-            this.BTNimportplayersforday.Name = "BTNimportplayersforday";
-            this.BTNimportplayersforday.Size = new System.Drawing.Size(128, 23);
-            this.BTNimportplayersforday.TabIndex = 8;
-            this.BTNimportplayersforday.Text = "Import from File";
-            this.BTNimportplayersforday.UseVisualStyleBackColor = true;
-            this.BTNimportplayersforday.Click += new System.EventHandler(this.BTNimportplayersforday_Click);
-            // 
-            // BTNsorttagmatches
-            // 
-            this.BTNsorttagmatches.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BTNsorttagmatches.Location = new System.Drawing.Point(407, 31);
-            this.BTNsorttagmatches.Name = "BTNsorttagmatches";
-            this.BTNsorttagmatches.Size = new System.Drawing.Size(128, 23);
-            this.BTNsorttagmatches.TabIndex = 7;
-            this.BTNsorttagmatches.Text = "Sort by Tag Number";
-            this.BTNsorttagmatches.UseVisualStyleBackColor = true;
-            this.BTNsorttagmatches.Click += new System.EventHandler(this.BTNsorttagmatches_Click);
-            // 
-            // BTNsortnamematches
-            // 
-            this.BTNsortnamematches.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BTNsortnamematches.Location = new System.Drawing.Point(273, 31);
-            this.BTNsortnamematches.Name = "BTNsortnamematches";
-            this.BTNsortnamematches.Size = new System.Drawing.Size(128, 23);
-            this.BTNsortnamematches.TabIndex = 6;
-            this.BTNsortnamematches.Text = "Sort by Name";
-            this.BTNsortnamematches.UseVisualStyleBackColor = true;
-            this.BTNsortnamematches.Click += new System.EventHandler(this.BTNsortnamematches_Click);
             // 
             // label6
             // 
@@ -501,6 +461,7 @@
             this.TBXfilterPagePlayers.WaterMarkColor = System.Drawing.Color.Gray;
             this.TBXfilterPagePlayers.WaterMarkText = "Name or Tag Number";
             this.TBXfilterPagePlayers.TextChanged += new System.EventHandler(this.TBXfilterPagePlayers_TextChanged);
+            this.TBXfilterPagePlayers.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TBXfilterPagePlayers_KeyPress);
             // 
             // pageFixedMatches
             // 
@@ -1609,8 +1570,6 @@
         private System.Windows.Forms.NumericUpDown NUDfours;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label LBLnummatcheswarning;
-        private System.Windows.Forms.Button BTNsorttagmatches;
-        private System.Windows.Forms.Button BTNsortnamematches;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button BTNexcelexport;
@@ -1646,7 +1605,6 @@
         private System.Windows.Forms.Button BTNmaxfours;
         private System.Windows.Forms.Button BTNmaxtrips;
         private System.Windows.Forms.Button BTNmaxpairs;
-        private System.Windows.Forms.Button BTNimportplayersforday;
         private System.Windows.Forms.Button BTNexportplayersinday;
         private System.Windows.Forms.OpenFileDialog OFDplayersinday;
         private System.Windows.Forms.SaveFileDialog SFDplayersinday;

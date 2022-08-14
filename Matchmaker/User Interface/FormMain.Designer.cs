@@ -45,6 +45,13 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.zoom100ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoom125ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoom150ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoom200ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.zoom250ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.OFDexcel = new System.Windows.Forms.OpenFileDialog();
             this.SFDexcel = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -301,25 +308,83 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1,
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 580);
+            this.toolStripStatusLabel1,
+            this.toolStripStatusLabel2,
+            this.toolStripDropDownButton1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 564);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(990, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(990, 38);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripProgressBar1
             // 
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 32);
             this.toolStripProgressBar1.Step = 1;
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 33);
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(755, 33);
+            this.toolStripStatusLabel2.Spring = true;
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zoom100ToolStripMenuItem1,
+            this.zoom125ToolStripMenuItem1,
+            this.zoom150ToolStripMenuItem1,
+            this.zoom200ToolStripMenuItem1,
+            this.zoom250ToolStripMenuItem1});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.White;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(118, 36);
+            this.toolStripDropDownButton1.Text = "Zoom: 100%";
+            // 
+            // zoom100ToolStripMenuItem1
+            // 
+            this.zoom100ToolStripMenuItem1.Name = "zoom100ToolStripMenuItem1";
+            this.zoom100ToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
+            this.zoom100ToolStripMenuItem1.Text = "Zoom 100%";
+            this.zoom100ToolStripMenuItem1.Click += new System.EventHandler(this.Zoom100ToolStripMenuItem1_Click);
+            // 
+            // zoom125ToolStripMenuItem1
+            // 
+            this.zoom125ToolStripMenuItem1.Name = "zoom125ToolStripMenuItem1";
+            this.zoom125ToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
+            this.zoom125ToolStripMenuItem1.Text = "Zoom 125%";
+            this.zoom125ToolStripMenuItem1.Click += new System.EventHandler(this.Zoom125ToolStripMenuItem1_Click);
+            // 
+            // zoom150ToolStripMenuItem1
+            // 
+            this.zoom150ToolStripMenuItem1.Name = "zoom150ToolStripMenuItem1";
+            this.zoom150ToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
+            this.zoom150ToolStripMenuItem1.Text = "Zoom 150%";
+            this.zoom150ToolStripMenuItem1.Click += new System.EventHandler(this.Zoom150ToolStripMenuItem1_Click);
+            // 
+            // zoom200ToolStripMenuItem1
+            // 
+            this.zoom200ToolStripMenuItem1.Name = "zoom200ToolStripMenuItem1";
+            this.zoom200ToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
+            this.zoom200ToolStripMenuItem1.Text = "Zoom 200%";
+            this.zoom200ToolStripMenuItem1.Click += new System.EventHandler(this.Zoom200ToolStripMenuItem1_Click);
+            // 
+            // zoom250ToolStripMenuItem1
+            // 
+            this.zoom250ToolStripMenuItem1.Name = "zoom250ToolStripMenuItem1";
+            this.zoom250ToolStripMenuItem1.Size = new System.Drawing.Size(137, 22);
+            this.zoom250ToolStripMenuItem1.Text = "Zoom 250%";
+            this.zoom250ToolStripMenuItem1.Click += new System.EventHandler(this.Zoom250ToolStripMenuItem1_Click);
             // 
             // OFDexcel
             // 
@@ -368,7 +433,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(0, 86);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(990, 494);
+            this.tabControlMain.Size = new System.Drawing.Size(990, 478);
             this.tabControlMain.TabIndex = 2;
             // 
             // pageMainMatch
@@ -377,7 +442,7 @@
             this.pageMainMatch.Controls.Add(this.SideBarCreateDay);
             this.pageMainMatch.Location = new System.Drawing.Point(4, 22);
             this.pageMainMatch.Name = "pageMainMatch";
-            this.pageMainMatch.Size = new System.Drawing.Size(982, 468);
+            this.pageMainMatch.Size = new System.Drawing.Size(982, 452);
             this.pageMainMatch.TabIndex = 0;
             this.pageMainMatch.Text = "Matches";
             this.pageMainMatch.UseVisualStyleBackColor = true;
@@ -392,7 +457,7 @@
             this.tabControlMatches.Location = new System.Drawing.Point(200, 0);
             this.tabControlMatches.Name = "tabControlMatches";
             this.tabControlMatches.SelectedIndex = 0;
-            this.tabControlMatches.Size = new System.Drawing.Size(782, 468);
+            this.tabControlMatches.Size = new System.Drawing.Size(782, 452);
             this.tabControlMatches.TabIndex = 2;
             // 
             // pagePlayers
@@ -401,7 +466,7 @@
             this.pagePlayers.Controls.Add(this.panel6);
             this.pagePlayers.Location = new System.Drawing.Point(4, 22);
             this.pagePlayers.Name = "pagePlayers";
-            this.pagePlayers.Size = new System.Drawing.Size(774, 442);
+            this.pagePlayers.Size = new System.Drawing.Size(774, 426);
             this.pagePlayers.TabIndex = 0;
             this.pagePlayers.Text = "Players";
             this.pagePlayers.UseVisualStyleBackColor = true;
@@ -415,7 +480,7 @@
             this.CLBpagePlayers.IntegralHeight = false;
             this.CLBpagePlayers.Location = new System.Drawing.Point(0, 58);
             this.CLBpagePlayers.Name = "CLBpagePlayers";
-            this.CLBpagePlayers.Size = new System.Drawing.Size(774, 384);
+            this.CLBpagePlayers.Size = new System.Drawing.Size(774, 368);
             this.CLBpagePlayers.TabIndex = 2;
             this.CLBpagePlayers.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CLBpagePlayers_ItemCheck);
             // 
@@ -469,7 +534,7 @@
             this.pageFixedMatches.Controls.Add(this.panel3);
             this.pageFixedMatches.Location = new System.Drawing.Point(4, 22);
             this.pageFixedMatches.Name = "pageFixedMatches";
-            this.pageFixedMatches.Size = new System.Drawing.Size(774, 442);
+            this.pageFixedMatches.Size = new System.Drawing.Size(774, 426);
             this.pageFixedMatches.TabIndex = 1;
             this.pageFixedMatches.Text = "Fixed Matches";
             this.pageFixedMatches.UseVisualStyleBackColor = true;
@@ -480,8 +545,9 @@
             this.WEBfixmatches.Location = new System.Drawing.Point(0, 87);
             this.WEBfixmatches.MinimumSize = new System.Drawing.Size(20, 20);
             this.WEBfixmatches.Name = "WEBfixmatches";
-            this.WEBfixmatches.Size = new System.Drawing.Size(774, 355);
+            this.WEBfixmatches.Size = new System.Drawing.Size(774, 339);
             this.WEBfixmatches.TabIndex = 16;
+            this.WEBfixmatches.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WEBfixmatches_DocumentCompleted);
             // 
             // panel3
             // 
@@ -545,7 +611,7 @@
             this.pageConfirmBeforeMatches.Controls.Add(this.panel9);
             this.pageConfirmBeforeMatches.Location = new System.Drawing.Point(4, 22);
             this.pageConfirmBeforeMatches.Name = "pageConfirmBeforeMatches";
-            this.pageConfirmBeforeMatches.Size = new System.Drawing.Size(774, 442);
+            this.pageConfirmBeforeMatches.Size = new System.Drawing.Size(774, 426);
             this.pageConfirmBeforeMatches.TabIndex = 2;
             this.pageConfirmBeforeMatches.Text = "Confirm";
             this.pageConfirmBeforeMatches.UseVisualStyleBackColor = true;
@@ -560,7 +626,7 @@
             this.TBXconfirmConsole.Name = "TBXconfirmConsole";
             this.TBXconfirmConsole.ReadOnly = true;
             this.TBXconfirmConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TBXconfirmConsole.Size = new System.Drawing.Size(767, 195);
+            this.TBXconfirmConsole.Size = new System.Drawing.Size(767, 179);
             this.TBXconfirmConsole.TabIndex = 10;
             // 
             // panel7
@@ -770,7 +836,7 @@
             this.pageViewMatch.Controls.Add(this.panel5);
             this.pageViewMatch.Location = new System.Drawing.Point(4, 22);
             this.pageViewMatch.Name = "pageViewMatch";
-            this.pageViewMatch.Size = new System.Drawing.Size(774, 442);
+            this.pageViewMatch.Size = new System.Drawing.Size(774, 426);
             this.pageViewMatch.TabIndex = 3;
             this.pageViewMatch.Text = "New Games";
             this.pageViewMatch.UseVisualStyleBackColor = true;
@@ -790,7 +856,7 @@
             // 
             this.SCTnewgames.Panel2.Controls.Add(this.TBXnewdayConsole);
             this.SCTnewgames.Panel2Collapsed = true;
-            this.SCTnewgames.Size = new System.Drawing.Size(774, 355);
+            this.SCTnewgames.Size = new System.Drawing.Size(774, 339);
             this.SCTnewgames.SplitterDistance = 227;
             this.SCTnewgames.TabIndex = 12;
             // 
@@ -801,7 +867,7 @@
             this.WEBnewgames.Location = new System.Drawing.Point(0, 0);
             this.WEBnewgames.MinimumSize = new System.Drawing.Size(20, 20);
             this.WEBnewgames.Name = "WEBnewgames";
-            this.WEBnewgames.Size = new System.Drawing.Size(774, 355);
+            this.WEBnewgames.Size = new System.Drawing.Size(774, 339);
             this.WEBnewgames.TabIndex = 13;
             this.WEBnewgames.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WEBnewgames_DocumentCompleted);
             this.WEBnewgames.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.WEBnewgames_Navigating);
@@ -887,7 +953,7 @@
             this.SideBarCreateDay.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.SideBarCreateDay.Location = new System.Drawing.Point(0, 0);
             this.SideBarCreateDay.Name = "SideBarCreateDay";
-            this.SideBarCreateDay.Size = new System.Drawing.Size(200, 468);
+            this.SideBarCreateDay.Size = new System.Drawing.Size(200, 452);
             this.SideBarCreateDay.TabIndex = 1;
             this.SideBarCreateDay.WrapContents = false;
             // 
@@ -940,7 +1006,7 @@
             this.pageMainSettings.Controls.Add(this.FLPweights);
             this.pageMainSettings.Location = new System.Drawing.Point(4, 22);
             this.pageMainSettings.Name = "pageMainSettings";
-            this.pageMainSettings.Size = new System.Drawing.Size(982, 468);
+            this.pageMainSettings.Size = new System.Drawing.Size(982, 452);
             this.pageMainSettings.TabIndex = 3;
             this.pageMainSettings.Text = "Settings";
             this.pageMainSettings.UseVisualStyleBackColor = true;
@@ -967,7 +1033,7 @@
             this.FLPweights.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.FLPweights.Location = new System.Drawing.Point(0, 0);
             this.FLPweights.Name = "FLPweights";
-            this.FLPweights.Size = new System.Drawing.Size(982, 468);
+            this.FLPweights.Size = new System.Drawing.Size(982, 452);
             this.FLPweights.TabIndex = 12;
             this.FLPweights.WrapContents = false;
             // 
@@ -1122,7 +1188,7 @@
             this.pageMainPlayers.Controls.Add(this.SideBarPlayers);
             this.pageMainPlayers.Location = new System.Drawing.Point(4, 22);
             this.pageMainPlayers.Name = "pageMainPlayers";
-            this.pageMainPlayers.Size = new System.Drawing.Size(982, 468);
+            this.pageMainPlayers.Size = new System.Drawing.Size(982, 452);
             this.pageMainPlayers.TabIndex = 1;
             this.pageMainPlayers.Text = "Players";
             this.pageMainPlayers.UseVisualStyleBackColor = true;
@@ -1133,6 +1199,8 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.tagDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn,
@@ -1146,7 +1214,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(200, 31);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(782, 437);
+            this.dataGridView1.Size = new System.Drawing.Size(782, 421);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridView1_CellMouseDown);
             // 
@@ -1270,7 +1338,7 @@
             this.SideBarPlayers.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.SideBarPlayers.Location = new System.Drawing.Point(0, 0);
             this.SideBarPlayers.Name = "SideBarPlayers";
-            this.SideBarPlayers.Size = new System.Drawing.Size(200, 468);
+            this.SideBarPlayers.Size = new System.Drawing.Size(200, 452);
             this.SideBarPlayers.TabIndex = 2;
             this.SideBarPlayers.WrapContents = false;
             // 
@@ -1352,7 +1420,7 @@
             this.pageMainHistory.Controls.Add(this.panel4);
             this.pageMainHistory.Location = new System.Drawing.Point(4, 22);
             this.pageMainHistory.Name = "pageMainHistory";
-            this.pageMainHistory.Size = new System.Drawing.Size(982, 468);
+            this.pageMainHistory.Size = new System.Drawing.Size(982, 452);
             this.pageMainHistory.TabIndex = 2;
             this.pageMainHistory.Text = "History";
             this.pageMainHistory.UseVisualStyleBackColor = true;
@@ -1364,8 +1432,9 @@
             this.WEBhistory.Location = new System.Drawing.Point(200, 62);
             this.WEBhistory.MinimumSize = new System.Drawing.Size(20, 20);
             this.WEBhistory.Name = "WEBhistory";
-            this.WEBhistory.Size = new System.Drawing.Size(782, 406);
+            this.WEBhistory.Size = new System.Drawing.Size(782, 390);
             this.WEBhistory.TabIndex = 3;
+            this.WEBhistory.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WEBhistory_DocumentCompleted);
             // 
             // panel8
             // 
@@ -1420,7 +1489,7 @@
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
             this.panel4.Padding = new System.Windows.Forms.Padding(3);
-            this.panel4.Size = new System.Drawing.Size(200, 468);
+            this.panel4.Size = new System.Drawing.Size(200, 452);
             this.panel4.TabIndex = 2;
             // 
             // LBXhistory
@@ -1434,7 +1503,7 @@
             this.LBXhistory.Location = new System.Drawing.Point(3, 3);
             this.LBXhistory.Name = "LBXhistory";
             this.LBXhistory.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.LBXhistory.Size = new System.Drawing.Size(194, 462);
+            this.LBXhistory.Size = new System.Drawing.Size(194, 446);
             this.LBXhistory.TabIndex = 6;
             this.LBXhistory.SelectedIndexChanged += new System.EventHandler(this.LBXhistory_SelectedIndexChanged);
             // 
@@ -1625,6 +1694,13 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn GradeSecondary;
         private System.Windows.Forms.DataGridViewComboBoxColumn preferredTeamSizesDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button BTNprintersettings;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem zoom100ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem zoom125ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem zoom150ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem zoom200ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem zoom250ToolStripMenuItem1;
     }
 }
 

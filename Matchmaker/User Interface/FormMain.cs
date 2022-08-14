@@ -352,6 +352,11 @@ namespace Matchmaker.UserInterface
             SCBfixedmatchplayers.SetAllItems(players.Except(fixedMatchesDay.Players()));
         }
 
+        private void WEBfixmatches_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            SetWebBrowserZoom(WEBfixmatches, currentZoom);
+        }
+
         int swapPlayerIndexForFixing = -1;
         private void ScripterFixGames_PlayerClickedOn(int matchIndex, int teamIndex, int position)
         {
@@ -803,7 +808,11 @@ namespace Matchmaker.UserInterface
 
         private void WEBnewgames_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (scrollTop != -1 && WEBnewgames.ReadyState == WebBrowserReadyState.Complete)
+            if (WEBnewgames.ReadyState != WebBrowserReadyState.Complete) return;
+
+            SetWebBrowserZoom(WEBnewgames, currentZoom);
+
+            if (scrollTop != -1)
             {
                 WEBnewgames.Document.GetElementsByTagName("HTML")[0].ScrollTop = scrollTop;
                 scrollTop = -1;
@@ -839,6 +848,8 @@ namespace Matchmaker.UserInterface
         {
             BFFmain.FileName = Properties.Settings.Default.FileMain;
             BFFhtml.FileName = Properties.Settings.Default.FileHTML;
+
+            Zoom(Properties.Settings.Default.Zoom);
 
             HTMLdocument.ReloadFormat(Properties.Settings.Default.FileHTML);
         }
@@ -1045,6 +1056,11 @@ namespace Matchmaker.UserInterface
             deleteToolStripMenuItem.Text = days.Count == 1 ? "Delete day" : $"Delete {days.Count} days";
         }
 
+        private void WEBhistory_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            SetWebBrowserZoom(WEBhistory, currentZoom);
+        }
+
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (LBXhistory.SelectedItems.Count == 0) return;
@@ -1080,6 +1096,92 @@ namespace Matchmaker.UserInterface
                 if (SFDplayersinday.ShowDialog() == DialogResult.Cancel) continue;
                 ReadWriteTable.ExportPlayersFromDay(SFDplayersinday.FileName, day);
             }
+        }
+
+        #endregion
+
+        #region screen zooming
+
+        private void Zoom100ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Zoom(1f);
+        }
+
+        private void Zoom125ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Zoom(1.25f);
+        }
+
+        private void Zoom150ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Zoom(1.5f);
+        }
+
+        private void Zoom200ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Zoom(2f);
+        }
+
+        private void Zoom250ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Zoom(2.5f);
+        }
+
+        private float currentZoom = 1;
+
+        private void Zoom(float size)
+        {
+            ZoomRecursive(this, size, size / currentZoom);
+            currentZoom = size;
+
+            toolStripDropDownButton1.Text = $"Zoom: {currentZoom * 100}%";
+
+            Properties.Settings.Default.Zoom = currentZoom;
+            Properties.Settings.Default.Save();
+        }
+
+        private void ZoomRecursive(Control control, float size, float scale)
+        {
+            if (control.Font != control.Parent?.Font)
+            {
+                Debug.Assert(this.AutoScaleMode == AutoScaleMode.Font, "The scale should be driven by the font.");
+                control.Font = new Font(
+                    control.Font.FontFamily,
+                    control.Font.Size * scale,
+                    control.Font.Style,
+                    control.Font.Unit,
+                    control.Font.GdiCharSet,
+                    control.Font.GdiVerticalFont);
+            }
+
+            if (control is WebBrowser wb && wb.ReadyState == WebBrowserReadyState.Complete)
+            {
+                SetWebBrowserZoom(wb, size);
+            }
+            else if (control is DataGridView dgv)
+            {
+                foreach (DataGridViewColumn column in dgv.Columns)
+                {
+                    column.Width = (int)(column.Width * scale);
+                }
+            }
+
+            if (control.Controls != null)
+            {
+                foreach (Control child in control.Controls)
+                {
+                    ZoomRecursive(child, size, scale);
+                }
+            }
+        }
+
+        private void SetWebBrowserZoom(WebBrowser wb, float size)
+        {
+            int OLECMDID_OPTICAL_ZOOM = 63;
+            int OLECMDEXECOPT_DONTPROMPTUSER = 2;
+            dynamic iwb2 = wb.ActiveXInstance;
+            int zoom = Math.Max(Math.Min(1000, (int)(size * 100)), 10);
+            iwb2.ExecWB(OLECMDID_OPTICAL_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER, zoom, zoom);
         }
 
         #endregion

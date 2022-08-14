@@ -147,6 +147,18 @@
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>130, 17</value>
   </metadata>
+  <data name="toolStripDropDownButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFWSURBVGhD7Y9RTsQwDAX3/pcGHqJVaibBsR3SIkaan5Xf
+        NPv65ztvDm8LPdbrLaCHRd0CPaTKX4M+vsJl0Md6jqD7nuXQR6wRqGMtg+KtFVC3tQQKH1ZD3zhMQUHp
+        JbtpDUMx6aV6K0NQSHrJbEV2/wlF5Awr9nKKdOCD7Q0ay1lWNaSL8NCwvRMeGrZ2aCQjrOzIIdODAVtb
+        3gHdVUl47048A7qp1uK5ueAZ0E21Fs/NBc+Abqq1eG4ueAd0VyXhvTuZHgzY2qKBjLCyI38kNAK2d8JD
+        w/YODeUsqxrSTWr8xS0aFJAzrNjLabKR3fsTCkkv1VsZhmLSS3bTmoKChyug77SmoGBrBdTtmYKC1gjU
+        8ZiCgj1H0H3EFBTcaRqKVino954lUDiqhW56lkFxryPovmc59BHrDLQnHwE9nHwE9HDrY6DHtz4K+gOH
+        j+RP/IkOr9c7dGiTlx/n8qcAAAAASUVORK5CYII=
+</value>
+  </data>
   <metadata name="OFDexcel.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>246, 17</value>
   </metadata>
@@ -167,12 +179,6 @@
   </metadata>
   <metadata name="SFDhtml.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>576, 56</value>
-  </metadata>
-  <metadata name="PositionPrimary.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="playerBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>651, 17</value>
   </metadata>
   <metadata name="PositionPrimary.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

@@ -26,6 +26,17 @@ namespace CustomControls
             get { return _waterMarkText; }
             set { _waterMarkText = value; Invalidate(); }
         }
+
+        public override Font Font
+        {
+            get { return base.Font; }
+            set
+            {
+                this.SetStyle(ControlStyles.UserPaint, false);
+                base.Font = value;
+                this.SetStyle(ControlStyles.UserPaint, this.waterMarkTextEnabled);
+            }
+        }
         #endregion
 
         //Default constructor

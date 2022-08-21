@@ -37,7 +37,7 @@ namespace Matchmaker.DataHandling
                 history.RemoveAt(indexForDeleting);
         }
 
-        public static void DeletePlayers(List<Player> players, IList<Player> allPlayers, IList<Day> history)
+        public static void DeletePlayers(List<Player> players, IList<Player> allPlayers, IList<Day> history, HashSet<Player> playersSelectedForDay)
         {
             foreach (Day day in history)
             {
@@ -93,7 +93,10 @@ namespace Matchmaker.DataHandling
                 }
             }
             foreach (Player player in players)
+            {
                 allPlayers.Remove(player);
+                playersSelectedForDay.Remove(player);
+            }
         }
     }
 }

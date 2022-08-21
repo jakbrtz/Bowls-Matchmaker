@@ -275,14 +275,12 @@ namespace Matchmaker.UserInterface
         private void BTNsortnamematches_Click(object sender, EventArgs e)
         {
             players.Sort(Sorts.PlayerCompare);
-            CLBpagePlayers.FormatString = "%name - %position";
             RefreshPageMatchesPlayers(highlightWhenDone: true); 
         }
 
         private void BTNsorttagmatches_Click(object sender, EventArgs e)
         {
             players.Sort(Sorts.TagNumberCompare);
-            CLBpagePlayers.FormatString = "%tag - %name - %position";
             RefreshPageMatchesPlayers(highlightWhenDone: true);
         }
 
@@ -952,9 +950,9 @@ namespace Matchmaker.UserInterface
             Player player = new Player()
             {
                 ID = DataCreation.UniqueRandomInt(players),
-                TagNumber = RBNvisitor.Checked ? "" : DataCreation.NextTagNumber(players),
+                TagNumber = RBNmember.Checked ? DataCreation.NextTagNumber(players) : "",
             };
-            players.Add(player);
+            players.Insert(0, player);
             RefreshPlayerFilters();
             int rowIndex = (playerBindingSource.DataSource as List<PlayerIntermediate>).FindIndex(p => p.player == player);
             dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex].Cells[1];
@@ -1000,7 +998,8 @@ namespace Matchmaker.UserInterface
             string listPlayersForMessage = Tools.ShortListDescription(selectedPlayers);
             if (MessageBox.Show("Are you sure you want to delete " + listPlayersForMessage + "?", "Delete", MessageBoxButtons.YesNo) == DialogResult.No) return;
 
-            DataDeletion.DeletePlayers(selectedPlayers, players, history);
+            DataDeletion.DeletePlayers(selectedPlayers, players, history, playersSelectedForDay);
+            toolStripStatusLabel1.Text = "Deleted " + listPlayersForMessage;
 
             RefreshPlayerFilters();
         }

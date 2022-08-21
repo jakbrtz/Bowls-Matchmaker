@@ -475,7 +475,7 @@
             // 
             this.CLBpagePlayers.ContextMenuStrip = this.CMNaddall;
             this.CLBpagePlayers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CLBpagePlayers.FormatString = "%name - %position";
+            this.CLBpagePlayers.FormatString = "%tag - %name";
             this.CLBpagePlayers.FormattingEnabled = true;
             this.CLBpagePlayers.IntegralHeight = false;
             this.CLBpagePlayers.Location = new System.Drawing.Point(0, 58);

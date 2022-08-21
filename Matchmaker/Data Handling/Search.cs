@@ -1,17 +1,34 @@
 ﻿using Matchmaker.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Matchmaker.DataHandling
 {
     public static class Search
     {
-        static string SimplifySearch(string old) => old.ToLower().Replace("'", "").Replace("-", "").Replace("'", "");
+        static string SimplifySearch(string old) => old.ToLower().Replace("'", "").Replace("-", "").Replace("'", "").Replace("*", "").Replace("^", "");
 
         public static bool Filter(Player player, string search)
         {
-            if (string.IsNullOrEmpty(search)) return true;
-            return SimplifySearch(player.Name).IndexOf(SimplifySearch(search), StringComparison.OrdinalIgnoreCase) != -1 || player.TagNumber?.Contains(search) == true;
+            search = SimplifySearch(search);
+            if (string.IsNullOrEmpty(search))
+            {
+                return true;
+            }
+            if (player.TagNumber == search)
+            {
+                return true;
+            }
+            string simpleName = SimplifySearch(player.Name);
+            foreach (string word in search.Split(' '))
+            {
+                if (!simpleName.Contains(word))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public static int RelevanceToSearch(Player player, string search)
